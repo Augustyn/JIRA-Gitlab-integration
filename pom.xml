@@ -149,14 +149,48 @@
 
 
     </dependencies>
-
+    <profiles>
+        <profile>
+            <id>travis</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.atlassian.jira</groupId>
+                    <artifactId>jira-api</artifactId>
+                    <version>${jira.version}</version>
+                    <scope>provided</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>jta</groupId>
+                            <artifactId>jta</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>com.atlassian.jira</groupId>
+                    <artifactId>jira-core</artifactId>
+                    <version>${jira.version}</version>
+                    <scope>provided</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>jta</groupId>
+                            <artifactId>jta</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>jndi</groupId>
+                            <artifactId>jndi</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-jira-plugin</artifactId>
                 <version>${amps.version}</version>
-		<extensions>true</extensions>
+		        <extensions>true</extensions>
                 <configuration>
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
@@ -224,16 +258,40 @@
     </build>
 
     <properties>
-	<jdk.version>1.8</jdk.version>
+	    <jdk.version>1.8</jdk.version>
         <jira.version>7.1.2</jira.version>
         <amps.version>6.2.3</amps.version>
-	<spring.version>4.2.5.RELEASE</spring.version>
+    	<spring.version>4.2.5.RELEASE</spring.version>
         <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
         <atlassian.spring.scanner.version>1.2.6</atlassian.spring.scanner.version>
         <!-- This key is used to keep the consistency between the key in atlassian-plugin.xml and the key to generate bundle. -->
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
 		<!-- TestKit version 6.x for JIRA 6.x -->
-	<testkit.version>6.3.11</testkit.version>
+	    <testkit.version>6.3.11</testkit.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>atlassian-public-1</id>
+            <url>https://maven.atlassian.com/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>atlassian-public-2</id>
+            <url>https://m2proxy.atlassian.com/repository/public</url>
+        </repository>
+        <repository>
+            <id>atlassian-public-3</id>
+            <url>https://maven.atlassian.com/maven1/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>atlassian-public-plugin</id>
+            <url>https://maven.atlassian.com/repository/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
