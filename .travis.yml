@@ -13,8 +13,8 @@ branches:
     only:
       - master
       - development
-#install: 
-#  - mvn install -Ptravis -Dmaven.javadoc.skip=true -B -V
+install: 
+  - mvn install -P travis -Dmaven.javadoc.skip=true -B -V
 script:
-  - mvn clean install -Ptravis -B -V
+  - mvn clean install -P travis -B -V
 
