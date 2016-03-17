@@ -1,4 +1,4 @@
-# JIRA-Gitlab-integration
+# JIRA-Gitlab-integration [![Build Status](https://travis-ci.org/Augustyn/JIRA-Gitlab-integration.svg?branch=master)](https://travis-ci.org/Augustyn/JIRA-Gitlab-integration)
 Atlassian JIRA to Gitlab integration
 
 # Building
