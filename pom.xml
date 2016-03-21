@@ -184,8 +184,37 @@
             </dependencies>
         </profile>
     </profiles>
-    <build>
-        <plugins>
+  <build>
+  
+           <plugins>
+   	   <plugin>
+        	<groupId>org.apache.maven.plugins</groupId>
+       		<artifactId>maven-compiler-plugin</artifactId>
+       		<version>3.5.1</version>        
+	   </plugin>
+
+               <plugin>
+                 <groupId>pl.project13.maven</groupId>
+		<artifactId>git-commit-id-plugin</artifactId>
+		<version>2.2.0</version>
+                   <executions>
+                       <execution>
+                           <goals>
+                               <goal>revision</goal>
+                           </goals>
+                       </execution>
+                   </executions>
+                   <configuration>
+
+			
+                       <prefix>git</prefix> <!-- that's the default value -->
+                       <dateFormat>dd.MM.yyyy '@' HH:mm:ss z</dateFormat> <!-- that's the default value -->
+                       <verbose>true</verbose> <!-- false is default for this -->
+                       <dotGitDirectory>${project.basedir}/../.git</dotGitDirectory> <!-- required, you have to specify this path -->
+                   </configuration>
+
+               </plugin>
+
             <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-jira-plugin</artifactId>
@@ -226,9 +255,7 @@
 
                         <!-- Ensure plugin is spring powered -->
                         <Spring-Context>*</Spring-Context>
-                    </instructions>
-		<source>${jdk.version}</source>
-		<target>${jdk.version}</target>
+                    </instructions>	
                 </configuration>
             </plugin>
 
@@ -254,11 +281,32 @@
                     <verbose>false</verbose>
                 </configuration>
             </plugin>
+
+
+
         </plugins>
+
+     <resources>
+    	<resource>
+          <filtering>true</filtering>
+    	  <directory>${project.build.directory}/classes</directory>
+     	  <targetPath>${project.basedir}</targetPath>
+      <includes>
+        <include>**/git.properties</include>
+      </includes>
+    </resource>
+  <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>                 
+                </includes>
+            </resource>
+  </resources>
+
     </build>
 
-    <properties>
-	    <jdk.version>1.8</jdk.version>
+    <properties>	
         <jira.version>7.1.2</jira.version>
         <amps.version>6.2.3</amps.version>
     	<spring.version>4.2.5.RELEASE</spring.version>
@@ -267,7 +315,9 @@
         <!-- This key is used to keep the consistency between the key in atlassian-plugin.xml and the key to generate bundle. -->
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
 		<!-- TestKit version 6.x for JIRA 6.x -->
-	    <testkit.version>6.3.11</testkit.version>
+	<testkit.version>6.3.11</testkit.version>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>	
     </properties>
 
     <repositories>
