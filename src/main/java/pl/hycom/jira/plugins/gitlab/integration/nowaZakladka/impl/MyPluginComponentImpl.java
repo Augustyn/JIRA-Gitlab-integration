@@ -27,7 +27,7 @@ public class MyPluginComponentImpl implements MyPluginComponent
         {
             return "myComponent:" + applicationProperties.getDisplayName();
         }
-        
+
         return "myComponent";
     }
 }
