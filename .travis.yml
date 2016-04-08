@@ -13,4 +13,5 @@ branches:
     only:
       - master
       - development
-script: "mvn clean install -Ptravis"
+install: "mvn clean package -Ptravis"
+script: "mvn clean package -Ptravis"
