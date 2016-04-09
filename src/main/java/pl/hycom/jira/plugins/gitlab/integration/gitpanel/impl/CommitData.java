@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.nowaZakladka.impl;
+package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 
 /**
  * Created by Thorgal on 08.04.2016.

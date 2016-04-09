@@ -1,6 +1,6 @@
-package pl.hycom.jira.plugins.gitlab.integration.nowaZakladka.impl;
+package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 
-import pl.hycom.jira.plugins.gitlab.integration.nowaZakladka.api.ProcessorInterface;
+import pl.hycom.jira.plugins.gitlab.integration.gitpanel.api.ProcessorInterface;
 
 import java.util.List;
 

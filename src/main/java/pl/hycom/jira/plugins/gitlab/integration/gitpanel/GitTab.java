@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.nowaZakladka;
+package pl.hycom.jira.plugins.gitlab.integration.gitpanel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,12 +10,12 @@ import com.atlassian.jira.user.ApplicationUser;
 import java.util.Collections;
 import java.util.List;
 
-public class NaszaNowaZakladka extends AbstractIssueTabPanel implements IssueTabPanel
+public class GitTab extends AbstractIssueTabPanel implements IssueTabPanel
 {
-    private static final Logger log = LoggerFactory.getLogger(NaszaNowaZakladka.class);
+    private static final Logger log = LoggerFactory.getLogger(GitTab.class);
 
     public List getActions(Issue issue, ApplicationUser remoteUser) {
-        return Collections.singletonList(new GenericMessageAction("Say Hy To The World"));
+        return Collections.singletonList(new GenericMessageAction("Tu będzie znajdować się zawartość zakładki GitTab"));
     }
 
     public boolean showPanel(Issue issue, ApplicationUser remoteUser)

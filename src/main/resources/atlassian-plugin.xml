@@ -9,19 +9,19 @@
     <param name="plugin-logo">images/pluginLogo.png</param>
   </plugin-info>
   <!-- add our i18n resource -->
-  <resource type="i18n" name="i18n" location="nowaZakladka"/>
+  <resource type="i18n" name="i18n" location="gittab"/>
   <!-- add our web resources -->
-  <web-resource key="nowaZakladka-resources" name="nowaZakladka Web Resources">
+  <web-resource key="gittab-resources" name="gittab Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
-    <resource type="download" name="nowaZakladka.css" location="/css/nowaZakladka.css"/>
-    <resource type="download" name="nowaZakladka.js" location="/js/nowaZakladka.js"/>
+    <resource type="download" name="jira-gitlab-plugin.css" location="/css/jira-gitlab-plugin.css"/>
+    <resource type="download" name="jira-gitlab-plugin.js" location="/js/jira-gitlab-plugin.js"/>
     <resource type="download" name="images/" location="/images"/>
-    <context>nowaZakladka</context>
+    <context>gittab</context>
   </web-resource>
-  <issue-tabpanel key="nasza-nowa-zakladka" name="Nasza Nowa Zakladka" i18n-name-key="nasza-nowa-zakladka.name" class="pl.hycom.jira.plugins.gitlab.integration.nowaZakladka.NaszaNowaZakladka">
-    <description key="nasza-nowa-zakladka.description">The Nasza Nowa Zakladka Plugin</description>
-    <label key="nasza-nowa-zakladka.label"></label>
+  <issue-tabpanel key="git-tab" name="Git Tab" i18n-name-key="git-tab.name" class="pl.hycom.jira.plugins.gitlab.integration.gitpanel.GitTab">
+    <description key="git-tab.description">The Git Tab Plugin</description>
+    <label key="git-tab.label"></label>
     <order>10</order>
-    <resource type="velocity" name="view" location="templates/tabpanels/nasza-nowa-zakladka.vm"/>
+    <resource type="velocity" name="view" location="templates/tabpanels/git-tab.vm"/>
   </issue-tabpanel>
 </atlassian-plugin>

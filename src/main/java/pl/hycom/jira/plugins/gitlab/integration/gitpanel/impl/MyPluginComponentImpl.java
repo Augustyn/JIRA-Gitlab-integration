@@ -1,9 +1,9 @@
-package pl.hycom.jira.plugins.gitlab.integration.nowaZakladka.impl;
+package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 
 import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsService;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.ApplicationProperties;
-import pl.hycom.jira.plugins.gitlab.integration.nowaZakladka.api.MyPluginComponent;
+import pl.hycom.jira.plugins.gitlab.integration.gitpanel.api.MyPluginComponent;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,7 +27,7 @@ public class MyPluginComponentImpl implements MyPluginComponent
         {
             return "myComponent:" + applicationProperties.getDisplayName();
         }
-
+        
         return "myComponent";
     }
 }
