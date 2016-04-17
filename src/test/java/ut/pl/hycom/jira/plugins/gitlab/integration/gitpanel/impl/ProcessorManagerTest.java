@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
+package ut.pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 
 /*
  * <p>Copyright (c) 2016, Authors
@@ -20,8 +20,12 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
 import pl.hycom.jira.plugins.gitlab.integration.gitpanel.api.ProcessorInterface;
+import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.CommitData;
+import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.ProcessorManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +39,14 @@ import static org.junit.Assert.assertThat;
   * @author Augustyn Kończak <mailto:augustyn.konczak@hycom.pl> on 10.04.16.
   */
 @Log4j
+@RunWith(MockitoJUnitRunner.class)
 public class ProcessorManagerTest {
 
-    @Autowired
+    @InjectMocks
     private ProcessorManager manager;
 
     private List<ProcessorInterface> processorsList;
+
     @Before
     public void setUp() {
         processorsList = new ArrayList<>();
@@ -56,5 +62,8 @@ public class ProcessorManagerTest {
     public void referenceTest() {
         assertThat("Tested List is not empty", processorsList, is(notNullValue()));
         assertThat("Reference should be injected.", manager, is(notNullValue()));
+        List<CommitData> list = new ArrayList<>();
+        list.add(new CommitData());
+        manager.startProcessors(list);
     }
 }
