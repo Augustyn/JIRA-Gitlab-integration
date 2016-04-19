@@ -20,11 +20,9 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertThat;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
 
 //TODO end tests
 
@@ -32,20 +30,21 @@ import static org.junit.Assert.assertThat;
  * Created by Damian Deska on 4/17/16.
  */
 @Log4j
+@RunWith(MockitoJUnitRunner.class)
 public class GitLabManagerTest {
 
-    @Autowired
+    @InjectMocks
     private GitLabManager gitLabManager;
-    private String commitData;
+
 
     @Before
     public void setUp() {
-        //this.commitData = gitLabManager.getCommitData();
     }
 
     @Test
-    public void getCommitDataTest() {
-        //assertThat("CommitData is not empty", commitData, is(notNullValue()));
+    public void parseCommitData() {
+        gitLabManager.parseCommitData();
+
     }
 
 }

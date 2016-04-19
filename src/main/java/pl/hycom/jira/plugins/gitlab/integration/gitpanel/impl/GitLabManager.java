@@ -17,10 +17,13 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
  * limitations under the License.</p>
  */
 
-import org.springframework.stereotype.Component;
+import lombok.extern.log4j.Log4j;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -29,50 +32,43 @@ import java.util.List;
  * Created by anon on 17.04.16.
  */
 @Component
+@Log4j
 public class GitLabManager {
 
-    private String urlMock = "https://gitlab.com/api/v3/projects";
+    private String urlMock = "https://gitlab.com/api/v3/projects/1063546/repository/commits";
     private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
-    private List<CommitData> commitInfoData;
 
     public GitLabManager() {
 
     }
 
-    public void handleEvent(){
+    public void handleEvent() {
         //TODO
         runProcessors();
     }
 
-    public String getCommitData() {
+    public List<CommitData> parseCommitData() {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("PRIVATE-TOKEN", privateTokenMock);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(headers);
 
-        HttpEntity entity = new HttpEntity(headers);
+        ResponseEntity<List<Commit>> response = restTemplate.exchange(urlMock, HttpMethod.GET, requestEntity,
+                new ParameterizedTypeReference<List<Commit>>() {
 
-        HttpEntity<String> response = restTemplate.exchange(urlMock, HttpMethod.GET, entity, String.class);
+                });
+        List<Commit> commits = response.getBody();
 
-        String tmp = response.getBody();
-        String tmp2 = "asdasD";
-        System.out.println(tmp);
-
-        return tmp2;
-
-    }
-
-    public List<CommitData> parseCommitData(){
-        //TODO
+        log.info("Last commit id:" + commits.get(0).getId());
 
         return null;
 
     }
 
-    public void runProcessors(){
-       //TODO
-        getCommitData();
-
+    public void runProcessors() {
+        //TODO
+        parseCommitData();
     }
 
 }
