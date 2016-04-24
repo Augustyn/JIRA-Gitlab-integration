@@ -124,6 +124,12 @@
             <version>1.9.5</version>
         </dependency>
         <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.10</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
             <version>6.0.0</version>
@@ -262,7 +268,7 @@
                         <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
                         <testInstructions>
                             <Import-Package>
-                                pl.hycom.jira.plugins.gitlab.integration;version="0.0.0";resolution=optional
+                               ${klucz.sciezki.pakietu}="0.0.0";resolution=optional
                             </Import-Package>
                         </testInstructions>
                         <!-- Ensure plugin is spring powered -->
@@ -340,6 +346,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <version.junit>[4.12,)</version.junit>
         <version.lombok>[1.16,)</version.lombok>
+        <klucz.sciezki.pakietu>pl.hycom.jira.plugins.gitlab</klucz.sciezki.pakietu>
     </properties>
     <repositories>
         <repository>

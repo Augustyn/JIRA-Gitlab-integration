@@ -32,6 +32,8 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -53,7 +55,8 @@ public class ProcessorManagerTest {
         processorsList.add(new ProcessorInterface() {
             @Override
             public void execute(CommitData commitInfo) {
-                log.info("inside processor execute, processing: " + commitInfo);
+                //log.info("inside processor execute, processing: " + commitInfo);
+                System.out.println("inside processor execute, processing: " + commitInfo);
             }
         });
     }
@@ -65,5 +68,10 @@ public class ProcessorManagerTest {
         List<CommitData> list = new ArrayList<>();
         list.add(new CommitData());
         manager.startProcessors(list);
+    }
+    @Test
+    public void getImplementingClassesTest(){
+        manager.getImplementingClasses();
+        assertFalse(false);
     }
 }
