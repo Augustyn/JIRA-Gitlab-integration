@@ -18,25 +18,16 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
  */
 
 import lombok.extern.log4j.Log4j;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by anon on 17.04.16.
  */
-@Component
+@Service
 @Log4j
 public class GitLabManager {
-
-    private String urlMock = "https://gitlab.com/api/v3/projects/1063546/repository/commits";
-    private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
 
     public GitLabManager() {
 
@@ -47,28 +38,15 @@ public class GitLabManager {
         runProcessors();
     }
 
-    public List<CommitData> parseCommitData() {
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("PRIVATE-TOKEN", privateTokenMock);
-        HttpEntity<?> requestEntity = new HttpEntity<Object>(headers);
-
-        ResponseEntity<List<Commit>> response = restTemplate.exchange(urlMock, HttpMethod.GET, requestEntity,
-                new ParameterizedTypeReference<List<Commit>>() {
-
-                });
-        List<Commit> commits = response.getBody();
-
-        log.info("Last commit id:" + commits.get(0).getId());
-
+    public List<Commit> parseCommitData() {
+        //TODO
         return null;
-
     }
+
 
     public void runProcessors() {
         //TODO
-        parseCommitData();
+
     }
 
 }

@@ -19,9 +19,7 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 
 import lombok.extern.log4j.Log4j;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 //TODO end tests
@@ -33,17 +31,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class GitLabManagerTest {
 
-    @InjectMocks
-    private GitLabManager gitLabManager;
-
-
     @Before
     public void setUp() {
     }
 
-    @Test
     public void parseCommitData() {
-        gitLabManager.parseCommitData();
 
     }
 
