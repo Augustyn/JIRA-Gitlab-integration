@@ -24,7 +24,7 @@
     <order>10</order>
     <resource type="velocity" name="view" location="templates/tabpanels/git-tab.vm"/>
   </issue-tabpanel>
-  <web-section name="JIRA Gitlab plugin" i18n-name-key="configuration-section-for-jira-plugin i18n" key="configuration-section-for-jira-plugin" location="system.admin/mynewsection" weight="110">
+  <web-section name="JIRA Gitlab plugin" i18n-name-key="configuration-section-for-jira-plugin i18n" key="configuration-section-for-jira-plugin" location="admin_plugins_menu" weight="110">
     <description key="i18n web-section">JIRA Gitlab plugin 2016</description>
     <label key="configuration-section-for-jira-plugin.name">
       <param name="param0" value="value"/>
@@ -36,4 +36,9 @@
       <param name="param1" value="Name"/>
     </tooltip>
   </web-section>
+    <web-item name="Gitlab URL" i18n-name-key="gitlab-url-module.name" key="gitlab-url" section="admin_plugins_menu/configuration-section-for-jira-plugin" weight="10">
+        <description key="gitlab-url.description">Configuration module for JIRA plugin - Gitlab URL</description>
+        <label key="gitlab-url-module.label"/>
+        <link linkId="gitlab-url-module-link">/secure/MyActionClass.jspa?projectId=${project.id}</link>
+    </web-item>
 </atlassian-plugin>
