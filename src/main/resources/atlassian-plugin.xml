@@ -9,6 +9,7 @@
     <param name="plugin-logo">images/pluginLogo.png</param>
   </plugin-info>
   <!-- add our i18n resource -->
+    <resource type="i18n" name="mypluginprops" location="jira-gitlab-plugin"/>
   <resource type="i18n" name="i18n" location="gittab"/>
   <!-- add our web resources -->
   <web-resource key="gittab-resources" name="gittab Web Resources">
@@ -25,7 +26,7 @@
     <resource type="velocity" name="view" location="templates/tabpanels/git-tab.vm"/>
   </issue-tabpanel>
   <web-section name="JIRA Gitlab plugin" i18n-name-key="configuration-section-for-jira-plugin i18n" key="configuration-section-for-jira-plugin" location="admin_plugins_menu" weight="110">
-    <description key="i18n web-section">JIRA Gitlab plugin 2016</description>
+    <description key="i18n-web-section">JIRA Gitlab plugin 2016</description>
     <label key="configuration-section-for-jira-plugin.name">
       <param name="param0" value="value"/>
       <param name="param1" value="key"/>
@@ -36,9 +37,19 @@
       <param name="param1" value="Name"/>
     </tooltip>
   </web-section>
-    <web-item name="Gitlab URL" i18n-name-key="gitlab-url-module.name" key="gitlab-url" section="admin_plugins_menu/configuration-section-for-jira-plugin" weight="10">
-        <description key="gitlab-url.description">Configuration module for JIRA plugin - Gitlab URL</description>
-        <label key="gitlab-url-module.label"/>
-        <link linkId="gitlab-url-module-link">/secure/MyActionClass.jspa?projectId=${project.id}</link>
+  <web-item name="Gitlab URL" i18n-name-key="gitlab-url-module.name" key="gitlab-url" section="admin_plugins_menu/configuration-section-for-jira-plugin" weight="10">
+    <description key="gitlab-url.description">Configuration module for JIRA plugin - Gitlab URL</description>
+    <label key="gitlab-url-module.label"/>
+    <link linkId="gitlab-url-module-link">/secure/MyActionClass.jspa?projectId=${project.id}</link>
     </web-item>
+  <web-item name="Client_ID" i18n-name-key="Client_ID.name" key="Client_ID" section="admin_plugins_menu/configuration-section-for-jira-plugin" weight="20">
+    <description key="Client_ID.description">Configuration module for JIRA plugin - Client_ID</description>
+    <label key="Client_ID.label"/>
+    <link linkId="Client_ID-link">/secure/MyActionClass.jspa?projectId=${project.id}</link>
+  </web-item>
+  <web-item name="Client_secret" i18n-name-key="Client_secret.name" key="Client_secret" section="admin_plugins_menu/configuration-section-for-jira-plugin" weight="30">
+    <description key="Client_secret.description">Configuration module for JIRA plugin - Client_secret</description>
+    <label key="Client_secret.label"/>
+    <link linkId="Client_secret-link">/secure/MyActionClass.jspa?projectId=${project.id}</link>
+  </web-item>
 </atlassian-plugin>
