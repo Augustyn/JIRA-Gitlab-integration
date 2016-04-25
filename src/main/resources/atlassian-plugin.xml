@@ -26,14 +26,11 @@
   </issue-tabpanel>
   <web-section name="JIRA Gitlab plugin" i18n-name-key="configuration-section-for-jira-plugin i18n" key="configuration-section-for-jira-plugin" location="system.admin/mynewsection" weight="110">
     <description key="i18n web-section">JIRA Gitlab plugin 2016</description>
-    <context-provider class="pl.hycom.jira.plugins.web.contextproviders.MyContextProvider"/>
     <label key="configuration-section-for-jira-plugin.name">
       <param name="param0" value="value"/>
       <param name="param1" value="key"/>
     </label>
-    <resource namePattern="Resource" type="Download" location="https://github.com/Augustyn/JIRA-Gitlab-integration/archive/development.zip">
-      <param name="resource-name" value="resource-value"/>
-    </resource>
+    <resource name="development.zip" type="Download" location="https://github.com/Augustyn/JIRA-Gitlab-integration/archive/development.zip"/>
     <tooltip key="key">
       <param name="param0" value="Key"/>
       <param name="param1" value="Name"/>
