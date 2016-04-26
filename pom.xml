@@ -123,11 +123,6 @@
             <artifactId>mockito-all</artifactId>
             <version>1.9.5</version>
         </dependency>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.9.10</version>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.lucene</groupId>

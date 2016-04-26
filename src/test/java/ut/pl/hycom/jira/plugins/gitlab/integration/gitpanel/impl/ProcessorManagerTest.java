@@ -32,8 +32,6 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -49,16 +47,17 @@ public class ProcessorManagerTest {
 
     private List<ProcessorInterface> processorsList;
 
+
     @Before
     public void setUp() {
         processorsList = new ArrayList<>();
         processorsList.add(new ProcessorInterface() {
             @Override
             public void execute(CommitData commitInfo) {
-                //log.info("inside processor execute, processing: " + commitInfo);
-                System.out.println("inside processor execute, processing: " + commitInfo);
+                log.info("inside processor execute, processing: " + commitInfo);
             }
         });
+//        manager.setReferenceToPackagePath("pl.hycom.jira.plugins.gitlab.integration.gitpanel");
     }
 
     @Test
@@ -69,9 +68,9 @@ public class ProcessorManagerTest {
         list.add(new CommitData());
         manager.startProcessors(list);
     }
-    @Test
-    public void getImplementingClassesTest(){
-        manager.getImplementingClasses();
-        assertFalse(false);
-    }
+//    @Test
+//    public void getImplementingClassesTest(){
+//        manager.getImplementingClasses();
+//        assertFalse(false);
+//    }
 }
