@@ -18,6 +18,7 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
  */
 
 import lombok.extern.log4j.Log4j;
+import org.junit.Test;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -35,6 +36,7 @@ public class GitLabManagerTest {
     public void setUp() {
     }
 
+    @Test
     public void parseCommitData() {
 
     }

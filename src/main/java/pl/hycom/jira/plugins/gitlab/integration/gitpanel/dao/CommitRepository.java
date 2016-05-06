@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,26 +20,55 @@ import java.util.List;
 @Repository
 public class CommitRepository implements ICommitDao {
 
+    RestTemplate restTemplate = new RestTemplate();
+    HttpHeaders headers = new HttpHeaders();
+
     private String urlMock = "https://gitlab.com/api/v3/projects/1063546/repository/commits";
     private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
 
     @Override
-    public List<Commit> getAllCommits() {
-        RestTemplate restTemplate = new RestTemplate();
+    public List<Commit> getNewCommits(int perPage) {
+        int pageNumber = 1;
+        String urlMockWithPageNumber;
+        List<Commit> newCommitsList = new ArrayList<>();
 
-        HttpHeaders headers = new HttpHeaders();
+        urlMock += "?per_page=" + Integer.toString(perPage) + "&page=";
         headers.set("PRIVATE-TOKEN", privateTokenMock);
         HttpEntity<?> requestEntity = new HttpEntity<Object>(headers);
-        ResponseEntity<List<Commit>> response = restTemplate.exchange(urlMock, HttpMethod.GET, requestEntity,
-                new ParameterizedTypeReference<List<Commit>>() {
-                });
 
-       return response.getBody();
+        //TODO zapisywanie do Lucyny (PIP-32)
+        addingCommitsToList:
+        while(true) {
+            urlMockWithPageNumber = urlMock + Integer.toString(pageNumber);
+            log.info(urlMockWithPageNumber);
+            ResponseEntity<List<Commit>> response = restTemplate.exchange(urlMockWithPageNumber, HttpMethod.GET, requestEntity,
+                    new ParameterizedTypeReference<List<Commit>>() {
+                    });
+
+            for(Commit commit : response.getBody() ) {
+                //TODO sprawdzenie czy commit jest juz zaindeksowany
+                if( pageNumber < 3) {
+                    newCommitsList.add(commit);
+                } else {
+                    break addingCommitsToList;
+                }
+            }
+
+            pageNumber++;
+        }
+
+       return newCommitsList;
     }
 
     @Override
-    public Commit getOneCommit() {
-        //TODO
-        return null;
+    public Commit getOneCommit(String shaSum) {
+        urlMock += "/" + shaSum;
+        headers.set("PRIVATE-TOKEN", privateTokenMock);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(headers);
+        ResponseEntity<Commit> response = restTemplate.exchange(urlMock, HttpMethod.GET, requestEntity,
+                new ParameterizedTypeReference<Commit>() {
+                });
+
+        return response.getBody();
     }
 }

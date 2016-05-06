@@ -37,24 +37,24 @@ import static org.junit.Assert.assertThat;
 @Log4j
 public class ProcessorManagerTest {
 
-    @Autowired
-    private ProcessorManager manager;
-
-    private List<ProcessorInterface> processorsList;
-    @Before
-    public void setUp() {
-        processorsList = new ArrayList<>();
-        processorsList.add(new ProcessorInterface() {
-            @Override
-            public void execute(CommitData commitInfo) {
-                log.info("inside processor execute, processing: " + commitInfo);
-            }
-        });
-    }
-
-    @Test
-    public void referenceTest() {
-        assertThat("Tested List is not empty", processorsList, is(notNullValue()));
-        assertThat("Reference should be injected.", manager, is(notNullValue()));
-    }
+//    @Autowired
+//    private ProcessorManager manager;
+//
+//    private List<ProcessorInterface> processorsList;
+//    @Before
+//    public void setUp() {
+//        processorsList = new ArrayList<>();
+//        processorsList.add(new ProcessorInterface() {
+//            @Override
+//            public void execute(CommitData commitInfo) {
+//                log.info("inside processor execute, processing: " + commitInfo);
+//            }
+//        });
+//    }
+//
+//    @Test
+//    public void referenceTest() {
+//        assertThat("Tested List is not empty", processorsList, is(notNullValue()));
+//        assertThat("Reference should be injected.", manager, is(notNullValue()));
+//    }
 }

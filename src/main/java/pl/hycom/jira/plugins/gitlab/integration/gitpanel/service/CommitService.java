@@ -20,12 +20,13 @@ public class CommitService implements ICommitService {
     private ICommitDao commitRepository;
 
     @Override
-    public List<Commit> getAllCommits() {
-      return commitRepository.getAllCommits();
+    public List<Commit> getNewCommits(int perPage) {
+
+        return commitRepository.getNewCommits(perPage);
     }
 
     @Override
-    public Commit getOneCommit() {
-        return commitRepository.getOneCommit();
+    public Commit getOneCommit(String shaSum) {
+        return commitRepository.getOneCommit(shaSum);
     }
 }

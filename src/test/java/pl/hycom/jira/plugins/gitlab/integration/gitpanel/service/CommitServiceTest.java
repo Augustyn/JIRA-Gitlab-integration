@@ -4,7 +4,10 @@ import lombok.extern.log4j.Log4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import pl.hycom.jira.plugins.gitlab.integration.gitpanel.dao.CommitRepository;
+import pl.hycom.jira.plugins.gitlab.integration.gitpanel.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
 
 import java.util.List;
@@ -17,13 +20,21 @@ import java.util.List;
 public class CommitServiceTest {
 
     @InjectMocks
-    private CommitService commitService;
+    private CommitRepository commitService;
+    @Mock
+    private ICommitDao dao;
 
     @Test
-    public void testGetAllCommits() throws Exception {
-        List<Commit> commits = commitService.getAllCommits();
+    public void testGetNewCommits() throws Exception {
+        List<Commit> commits = commitService.getNewCommits(3);
         for (Commit commit : commits)
             log.info(commit);
       //  Assert.assertNotNull(commits);
+    }
+
+    @Test
+    public void testGetOneCommit() throws Exception {
+        Commit commit = commitService.getOneCommit("master");
+        log.info(commit);
     }
 }

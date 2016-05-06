@@ -14,8 +14,8 @@ public class ProcessorManager {
         this.processorsList = processorsList;
     }
 
-    public void startProcessors(List<CommitData> commitInfoList){
-        for (CommitData commitInfo : commitInfoList){
+    public void startProcessors(List<Commit> commitInfoList){
+        for (Commit commitInfo : commitInfoList){
             for (ProcessorInterface processor : processorsList) {
                 processor.execute(commitInfo);
             }
