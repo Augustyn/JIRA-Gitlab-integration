@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
+package pl.hycom.jira.plugins.gitlab.integration.service.processors;
 
 /*
  * <p>Copyright (c) 2016, Authors
@@ -17,7 +17,6 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
  * limitations under the License.</p>
  */
 
-import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.event.api.EventPublisher;
 import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.jira.event.type.EventType;
@@ -26,7 +25,8 @@ import com.atlassian.jira.user.ApplicationUser;
 //import com.atlassian.jira.user.DelegatingApplicationUser;
 import com.atlassian.jira.user.MockApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.api.ProcessorInterface;
+import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
+import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
 import java.util.HashMap;
 import java.util.Map;
