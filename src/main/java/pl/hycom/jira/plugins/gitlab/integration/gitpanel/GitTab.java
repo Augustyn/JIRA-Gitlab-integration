@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service;
+package pl.hycom.jira.plugins.gitlab.integration.gitpanel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

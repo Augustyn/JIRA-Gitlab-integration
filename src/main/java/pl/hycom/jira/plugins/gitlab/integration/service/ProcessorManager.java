@@ -1,7 +1,8 @@
-package pl.hycom.jira.plugins.gitlab.integration.service.processors;
+package pl.hycom.jira.plugins.gitlab.integration.service;
 
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.model.CommitData;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.service.ProcessorInterface;
+import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
+import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
+import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
 import java.util.List;
 
