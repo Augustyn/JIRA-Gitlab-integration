@@ -1,4 +1,4 @@
-package ut.pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
+package ut.pl.hycom.jira.plugins.gitlab.integration.service;
 
 /*
  * <p>Copyright (c) 2016, Authors
@@ -23,9 +23,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.api.ProcessorInterface;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.CommitData;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.ProcessorManager;
+import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
+import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
+import pl.hycom.jira.plugins.gitlab.integration.service.ProcessorManager;
 
 import java.util.ArrayList;
 import java.util.List;

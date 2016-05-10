@@ -1,4 +1,4 @@
-package ut.pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
+package pl.hycom.jira.plugins.gitlab.integration.model;
 /*
  * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
@@ -15,16 +15,9 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
-import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
-
 /**
- * Created by Thorgal on 18.04.2016.
+ * Created by Thorgal on 08.04.2016.
  */
-public class ProcessorInterfaceImplementationTest implements ProcessorInterface {
-    @Override
-    public void execute(CommitData commitInfo) {
-
-    }
+public class CommitData {
+    //TO DO PIP-30 Implementacja pobierania informacji o commitach po stronie JIRY
 }
