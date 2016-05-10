@@ -1,6 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
 
-import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
+import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
