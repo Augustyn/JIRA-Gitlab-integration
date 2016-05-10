@@ -68,9 +68,5 @@ public class ProcessorManagerTest {
         list.add(new CommitData());
         manager.startProcessors(list);
     }
-//    @Test
-//    public void getImplementingClassesTest(){
-//        manager.getImplementingClasses();
-//        assertFalse(false);
-//    }
+
 }
