@@ -163,8 +163,12 @@
             <artifactId>jira-tests</artifactId>
             <version>${jira.version}</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>com.atlassian.activeobjects</groupId>
+            <artifactId>activeobjects-plugin</artifactId>
+            <version>${ao.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>
@@ -346,12 +350,17 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <version.junit>[4.12,)</version.junit>
         <version.lombok>[1.16,)</version.lombok>
+        <ao.version>1.1.5</ao.version>
     </properties>
     <repositories>
         <repository>
             <id>atlassian-public-1</id>
             <url>https://maven.atlassian.com/content/groups/public</url>
         </repository>
+        <repository>
+        <id>atlassian-public-56</id>
+        <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+    </repository>
         <repository>
             <id>atlassian-public-2</id>
             <url>https://m2proxy.atlassian.com/repository/public</url>

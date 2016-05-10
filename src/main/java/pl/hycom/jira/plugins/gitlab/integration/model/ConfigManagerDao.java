@@ -17,6 +17,7 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
  * limitations under the License.</p>
  */
 
+import com.atlassian.activeobjects.external.ActiveObjects;
 import com.atlassian.sal.api.pluginsettings.PluginSettings;
 import com.atlassian.sal.api.pluginsettings.PluginSettings.*;
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
@@ -32,8 +33,10 @@ import java.sql.SQLException;
 @Repository
 public class ConfigManagerDao
 {
+//    @Autowired
+//    private EntityManager entityManager;
     @Autowired
-    private EntityManager entityManager;
+    private ActiveObjects entityManager;
 
     public ProjectConfigEntity getProjectConfig(String projectName) throws SQLException
     {
@@ -56,6 +59,8 @@ public class ConfigManagerDao
         projectConfig.setLink(gitlabLink);
         projectConfig.setSecret(gitlabSecret);
         projectConfig.setClientId(gitlabClientId);
+
+        projectConfig.save();
     }
 
 }
