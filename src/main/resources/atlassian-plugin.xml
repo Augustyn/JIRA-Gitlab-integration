@@ -37,19 +37,18 @@
       <param name="param1" value="Name"/>
     </tooltip>
   </web-section>
-  <web-item name="Gitlab URL" i18n-name-key="gitlab-url-module.name" key="gitlab-url" section="atl.jira.proj.config/configuration-section-for-jira-plugin" weight="10">
-    <description key="gitlab-url.description">Configuration module for JIRA plugin - Gitlab URL</description>
-    <label key="gitlab-url-module.label"/>
-    <link linkId="gitlab-url-module-link">/secure/MyActionClass.jspa?projectId=${project.id}</link>
+  <web-item name="Gitlab configuration" i18n-name-key="gitlab-configuration-module.name" key="gitlab-url" section="atl.jira.proj.config/configuration-section-for-jira-plugin" weight="10">
+    <description key="gitlab-configuration.description">Configuration module for JIRA plugin - Gitlab configuration</description>
+    <label key="gitlab-configuration-module.label"/>
+    <link linkId="gitlab-configuration-module-link">/secure/JiraSectionAction!default.jspa</link>
     </web-item>
-  <web-item name="Client_ID" i18n-name-key="Client_ID.name" key="Client_ID" section="atl.jira.proj.config/configuration-section-for-jira-plugin" weight="20">
-    <description key="Client_ID.description">Configuration module for JIRA plugin - Client_ID</description>
-    <label key="Client_ID.label"/>
-    <link linkId="Client_ID-link">/secure/MyActionClass.jspa?projectId=${project.id}</link>
-  </web-item>
-  <web-item name="Client_secret" i18n-name-key="Client_secret.name" key="Client_secret" section="atl.jira.proj.config/configuration-section-for-jira-plugin" weight="30">
-    <description key="Client_secret.description">Configuration module for JIRA plugin - Client_secret</description>
-    <label key="Client_secret.label"/>
-    <link linkId="Client_secret-link">/secure/MyActionClass.jspa?projectId=${project.id}</link>
-  </web-item>
+  <webwork1 key="webworkkey" name="Edition and preview of JIRA-Gitlab configuration" class="java.lang.Object">
+    <actions>
+      <action name="pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.JiraSectionAction" alias="JiraSectionAction" roles-required="admin">
+        <view name="input">/templates/input.vm</view>
+        <view name="success">/templates/success.vm</view>
+        <view name="error">/templates/error.vm</view>
+      </action>
+    </actions>
+  </webwork1>
 </atlassian-plugin>

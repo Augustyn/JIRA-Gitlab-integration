@@ -53,4 +53,10 @@ public abstract class JiraGitConfigurationController extends AbstractJiraContext
         return EasyMap.build("historyWindowHeight", historyHeight,
                 "filtersWindowHeight", filterHeight);
     }*/
+
+
+//webwork1 stworzyć i velocity ma zawierać linka do gitlaba.
+//velocity składania: w jaki sposób działać? velocity tylko ma dać dane, któ¶e wyświetlam. Lista linków, commitów do gitlaba, iteruję po liście i uzypełniam dane pola w szablonie. 
+// $ {klucz} > jeśli nie ma zmiennej o nazwie klucz to zostanie wyświetlony token cały 
+//   !${klucz} > jeśli nie będzie kntekstu. zostanie pusty ciąg znaków, usunie klucz. Ten zapis lepszy o ile JIRA wspiera to. 
 }

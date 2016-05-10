@@ -3,7 +3,7 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 import java.io.*;
 import java.util.ArrayList;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+//import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.CorruptIndexException;
@@ -13,7 +13,7 @@ import org.apache.lucene.store.FSDirectory;
 
 
 public class CommitDataIndexer {
-
+/*
     private IndexWriter indexWriter;
 
     private Document getDocument (CommitData commitData) throws IOException {
@@ -46,6 +46,6 @@ public class CommitDataIndexer {
 
         indexWriter.addDocument(document);
 
-    }
+    }*/
 
 }

@@ -1,0 +1,35 @@
+<p>This is an error page for webwork section Jira-Gitlab.</p>
+
+<p>
+The value from the action-client_id: ${clientId}
+</p>
+<p>
+The value from the action-client_secret: ${clientSecret}
+</p>
+<p>
+The value from the action-gitlablink: ${gitlabLink}
+</p>
+<p>
+Or display the details of the error(s):
+</p>
+
+## Error messages are per action, errors are per field
+<table>
+  #foreach ($error in $action.getErrorMessages())
+  <tr>
+    <td>${error}</td>
+  </tr>
+  #end
+</table>
+<table>
+  #foreach ($error in $action.errors)
+  <tr>
+    <td>${error}</td>
+  </tr>
+  #end
+</table>
+
+<p>
+In many pages, the errors are displayed as part of the controlheader macro.
+See macros.vm for more examples of displaying errors
+</p>

@@ -163,6 +163,11 @@
             <artifactId>jira-tests</artifactId>
             <version>${jira.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-api</artifactId>
+            <version>7.1.2</version>
+        </dependency>
 
 
     </dependencies>
