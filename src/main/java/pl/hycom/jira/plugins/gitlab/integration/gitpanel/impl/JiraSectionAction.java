@@ -57,9 +57,9 @@ public class JiraSectionAction extends JiraWebActionSupport {
      */
     protected void doValidation() {
         log.debug("Entering doValidation");
-        for (Enumeration e =  request.getParameterNames(); e.hasMoreElements() ;) {
+        for (Enumeration e =   getHttpRequest().getParameterNames(); e.hasMoreElements() ;) {
             String n = (String)e.nextElement();
-            String[] vals = request.getParameterValues(n);
+            String[] vals =  getHttpRequest().getParameterValues(n);
             log.debug("name " + n + ": " + vals[0]);
         }
 
@@ -135,9 +135,9 @@ public class JiraSectionAction extends JiraWebActionSupport {
      */
     protected String doExecute() throws Exception {
         log.debug("Entering doExecute");
-        for (Enumeration e =  request.getParameterNames(); e.hasMoreElements() ;) {
+        for (Enumeration e =   getHttpRequest().getParameterNames(); e.hasMoreElements() ;) {
             String n = (String)e.nextElement();
-            String[] vals = request.getParameterValues(n);
+            String[] vals =  getHttpRequest().getParameterValues(n);
             log.debug("name " + n + ": " + vals[0]);
         }
 
@@ -168,9 +168,9 @@ public class JiraSectionAction extends JiraWebActionSupport {
         // If any of these parameter names match public set methods for local
         // variables, then the local variable will have been set before this
         // method is entered.
-        for (Enumeration e =  request.getParameterNames(); e.hasMoreElements() ;) {
+        for (Enumeration e =   getHttpRequest().getParameterNames(); e.hasMoreElements() ;) {
             String n = (String)e.nextElement();
-            String[] vals = request.getParameterValues(n);
+            String[] vals =  getHttpRequest().getParameterValues(n);
             log.debug("Parameter " + n + "=" + vals[0]);
         }
 
@@ -196,6 +196,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private String clientId = "clientId default";
     private String clientSecret = "clientSecret default";
     private String gitlabLink = "gitlabLink default";
+    private String projectId = "projectId default";
 
     /**
      * This method is automatically discovered and called by JSP and Webwork
@@ -206,20 +207,25 @@ public class JiraSectionAction extends JiraWebActionSupport {
 
 
     public void setClientId(String value) {
-        log.debug("Setting client_id to: " + value);
+        log.debug("Setting clientId to: " + value);
         this.clientId = value;
     }
 
     public void setClientSecret(String value) {
-        log.debug("Setting client_secret to: " + value);
+        log.debug("Setting clientSecret to: " + value);
         this.clientSecret = value;
     }
 
     public void setGitlabLink(String value) {
-        log.debug("Setting gitlablink to: " + value);
+        log.debug("Setting gitlabLink to: " + value);
         this.gitlabLink = value;
     }
 
+
+    public void setProjectId(String value) {
+        log.debug("Setting projectId to: " + value);
+        this.projectId = value;
+    }
     /**
      * This is how the local variable is always accessed, since only this
      * action knows that its name isn't really "myfirstparameter".
@@ -227,24 +233,31 @@ public class JiraSectionAction extends JiraWebActionSupport {
 
 
     public String getClientId() {
-        log.debug("Getting client_id");
+        log.debug("Getting clientId");
         return clientId;
     }
 
     public String getClientSecret() {
-        log.debug("Getting client_secret");
+        log.debug("Getting clientSecret");
         return clientSecret;
     }
 
     public String getGitlabLink() {
-        log.debug("Getting gitlablink");
+        log.debug("Getting gitlabLink");
         return gitlabLink;
     }
+
+    public String getProjectId() {
+        log.debug("Getting projectId");
+        return projectId;
+    }
+
 
     public JiraSectionAction(String client_id, String client_secret, String gitlablink){
         this.clientId = client_id;
         this.clientSecret = client_secret;
         this.gitlabLink = gitlablink;
+        this.projectId = projectId;
     }
 }
 

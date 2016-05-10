@@ -20,13 +20,13 @@
 
         <tr>
           <td class="jiraformbody">
-          The raw current parameter value is: $action.getClientId().
+          The raw current parameter value of clientId is: $action.getClientId().
           </td>
           <td class="jiraformbody">
-          The raw current parameter value is: $action.getClientSecret().
+          The raw current parameter value of clientSecret is: $action.getClientSecret().
           </td>
           <td class="jiraformbody">
-          The raw current parameter value is: $action.getGitlabLink().
+          The raw current parameter value of gitlabLink is: $action.getGitlabLink().
           </td>
         </tr>   
       </table>  

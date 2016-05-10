@@ -22,7 +22,7 @@
 
       <!-- The ActionAlpha doValidation method and then doExecute
            method will be called -->
-      <form id="uniqueid1" method="post" action="${req.contextPath}/secure/FirstNewAction.jspa">
+      <form id="uniqueid1" method="post" action="${req.contextPath}/secure/JiraSectionAction.jspa">
               
       <!-- Note: velocity variables in HTML comments are still
            evaluated. If you want to comment out velocity code, use
