@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.gitpanel.util.TemplateFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,52 +21,46 @@ import java.util.List;
 @Repository
 public class CommitRepository implements ICommitDao {
 
-    RestTemplate restTemplate = new RestTemplate();
-    HttpHeaders headers = new HttpHeaders();
-
     private String urlMock = "https://gitlab.com/api/v3/projects/1063546/repository/commits";
     private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
 
+    private TemplateFactory templateFactory = new TemplateFactory();
+    private RestTemplate restTemplate = templateFactory.getRestTemplate();
+    private HttpHeaders headers = templateFactory.getHttpHeaders();
+
     @Override
-    public List<Commit> getNewCommits(int perPage) {
-        int pageNumber = 1;
-        String urlMockWithPageNumber;
-        List<Commit> newCommitsList = new ArrayList<>();
+    public void indexNewCommits(List<Commit> commitsList) {
 
-        urlMock += "?per_page=" + Integer.toString(perPage) + "&page=";
-        headers.set("PRIVATE-TOKEN", privateTokenMock);
-        HttpEntity<?> requestEntity = new HttpEntity<Object>(headers);
-
-        //TODO zapisywanie do Lucyny (PIP-32)
-        addingCommitsToList:
-        while(true) {
-            urlMockWithPageNumber = urlMock + Integer.toString(pageNumber);
-            log.info(urlMockWithPageNumber);
-            ResponseEntity<List<Commit>> response = restTemplate.exchange(urlMockWithPageNumber, HttpMethod.GET, requestEntity,
-                    new ParameterizedTypeReference<List<Commit>>() {
-                    });
-
-            for(Commit commit : response.getBody() ) {
-                //TODO sprawdzenie czy commit jest juz zaindeksowany
-                if( pageNumber < 3) {
-                    newCommitsList.add(commit);
-                } else {
-                    break addingCommitsToList;
-                }
+        indexedCommitEncountered:
+        for(Commit commit : commitsList ) {
+            //TODO sprawdzenie czy commit jest juz zaindeksowany
+            if( 1 < 3 ) {
+                //TODO indeksowanie nowych commitów (PIP-32)
+            } else {
+                break indexedCommitEncountered;
             }
-
-            pageNumber++;
         }
 
-       return newCommitsList;
+    }
+
+    @Override
+    public List<Commit> getNewCommits(int perPage, int pageNumber) {
+        String urlMockWithPageNumber = urlMock + "?per_page=" + Integer.toString(perPage) + "&page=" + Integer.toString(pageNumber);
+        headers.set("PRIVATE-TOKEN", privateTokenMock);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(headers);
+        ResponseEntity<List<Commit>> response = restTemplate.exchange(urlMockWithPageNumber, HttpMethod.GET, requestEntity,
+                new ParameterizedTypeReference<List<Commit>>() {
+                });
+
+        return response.getBody();
     }
 
     @Override
     public Commit getOneCommit(String shaSum) {
-        urlMock += "/" + shaSum;
+        String oneCommitUrlMock = urlMock + "/" + shaSum;
         headers.set("PRIVATE-TOKEN", privateTokenMock);
         HttpEntity<?> requestEntity = new HttpEntity<Object>(headers);
-        ResponseEntity<Commit> response = restTemplate.exchange(urlMock, HttpMethod.GET, requestEntity,
+        ResponseEntity<Commit> response = restTemplate.exchange(oneCommitUrlMock, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
                 });
 

@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface ICommitDao {
 
-    List<Commit> getNewCommits(int perPage);
+    void indexNewCommits(List<Commit> commitList);
+    List<Commit> getNewCommits(int perPage, int pageNumber);
     Commit getOneCommit(String shaSum);
 }

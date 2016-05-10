@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface ICommitService {
 
-    List<Commit> getNewCommits(int perPage);
+    void indexNewCommits(List<Commit> commitsList);
+    List<Commit> getNewCommits(int perPage, int pageNumber);
     Commit getOneCommit(String shaSum);
 }

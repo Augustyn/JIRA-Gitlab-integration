@@ -26,7 +26,7 @@ public class CommitServiceTest {
 
     @Test
     public void testGetNewCommits() throws Exception {
-        List<Commit> commits = commitService.getNewCommits(3);
+        List<Commit> commits = commitService.getNewCommits(3, 1);
         for (Commit commit : commits)
             log.info(commit);
       //  Assert.assertNotNull(commits);

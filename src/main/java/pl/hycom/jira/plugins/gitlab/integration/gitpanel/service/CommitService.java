@@ -20,9 +20,15 @@ public class CommitService implements ICommitService {
     private ICommitDao commitRepository;
 
     @Override
-    public List<Commit> getNewCommits(int perPage) {
+    public void indexNewCommits(List<Commit> commitsList) {
 
-        return commitRepository.getNewCommits(perPage);
+        commitRepository.indexNewCommits(commitsList);
+    }
+
+    @Override
+    public List<Commit> getNewCommits(int perPage, int pageNumber) {
+
+        return commitRepository.getNewCommits(perPage, pageNumber);
     }
 
     @Override
