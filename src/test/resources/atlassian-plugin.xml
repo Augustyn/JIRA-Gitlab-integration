@@ -8,6 +8,18 @@
     <!-- from our base plugin -->
     <component-import key="myComponent" interface="pl.hycom.jira.plugins.gitlab.integration.gitpanel.api.MyPluginComponent"/>
 
+    <component-import key="pluginScheduler">
+        <description>SAL Scheduler</description>
+        <interface>com.atlassian.sal.api.scheduling.PluginScheduler</interface>
+    </component-import>
+
+    <component key="schedulerComponent" class="pl.hycom.jira.plugins.gitlab.integration.service.processors.SchedulerProcessor"
+               system="true" public="true">
+        <description>The task scheduler</description>
+        <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
+        <interface>com.atlassian.example.scheduling.TwitterMonitor</interface>
+    </component>
+
     <!-- from the product container -->
     <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties" />
     
