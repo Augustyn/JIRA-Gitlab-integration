@@ -1,6 +1,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.gitpanel.service;
 
 import lombok.extern.log4j.Log4j;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,15 +27,15 @@ public class CommitServiceTest {
 
     @Test
     public void testGetNewCommits() throws Exception {
-        List<Commit> commits = commitService.getNewCommits(3, 1);
-        for (Commit commit : commits)
-            log.info(commit);
-      //  Assert.assertNotNull(commits);
+        int pageSize = 3;
+        List<Commit> commits = commitService.getNewCommits(pageSize, 3);
+        Assert.assertTrue(commits.size() == pageSize);
     }
 
     @Test
     public void testGetOneCommit() throws Exception {
+        String id = "404dd04e1d6279f76db51f64c80edf6c2bd96bf2";
         Commit commit = commitService.getOneCommit("master");
-        log.info(commit);
+        Assert.assertTrue(commit.getId().equals(id));
     }
 }
