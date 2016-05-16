@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.dao;
+package pl.hycom.jira.plugins.gitlab.integration.controller.dao;
 
 import lombok.extern.log4j.Log4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -9,9 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.util.TemplateFactory;
+import pl.hycom.jira.plugins.gitlab.integration.controller.util.TemplateFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,23 +24,9 @@ public class CommitRepository implements ICommitDao {
     private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
 
     private TemplateFactory templateFactory = new TemplateFactory();
-    private RestTemplate restTemplate = templateFactory.getRestTemplate();
-    private HttpHeaders headers = templateFactory.getHttpHeaders();
+    private RestTemplate restTemplate = templateFactory.restTemplate;
+    private HttpHeaders headers = templateFactory.httpHeaders;
 
-    @Override
-    public void indexNewCommits(List<Commit> commitsList) {
-
-        indexedCommitEncountered:
-        for(Commit commit : commitsList ) {
-            //TODO sprawdzenie czy commit jest juz zaindeksowany
-            if( 1 < 3 ) {
-                //TODO indeksowanie nowych commitów (PIP-32)
-            } else {
-                break indexedCommitEncountered;
-            }
-        }
-
-    }
 
     @Override
     public List<Commit> getNewCommits(int perPage, int pageNumber) {

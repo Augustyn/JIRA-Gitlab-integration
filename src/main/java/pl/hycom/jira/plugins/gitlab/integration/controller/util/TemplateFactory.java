@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.util;
+package pl.hycom.jira.plugins.gitlab.integration.controller.util;
 
 /*
  * <p>Copyright (c) 2016, Damian Deska
@@ -17,7 +17,6 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.util;
  * limitations under the License.</p>
  */
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -27,6 +26,9 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 public class TemplateFactory {
+
+    public RestTemplate restTemplate = getRestTemplate();
+    public HttpHeaders httpHeaders = getHttpHeaders();
 
     public RestTemplate getRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();

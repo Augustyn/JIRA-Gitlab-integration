@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.service;
+package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 
 import lombok.extern.log4j.Log4j;
 import org.junit.Assert;
@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.dao.CommitRepository;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.dao.ICommitDao;
+import pl.hycom.jira.plugins.gitlab.integration.controller.dao.CommitRepository;
+import pl.hycom.jira.plugins.gitlab.integration.controller.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
 
 import java.util.List;

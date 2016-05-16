@@ -17,12 +17,12 @@
 
     <context:component-scan base-package="pl.hycom.jira.plugins.gitlab.integration.gitpanel"/>
 
-    <bean id="ICommitDao" class="pl.hycom.jira.plugins.gitlab.integration.gitpanel.dao.CommitRepository"/>
-    <osgi:service ref="ICommitDao" interface="pl.hycom.jira.plugins.gitlab.integration.gitpanel.dao.ICommitDao"/>
+    <bean id="ICommitDao" class="pl.hycom.jira.plugins.gitlab.integration.controller.dao.CommitRepository"/>
+    <osgi:service ref="ICommitDao" interface="pl.hycom.jira.plugins.gitlab.integration.controller.dao.ICommitDao"/>
 
-    <bean id="ICommitService" class="pl.hycom.jira.plugins.gitlab.integration.gitpanel.service.CommitService"/>
-    <osgi:service ref="ICommitService" interface="pl.hycom.jira.plugins.gitlab.integration.gitpanel.service.ICommitService"/>
+    <bean id="ICommitService" class="pl.hycom.jira.plugins.gitlab.integration.controller.service.CommitService"/>
+    <osgi:service ref="ICommitService" interface="pl.hycom.jira.plugins.gitlab.integration.controller.service.ICommitService"/>
 
-    <osgi:service ref="commitRepository" interface="pl.hycom.jira.plugins.gitlab.integration.gitpanel.dao.ICommitDao"/>
+    <osgi:service ref="commitRepository" interface="pl.hycom.jira.plugins.gitlab.integration.controller.dao.ICommitDao"/>
 
 </beans>

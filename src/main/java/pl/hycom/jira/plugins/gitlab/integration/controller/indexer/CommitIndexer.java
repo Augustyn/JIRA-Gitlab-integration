@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.indexer;
+package pl.hycom.jira.plugins.gitlab.integration.controller.indexer;
 
 //TODO when Commit done
 
@@ -19,9 +19,6 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.indexer;
  * limitations under the License.</p>
  */
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,14 +26,12 @@ import java.nio.file.Paths;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import org.apache.lucene.util.Version;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.service.CommitService;
+import pl.hycom.jira.plugins.gitlab.integration.controller.service.CommitService;
 
 /**
  * Created by Damian Deska on 25.04.2016.

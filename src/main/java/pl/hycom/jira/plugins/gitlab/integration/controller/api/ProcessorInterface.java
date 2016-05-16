@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.api;
+package pl.hycom.jira.plugins.gitlab.integration.controller.api;
 
 import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
 /**

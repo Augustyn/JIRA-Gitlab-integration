@@ -1,9 +1,9 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.service;
+package pl.hycom.jira.plugins.gitlab.integration.controller.service;
 
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.dao.ICommitDao;
+import pl.hycom.jira.plugins.gitlab.integration.controller.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
 
 import java.util.List;
@@ -18,12 +18,6 @@ public class CommitService implements ICommitService {
     //FIXME
     @Autowired
     private ICommitDao commitRepository;
-
-    @Override
-    public void indexNewCommits(List<Commit> commitsList) {
-
-        commitRepository.indexNewCommits(commitsList);
-    }
 
     @Override
     public List<Commit> getNewCommits(int perPage, int pageNumber) {
