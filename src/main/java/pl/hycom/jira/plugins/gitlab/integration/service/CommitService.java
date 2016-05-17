@@ -1,10 +1,10 @@
-package pl.hycom.jira.plugins.gitlab.integration.controller.service;
+package pl.hycom.jira.plugins.gitlab.integration.service;
 
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.hycom.jira.plugins.gitlab.integration.controller.dao.ICommitDao;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package pl.hycom.jira.plugins.gitlab.integration.controller.dao;
+package pl.hycom.jira.plugins.gitlab.integration.dao;
 
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.util.List;
 

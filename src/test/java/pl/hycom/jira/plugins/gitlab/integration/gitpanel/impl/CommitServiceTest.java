@@ -7,9 +7,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import pl.hycom.jira.plugins.gitlab.integration.controller.dao.CommitRepository;
-import pl.hycom.jira.plugins.gitlab.integration.controller.dao.ICommitDao;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.util.List;
 

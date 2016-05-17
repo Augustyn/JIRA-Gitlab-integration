@@ -1,6 +1,6 @@
-package pl.hycom.jira.plugins.gitlab.integration.controller.service;
+package pl.hycom.jira.plugins.gitlab.integration.service;
 
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.util.List;
 

@@ -25,8 +25,7 @@ import com.atlassian.jira.user.ApplicationUser;
 //import com.atlassian.jira.user.DelegatingApplicationUser;
 import com.atlassian.jira.user.MockApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.util.HashMap;
 import java.util.Map;

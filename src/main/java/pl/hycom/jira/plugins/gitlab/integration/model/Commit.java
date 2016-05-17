@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
+package pl.hycom.jira.plugins.gitlab.integration.model;
 
 /**
  * Created by anon on 19.04.2016.

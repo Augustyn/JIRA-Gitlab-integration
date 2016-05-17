@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.controller.util;
+package pl.hycom.jira.plugins.gitlab.integration.util;
 
 /*
  * <p>Copyright (c) 2016, Damian Deska
@@ -27,8 +27,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class TemplateFactory {
 
-    public RestTemplate restTemplate = getRestTemplate();
-    public HttpHeaders httpHeaders = getHttpHeaders();
+    HttpHeaders headers = null;
 
     public RestTemplate getRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
@@ -36,10 +35,19 @@ public class TemplateFactory {
         return restTemplate;
     }
 
-    public HttpHeaders getHttpHeaders() {
-        HttpHeaders httpHeaders = new HttpHeaders();
+    public TemplateFactory getHttpHeaders() {
+        this.headers = new HttpHeaders();
 
-        return httpHeaders;
+        return this;
+    }
+
+    public TemplateFactory setAuth(String privateToken) {
+        this.headers.set("PRIVATE-TOKEN", privateToken);
+        return this;
+    }
+
+    public HttpHeaders build() {
+        return this.headers;
     }
 
 }
