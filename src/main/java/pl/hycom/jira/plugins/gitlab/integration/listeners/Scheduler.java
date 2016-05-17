@@ -1,0 +1,53 @@
+package pl.hycom.jira.plugins.gitlab.integration.listeners;
+
+import com.atlassian.sal.api.scheduling.PluginJob;
+import com.atlassian.sal.api.scheduling.PluginScheduler;
+import com.atlassian.sal.api.lifecycle.LifecycleAware;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueCommitChangeNotificationProcessor;
+
+import java.util.Date;
+import java.util.HashMap;
+
+
+/**
+ * Created by Tomek on 15/14/16.
+ */
+@Log4j
+public class Scheduler implements IScheduler, LifecycleAware {
+
+    private static final String KEY = Scheduler.class.getName() + "instance";
+    private static final String JOB_NAME = "Schedules info about commits"; // nazwa zadania
+    private final PluginScheduler pluginScheduler;
+    private long interval = 300000L;
+
+    @Autowired
+    public Scheduler(PluginScheduler pluginScheduler) {
+        this.pluginScheduler = pluginScheduler;
+    }
+
+    public void onStart() {
+        reschedule(interval);
+    }
+
+    public void onStop(){
+    }
+
+    HashMap params = new HashMap<String,Object>() {{
+        put(KEY, Scheduler.this);
+    }};
+
+    public void reschedule(long interval) {
+        this.interval = interval;
+
+        pluginScheduler.scheduleJob(
+                JOB_NAME,             // unikalna nazwa zadania do wykonania
+                (Class<? extends PluginJob>) IssueCommitChangeNotificationProcessor.class,     // klasa zadania do wykonania
+                params,
+                new Date(),                 // czas kiedy praca jest rozpoczynana
+                interval);                  // co jaki czas w milisekundach zadanie bedzie wykonywane
+        log.info(String.format("Informacje o comittach sa pobierane co %dms", interval));
+    }
+
+}

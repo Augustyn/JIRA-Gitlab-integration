@@ -13,7 +13,7 @@
         <interface>com.atlassian.sal.api.scheduling.PluginScheduler</interface>
     </component-import>
 
-    <component key="schedulerComponent" class="pl.hycom.jira.plugins.gitlab.integration.service.processors.SchedulerProcessor"
+    <component key="schedulerComponent" class="pl.hycom.jira.plugins.gitlab.integration.listeners.Scheduler"
                system="true" public="true">
         <description>The task scheduler</description>
         <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
