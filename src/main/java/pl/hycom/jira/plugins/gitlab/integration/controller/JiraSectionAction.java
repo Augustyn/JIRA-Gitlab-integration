@@ -1,6 +1,8 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
+package pl.hycom.jira.plugins.gitlab.integration.controller;
 
 import com.atlassian.jira.web.action.JiraWebActionSupport;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -147,7 +149,6 @@ public class JiraSectionAction extends JiraWebActionSupport {
         if (false) {
             throw new Exception("doExecute raised this exception for some reason");
         }
-
         return SUCCESS;
     }
 
@@ -259,6 +260,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
         this.gitlabLink = gitlablink;
         this.projectId = projectId;
     }
+
 }
 
 

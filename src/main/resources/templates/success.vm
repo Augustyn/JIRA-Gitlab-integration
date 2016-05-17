@@ -2,9 +2,7 @@
   <head>
     <title>JiraSectionAction Success</title>
   </head>
-  
   <body>
-
     <div style="background: #FFFFFF">
       <table class="jiraform maxWidth">
         <tr>
@@ -14,23 +12,21 @@
         </tr>
         <tr>
           <td class="jiraformbody">
-          This page is what the JiraSectionAction action class shows when success is returned.
+          This page shows current settings for Jira-Gitlab plugin.
           </td>
         </tr>   
 
         <tr>
           <td class="jiraformbody">
-          The raw current parameter value of clientId is: $action.getClientId().
+          The current parameter value of clientId is: $action.getClientId().
           </td>
           <td class="jiraformbody">
-          The raw current parameter value of clientSecret is: $action.getClientSecret().
+          The current parameter value of clientSecret is: $action.getClientSecret().
           </td>
           <td class="jiraformbody">
-          The raw current parameter value of gitlabLink is: $action.getGitlabLink().
+          The current parameter value of gitlabLink is: $action.getGitlabLink().
           </td>
         </tr>   
-      </table>  
-      <br>      
-
+      </table>
   </body>
 </html>

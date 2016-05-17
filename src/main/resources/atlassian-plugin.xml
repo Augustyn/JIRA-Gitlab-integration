@@ -44,7 +44,7 @@
     </web-item>
   <webwork1 key="webworkkey" name="Edition and preview of JIRA-Gitlab configuration" class="java.lang.Object">
     <actions>
-      <action name="pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl.JiraSectionAction" alias="JiraSectionAction" roles-required="admin">
+      <action name="pl.hycom.jira.plugins.gitlab.integration.controller.JiraSectionAction" alias="JiraSectionAction" roles-required="admin">
         <view name="input">/templates/input.vm</view>
         <view name="success">/templates/success.vm</view>
         <view name="error">/templates/error.vm</view>

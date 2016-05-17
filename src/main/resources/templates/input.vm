@@ -14,7 +14,7 @@
         </tr>
         <tr>
           <td class="jiraformbody">
-          This page is what the JiraSectionAction action class shows for input
+          This page is responsible for a section with configuration of Jira-Gitlab plugin.
           </td>
         </tr>   
       </table>  
@@ -33,7 +33,7 @@
 	  <tr>
 	    <td align="fieldLabelArea">
               ClientId:&nbsp;
-            </td
+            </td>
 	    <td class="fieldValueArea">
               ## Note: ${client_id} is the same as $action.getClient_id()
               ## It's important to encode the inputs to avoid XSS hacks
@@ -75,6 +75,7 @@
               <br>
               <font size="1">An example of a text parameter.</font>
 	    </td>
+
 	  </tr>
           <tr>
             <td class="fullyCentered jiraformfooter">
