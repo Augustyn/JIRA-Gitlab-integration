@@ -18,12 +18,15 @@ package pl.hycom.jira.plugins.gitlab.integration.search;
  */
 
 import lombok.extern.log4j.Log4j;
-import org.apache.velocity.runtime.directive.Parse;
+import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -38,10 +41,27 @@ public class CommitSearcherTest {
     private CommitSearcher commitSearcher = new CommitSearcher();
 
     @Test
-    public void searchCommitsTest() throws ParseException, IOException{
+    public void searchCommitsTest() throws ParseException, IOException {
+
+        List<Document> foundedCommitsList = new ArrayList<Document>();
+
         String fieldName = "author_name";
         String fieldValue = "kamilrogowski";
-        commitSearcher.searchCommits(fieldName, fieldValue);
+        foundedCommitsList = commitSearcher.searchCommits(fieldName, fieldValue);
+
+        for(Document document : foundedCommitsList) {
+            Assert.assertTrue(document.get("author_name").equals("kamilrogowski"));
+        }
+
+    }
+
+    @Test
+    public void checkIfCommitIsIndexedTest() throws ParseException, IOException {
+        String validIdValue = "da3d482b7a675926502c20b0598b470f05ae8c57";
+        String invalidIdValue = "xxx";
+
+        Assert.assertTrue(commitSearcher.checkIfCommitIsIndexed(validIdValue));
+        Assert.assertFalse(commitSearcher.checkIfCommitIsIndexed(invalidIdValue));
     }
 
 }

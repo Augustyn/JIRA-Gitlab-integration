@@ -36,6 +36,7 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.lucene.search.IndexSearcher;
 
@@ -47,13 +48,15 @@ import org.apache.lucene.search.IndexSearcher;
 public class CommitSearcher {
 
     Analyzer analyzer = new StandardAnalyzer();
+    Path path = Paths.get("lucynatesty");
 
-    public void searchCommits(String fieldName, String fieldValue) throws ParseException, IOException {
-        Path path = Paths.get("lucynatesty");
+    public List<Document> searchCommits(String fieldName, String fieldValue) throws ParseException, IOException {
+
+        int hitsPerPage = 10;
+        List<Document> foundedCommitsList = new ArrayList<Document>();
+
         Directory indexDirectory = FSDirectory.open(path);
-        int hitsPerPage = 5;
         Query query = new QueryParser(fieldName, analyzer).parse(fieldValue);
-        log.info(query);
 
         IndexReader reader = DirectoryReader.open(indexDirectory);
         IndexSearcher searcher = new IndexSearcher(reader);
@@ -64,10 +67,39 @@ public class CommitSearcher {
         for(int i = 0; i < hits.length; i++) {
             int docId = hits[i].doc;
             Document document = searcher.doc(docId);
-            log.info(document.get("author_name") + ", " + document.get("id"));
+            foundedCommitsList.add(document);
         }
-
         reader.close();
+
+        return foundedCommitsList;
+    }
+
+    public boolean checkIfCommitIsIndexed(String idValue) throws ParseException, IOException {
+
+        Directory indexDirectory = FSDirectory.open(path);
+        int hitsPerPage = 10;
+        Query query = new QueryParser("id", analyzer).parse(idValue);
+
+        IndexReader reader = DirectoryReader.open(indexDirectory);
+        IndexSearcher searcher = new IndexSearcher(reader);
+
+        TopDocs docs = searcher.search(query, hitsPerPage);
+        ScoreDoc[] hits = docs.scoreDocs;
+
+        for(int i = 0; i < hits.length; i++) {
+            int docId = hits[i].doc;
+            Document document = searcher.doc(docId);
+
+            if(idValue.equals(document.get("id"))) {
+                reader.close();
+                return true;
+            }
+        }
+        reader.close();
+        return false;
+
+
+
     }
 
 }
