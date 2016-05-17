@@ -17,15 +17,57 @@ package pl.hycom.jira.plugins.gitlab.integration.search;
  * limitations under the License.</p>
  */
 
+//import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
+import lombok.extern.log4j.Log4j;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import org.apache.lucene.search.IndexSearcher;
+
 /**
  * Created by Damian Deska on 5/17/16.
  */
+
+@Log4j
 public class CommitSearcher {
 
-//    Analyzer analyzer = new StandardAnalyzer();
-//
-//    public List<Commit> searchCommits() throws ParseException {
-//        Query query = new QueryParser("id", analyzer).parse("lucene");
-//    }
-//
+    Analyzer analyzer = new StandardAnalyzer();
+
+    public void searchCommits(String fieldName, String fieldValue) throws ParseException, IOException {
+        Path path = Paths.get("lucynatesty");
+        Directory indexDirectory = FSDirectory.open(path);
+        int hitsPerPage = 5;
+        Query query = new QueryParser(fieldName, analyzer).parse(fieldValue);
+        log.info(query);
+
+        IndexReader reader = DirectoryReader.open(indexDirectory);
+        IndexSearcher searcher = new IndexSearcher(reader);
+
+        TopDocs docs = searcher.search(query, hitsPerPage);
+        ScoreDoc[] hits = docs.scoreDocs;
+
+        for(int i = 0; i < hits.length; i++) {
+            int docId = hits[i].doc;
+            Document document = searcher.doc(docId);
+            log.info(document.get("author_name") + ", " + document.get("id"));
+        }
+
+        reader.close();
+    }
+
 }

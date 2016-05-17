@@ -73,7 +73,6 @@ public class CommitIndexer {
         indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
 
         Document document = getDocument(indexWriter, commit);
-        log.info(document);
         indexWriter.addDocument(document);
         indexWriter.close();
 
