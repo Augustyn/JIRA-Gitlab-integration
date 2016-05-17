@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.model;
+package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 /*
  * <p>Copyright (c) 2016, Authors
@@ -24,6 +24,7 @@ import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import net.java.ao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import pl.hycom.jira.plugins.gitlab.integration.model.ProjectConfigEntity;
 
 
 import java.sql.SQLException;

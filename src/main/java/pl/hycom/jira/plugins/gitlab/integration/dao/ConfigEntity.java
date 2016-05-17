@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.model;
+package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 /*
  * <p>Copyright (c) 2016, Authors
@@ -19,16 +19,20 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
 
 import net.java.ao.Entity;
 import net.java.ao.RawEntity;
+import net.java.ao.schema.AutoIncrement;
 import net.java.ao.schema.NotNull;
 import net.java.ao.schema.PrimaryKey;
 
 /**
  * Created by vagrant on 5/10/16.
  */
-public interface ProjectConfigEntity extends RawEntity<String>
+public interface ConfigEntity extends RawEntity<Integer>
 {
     @NotNull
-    @PrimaryKey("ProjectName")
+    @AutoIncrement
+    @PrimaryKey("ProjectID")
+    public Integer getProjectID();
+
     public String getProjectName();
 
     public String getLink();
