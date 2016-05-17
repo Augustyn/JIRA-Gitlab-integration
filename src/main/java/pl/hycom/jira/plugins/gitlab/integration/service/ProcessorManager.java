@@ -33,12 +33,12 @@ import java.util.List;
 @Log4j
 public class ProcessorManager {
     @Setter
-    private List<Class<? extends ProcessorInterface>> processorsList = new ArrayList<>();
+    private List<ProcessorInterface> processorsList = new ArrayList<>();
 
     public void startProcessors(List<CommitData> commitInfoList) {
         for (CommitData commitInfo : commitInfoList) {
-            for (Class<? extends ProcessorInterface> processor : processorsList) {
-                ProcessorInterface interf = processor.cast(ProcessorInterface.class);
+            for (ProcessorInterface processor : processorsList) {
+                ProcessorInterface interf = processor;
                 try {
                     interf.execute(commitInfo);
                 } catch (ProcessException e) {

@@ -25,6 +25,7 @@ import com.atlassian.jira.user.ApplicationUser;
 //import com.atlassian.jira.user.DelegatingApplicationUser;
 import com.atlassian.jira.user.MockApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
@@ -32,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.atlassian.jira.mock.issue.MockIssue;
-
+@Component
 public class IssueCommitChangeNotificationProcessor implements ProcessorInterface
 {
     @Autowired
