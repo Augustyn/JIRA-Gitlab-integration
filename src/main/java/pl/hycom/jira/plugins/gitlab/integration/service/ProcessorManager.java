@@ -1,7 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
 
-import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
-import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
 import java.util.List;
@@ -16,8 +15,8 @@ public class ProcessorManager {
         this.processorsList = processorsList;
     }
 
-    public void startProcessors(List<CommitData> commitInfoList){
-        for (CommitData commitInfo : commitInfoList){
+    public void startProcessors(List<Commit> commitInfoList){
+        for (Commit commitInfo : commitInfoList){
             for (ProcessorInterface processor : processorsList) {
                 processor.execute(commitInfo);
             }

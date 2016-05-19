@@ -25,8 +25,7 @@ import com.atlassian.jira.user.ApplicationUser;
 //import com.atlassian.jira.user.DelegatingApplicationUser;
 import com.atlassian.jira.user.MockApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
-import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +41,7 @@ public class IssueCommitChangeNotificationProcessor implements ProcessorInterfac
     //TODO replace with actual user
 
     @Override
-    public void execute(CommitData commitInfo)
+    public void execute(Commit commitInfo)
     {
         Issue currentIssue = new MockIssue(); //TODO retrieve issue from CommitInfo once commitData is implemented
         Map<String,Object> eventParameters = new HashMap<String,Object>();
