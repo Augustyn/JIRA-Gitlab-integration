@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:osgi="http://www.springframework.org/schema/osgi"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:atlassian-scanner="http://www.atlassian.com/schema/atlassian-scanner"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context-2.5.xsd
-        http://www.springframework.org/schema/osgi
-        http://www.springframework.org/schema/osgi/spring-osgi.xsd"
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd"
        default-autowire="autodetect">
 
     <atlassian-scanner:scan-indexes/>
     <context:annotation-config/>
-
-    <context:component-scan base-package="pl.hycom.jira.plugins.gitlab.integration.gitpanel"/>
-
-    <bean id="ICommitDao" class="pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository"/>
-    <osgi:service ref="ICommitDao" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao"/>
-
-    <bean id="ICommitService" class="pl.hycom.jira.plugins.gitlab.integration.service.CommitService"/>
-    <osgi:service ref="ICommitService" interface="pl.hycom.jira.plugins.gitlab.integration.service.ICommitService"/>
-
-    <osgi:service ref="commitRepository" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao"/>
+    <context:component-scan base-package="pl.hycom.jira.plugins.gitlab.integration"/>
 
 </beans>
