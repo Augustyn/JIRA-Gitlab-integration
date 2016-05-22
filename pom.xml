@@ -164,6 +164,24 @@
             <version>${jira.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.atlassian.activeobjects</groupId>
+            <artifactId>activeobjects-plugin</artifactId>
+            <version>${ao.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.activeobjects</groupId>
+            <artifactId>activeobjects-test</artifactId>
+            <version>${ao.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-api</artifactId>
             <version>7.1.2</version>
@@ -273,7 +291,8 @@
                         <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
                         <testInstructions>
                             <Import-Package>
-                                pl.hycom.jira.plugins.gitlab.integration;version="0.0.0";resolution=optional
+                                pl.hycom.jira.plugins.gitlab.integration;version="0.0.0";resolution=optional,
+                                net.java.ao;version="0.0.0"
                             </Import-Package>
                         </testInstructions>
                         <!-- Ensure plugin is spring powered -->
@@ -351,12 +370,17 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <version.junit>[4.12,)</version.junit>
         <version.lombok>[1.16,)</version.lombok>
+        <ao.version>1.1.5</ao.version>
     </properties>
     <repositories>
         <repository>
             <id>atlassian-public-1</id>
             <url>https://maven.atlassian.com/content/groups/public</url>
         </repository>
+        <repository>
+        <id>atlassian-public-56</id>
+        <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+    </repository>
         <repository>
             <id>atlassian-public-2</id>
             <url>https://m2proxy.atlassian.com/repository/public</url>

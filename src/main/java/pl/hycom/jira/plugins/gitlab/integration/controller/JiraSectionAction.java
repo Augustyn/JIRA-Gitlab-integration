@@ -1,6 +1,9 @@
 package pl.hycom.jira.plugins.gitlab.integration.controller;
 
 import com.atlassian.jira.web.action.JiraWebActionSupport;
+import com.atlassian.plugin.webresource.impl.config.Config;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -174,12 +177,19 @@ public class JiraSectionAction extends JiraWebActionSupport {
             String[] vals =  getHttpRequest().getParameterValues(n);
             log.debug("Parameter " + n + "=" + vals[0]);
         }
-
+        String sClientId = getClientId();
+        String sClientSecret = getClientSecret();
+        String sGitlabLink = getGitlabLink();
+        String sProjectId = getProjectId();
         // You could also set a local variable to have a different value
         // every time the Action is invoked here, e.g. a timestamp.
 
         // This should be "input". If no input view exists, that's an error.
+        ConfigManagerDaoImpl myConfManager = new ConfigManagerDaoImpl();
+        myConfManager.updateProjectConfig(sProjectId, sGitlabLink, sClientSecret, sClientId);
         String result = super.doDefault();
+
+
         log.debug("Exiting doDefault with a result of: " + result);
         return result;
     }
