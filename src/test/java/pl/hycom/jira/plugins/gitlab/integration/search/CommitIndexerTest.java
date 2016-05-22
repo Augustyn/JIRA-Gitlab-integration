@@ -41,10 +41,12 @@ public class CommitIndexerTest {
     private Commit commit = new Commit();
     private CommitIndexer commitIndexer = new CommitIndexer();
     private CommitRepository commitRepository = new CommitRepository();
+    private String urlMock = "https://gitlab.com/api/v3/projects/1063546/repository/commits";
+    private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
 
     @Test
     public void indexNewCommitTest() throws IOException {
-        List<Commit> commitList = commitRepository.getNewCommits(10, 1);
+        List<Commit> commitList = commitRepository.getNewCommits(urlMock, privateTokenMock, 10, 1);
         for(Commit newCommit : commitList) {
             log.info(newCommit.getId() + ", " + newCommit.getAuthor_name());
             commitIndexer.indexFile(newCommit);
@@ -54,7 +56,7 @@ public class CommitIndexerTest {
 
     @Test
     public void indexOneCommitTest() throws IOException{
-        Commit oneCommit = commitRepository.getOneCommit("master");
+        Commit oneCommit = commitRepository.getOneCommit(urlMock, privateTokenMock, "master");
         log.info(oneCommit.getId());
         commitIndexer.indexFile(oneCommit);
     }

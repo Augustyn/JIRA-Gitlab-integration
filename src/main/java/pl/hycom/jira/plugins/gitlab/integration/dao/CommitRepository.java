@@ -33,11 +33,8 @@ import java.util.List;
 @Repository
 public class CommitRepository implements ICommitDao {
 
-    private String urlMock = "https://gitlab.com/api/v3/projects/1063546/repository/commits";
-    private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
-
     @Override
-    public List<Commit> getNewCommits(int perPage, int pageNumber) {
+    public List<Commit> getNewCommits(String urlMock, String privateTokenMock, int perPage, int pageNumber) {
         String urlMockWithPageNumber = urlMock + "?per_page=" + Integer.toString(perPage) + "&page=" + Integer.toString(pageNumber);
         HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateTokenMock).build());
         ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(urlMockWithPageNumber, HttpMethod.GET, requestEntity,
@@ -48,7 +45,7 @@ public class CommitRepository implements ICommitDao {
     }
 
     @Override
-    public Commit getOneCommit(String shaSum) {
+    public Commit getOneCommit(String urlMock, String privateTokenMock, String shaSum) {
         String oneCommitUrlMock = urlMock + "/" + shaSum;
         HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateTokenMock).build());
         ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(oneCommitUrlMock, HttpMethod.GET, requestEntity,

@@ -36,13 +36,13 @@ public class CommitService implements ICommitService {
     private ICommitDao commitRepository;
 
     @Override
-    public List<Commit> getNewCommits(int perPage, int pageNumber) {
+    public List<Commit> getNewCommits(String urlMock, String privateTokenMock, int perPage, int pageNumber) {
 
-        return commitRepository.getNewCommits(perPage, pageNumber);
+        return commitRepository.getNewCommits(urlMock, privateTokenMock, perPage, pageNumber);
     }
 
     @Override
-    public Commit getOneCommit(String shaSum) {
-        return commitRepository.getOneCommit(shaSum);
+    public Commit getOneCommit(String urlMock, String privateTokenMock, String shaSum) {
+        return commitRepository.getOneCommit(urlMock, privateTokenMock, shaSum);
     }
 }
