@@ -5,8 +5,7 @@ import com.atlassian.sal.api.scheduling.PluginScheduler;
 import com.atlassian.sal.api.lifecycle.LifecycleAware;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueCommitChangeNotificationProcessor;
-
+import pl.hycom.jira.plugins.gitlab.integration.service.CommitService;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -19,13 +18,9 @@ public class Scheduler implements IScheduler, LifecycleAware {
 
     private static final String KEY = Scheduler.class.getName() + "instance";
     private static final String JOB_NAME = "Schedules info about commits"; // nazwa zadania
-    private final PluginScheduler pluginScheduler;
-    private long interval = 300000L;
-
     @Autowired
-    public Scheduler(PluginScheduler pluginScheduler) {
-        this.pluginScheduler = pluginScheduler;
-    }
+    private PluginScheduler pluginScheduler;
+    private long interval = 300000L;
 
     public void onStart() {
         reschedule(interval);
@@ -34,16 +29,16 @@ public class Scheduler implements IScheduler, LifecycleAware {
     public void onStop(){
     }
 
-    HashMap params = new HashMap<String,Object>() {{
-        put(KEY, Scheduler.this);
-    }};
-
-    public void reschedule(long interval) {
+     public void reschedule(long interval) {
         this.interval = interval;
+
+         HashMap params = new HashMap<String,Object>() {{
+             put(KEY, Scheduler.this);
+         }};
 
         pluginScheduler.scheduleJob(
                 JOB_NAME,             // unikalna nazwa zadania do wykonania
-                (Class<? extends PluginJob>) IssueCommitChangeNotificationProcessor.class,     // klasa zadania do wykonania
+                CommitService.class,     // klasa zadania do wykonania
                 params,
                 new Date(),                 // czas kiedy praca jest rozpoczynana
                 interval);                  // co jaki czas w milisekundach zadanie bedzie wykonywane
