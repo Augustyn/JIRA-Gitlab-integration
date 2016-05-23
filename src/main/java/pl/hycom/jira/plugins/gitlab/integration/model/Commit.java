@@ -1,4 +1,3 @@
-
 package pl.hycom.jira.plugins.gitlab.integration.model;
 
 /**
@@ -17,3 +16,4 @@ public class Commit {
     private String created_at;
     private String message;
 }
+

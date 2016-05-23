@@ -14,7 +14,7 @@
   </component-import>
   <component key="schedulerComponent" class="pl.hycom.jira.plugins.gitlab.integration.listeners.Scheduler"
              system="true" public="true">
-    <description>The plugin component that schedules download about commits.</description>
+    <description>The plugin component that schedules download information about commits.</description>
     <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
     <interface>pl.hycom.jira.plugins.gitlab.integration.listeners.IScheduler</interface>
   </component>

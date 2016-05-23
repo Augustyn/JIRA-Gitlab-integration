@@ -23,8 +23,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
-import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
 import pl.hycom.jira.plugins.gitlab.integration.service.ProcessorManager;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class ProcessorManagerTest {
         processorsList = new ArrayList<>();
         processorsList.add(new ProcessorInterface() {
             @Override
-            public void execute(CommitData commitInfo) {
+            public void execute(Commit commitInfo) {
                 log.info("inside processor execute, processing: " + commitInfo);
             }
         });
@@ -62,8 +62,8 @@ public class ProcessorManagerTest {
     public void referenceTest() {
         assertThat("Tested List is not empty", processorsList, is(notNullValue()));
         assertThat("Reference should be injected.", manager, is(notNullValue()));
-        List<CommitData> list = new ArrayList<>();
-        list.add(new CommitData());
+        List<Commit> list = new ArrayList<>();
+        list.add(new Commit());
         manager.startProcessors(list);
     }
 }
