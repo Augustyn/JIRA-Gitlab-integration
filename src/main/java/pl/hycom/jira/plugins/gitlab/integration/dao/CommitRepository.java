@@ -34,10 +34,10 @@ import java.util.List;
 public class CommitRepository implements ICommitDao {
 
     @Override
-    public List<Commit> getNewCommits(String urlMock, String privateTokenMock, int perPage, int pageNumber) {
-        String urlMockWithPageNumber = urlMock + "?per_page=" + Integer.toString(perPage) + "&page=" + Integer.toString(pageNumber);
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateTokenMock).build());
-        ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(urlMockWithPageNumber, HttpMethod.GET, requestEntity,
+    public List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber) {
+        String repositoryUrlWithPageNumber = repositoryUrl + "?per_page=" + Integer.toString(perPage) + "&page=" + Integer.toString(pageNumber);
+        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateToken).build());
+        ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(repositoryUrlWithPageNumber, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<Commit>>() {
                 });
 
@@ -45,10 +45,10 @@ public class CommitRepository implements ICommitDao {
     }
 
     @Override
-    public Commit getOneCommit(String urlMock, String privateTokenMock, String shaSum) {
-        String oneCommitUrlMock = urlMock + "/" + shaSum;
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateTokenMock).build());
-        ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(oneCommitUrlMock, HttpMethod.GET, requestEntity,
+    public Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum) {
+        String oneCommitUrl = repositoryUrl + "/" + shaSum;
+        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateToken).build());
+        ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(oneCommitUrl, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
                 });
 

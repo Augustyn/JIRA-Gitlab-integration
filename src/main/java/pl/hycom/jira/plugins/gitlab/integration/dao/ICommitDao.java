@@ -24,6 +24,6 @@ import java.util.List;
  */
 public interface ICommitDao {
 
-    List<Commit> getNewCommits(String urlMock, String privateTokenMock, int perPage, int pageNumber);
-    Commit getOneCommit(String urlMock, String privateTokenMock, String shaSum);
+    List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber);
+    Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum);
 }
