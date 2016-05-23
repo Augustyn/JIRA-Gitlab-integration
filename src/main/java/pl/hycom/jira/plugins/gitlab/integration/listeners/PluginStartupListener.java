@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Thorgal on 26.04.2016.
+ * Created by Karol Joachimiak on 26.04.2016.
  */
 @Component
 public class PluginStartupListener implements LifecycleAware {
@@ -40,7 +40,7 @@ public class PluginStartupListener implements LifecycleAware {
 
     @Override
     public void onStart() {
-        //breakpoint
+
         List<ProcessorInterface> processorsList = new ArrayList<>();
 
         String[] beans = context.getBeanNamesForType(ProcessorInterface.class);
@@ -57,7 +57,7 @@ public class PluginStartupListener implements LifecycleAware {
 
     @Override
     public void onStop() {
-
+        //Nothing to see here. This method does nothing intentionally.
     }
 
 }

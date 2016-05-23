@@ -18,9 +18,11 @@ package pl.hycom.jira.plugins.gitlab.integration.service.processors;
 import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
 import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
 
+import javax.validation.constraints.NotNull;
+
 /**
- * Created by Thorgal on 08.04.2016.
+ * Created by Karol Joachimiak on 08.04.2016.
  */
 public interface ProcessorInterface {
-    public void execute(CommitData commitInfo) throws ProcessException;
+    void execute(@NotNull CommitData commitInfo) throws ProcessException;
 }

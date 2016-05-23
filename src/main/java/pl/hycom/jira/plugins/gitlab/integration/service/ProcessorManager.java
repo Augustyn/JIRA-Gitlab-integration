@@ -18,24 +18,29 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  */
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
 import pl.hycom.jira.plugins.gitlab.integration.model.CommitData;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Thorgal on 08.04.2016.
+ * Created by Karol Joachimiak on 08.04.2016.
  */
 @Service
 @Log4j
 public class ProcessorManager {
     @Setter
+    @NotNull
     private List<ProcessorInterface> processorsList = new ArrayList<>();
 
     public void startProcessors(List<CommitData> commitInfoList) {
+        log.info("Processor manager started. Tasks to process: "+ processorsList.size());
+        long startTime = System.currentTimeMillis();
         for (CommitData commitInfo : commitInfoList) {
             for (ProcessorInterface processor : processorsList) {
                 ProcessorInterface interf = processor;
@@ -46,6 +51,9 @@ public class ProcessorManager {
                 }
             }
         }
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        log.info("Method startProcessors in class " + ProcessorManager.class.getName()+" took " +elapsedTime+" ms to execute." );
     }
 
 }
