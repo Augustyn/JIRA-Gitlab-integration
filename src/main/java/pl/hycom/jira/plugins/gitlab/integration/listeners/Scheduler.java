@@ -3,6 +3,8 @@ package pl.hycom.jira.plugins.gitlab.integration.listeners;
 import com.atlassian.sal.api.scheduling.PluginJob;
 import com.atlassian.sal.api.scheduling.PluginScheduler;
 import com.atlassian.sal.api.lifecycle.LifecycleAware;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.hycom.jira.plugins.gitlab.integration.service.CommitService;
@@ -15,12 +17,14 @@ import java.util.HashMap;
  */
 @Log4j
 public class Scheduler implements IScheduler, LifecycleAware {
-
+    @Getter
     private static final String KEY = Scheduler.class.getName() + "instance";
     private static final String JOB_NAME = "Schedules info about commits"; // nazwa zadania
     @Autowired
     private PluginScheduler pluginScheduler;
     private long interval = 300000L;
+    @Setter
+    private Date lastRun = null;
 
     public void onStart() {
         reschedule(interval);
@@ -44,5 +48,6 @@ public class Scheduler implements IScheduler, LifecycleAware {
                 interval);                  // co jaki czas w milisekundach zadanie bedzie wykonywane
         log.info(String.format("Informacje o comittach sa pobierane co %dms", interval));
     }
+
 
 }

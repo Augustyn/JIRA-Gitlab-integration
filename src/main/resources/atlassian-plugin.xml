@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
   <plugin-info>
     <description>${project.description}</description>
@@ -8,6 +7,18 @@
     <param name="plugin-icon">images/pluginIcon.png</param>
     <param name="plugin-logo">images/pluginLogo.png</param>
   </plugin-info>
+
+  <component-import key="pluginScheduler">
+    <description>SAL Scheduler</description>
+    <interface>com.atlassian.sal.api.scheduling.PluginScheduler</interface>
+  </component-import>
+  <component key="schedulerComponent" class="pl.hycom.jira.plugins.gitlab.integration.listeners.Scheduler"
+             system="true" public="true">
+    <description>The plugin component that schedules download about commits.</description>
+    <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
+    <interface>pl.hycom.jira.plugins.gitlab.integration.listeners.IScheduler</interface>
+  </component>
+
   <!-- add our i18n resource -->
   <resource type="i18n" name="i18n" location="gittab"/>
   <!-- add our web resources -->
