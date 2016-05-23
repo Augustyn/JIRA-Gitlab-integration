@@ -36,11 +36,10 @@ public class Scheduler implements IScheduler, LifecycleAware {
      public void reschedule(long interval) {
         this.interval = interval;
 
-         HashMap params = new HashMap<String,Object>() {{
-             put(KEY, Scheduler.this);
-         }};
+         HashMap params = new HashMap<String,Object>();
+         params.put(KEY, Scheduler.this);
 
-        pluginScheduler.scheduleJob(
+         pluginScheduler.scheduleJob(
                 JOB_NAME,             // unikalna nazwa zadania do wykonania
                 CommitService.class,     // klasa zadania do wykonania
                 params,
