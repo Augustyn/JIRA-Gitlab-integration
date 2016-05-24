@@ -28,10 +28,8 @@ import java.sql.SQLException;
 
 
 @Repository
-public class ConfigManagerDaoImpl
+public class ConfigManagerDaoImpl implements ConfigManagerDao
 {
-//    @Autowired
-//    private EntityManager entityManager;
     @Autowired
     private ActiveObjects entityManager;
 
@@ -61,10 +59,5 @@ public class ConfigManagerDaoImpl
         projectConfig.save();
     }
 
-
-    public void updateProjectConfig(String projectName,String gitlabLink,String gitlabSecret,String gitlabClientId) throws SQLException
-    {
-        //
-    }
 
 }

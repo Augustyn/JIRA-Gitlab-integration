@@ -6,7 +6,7 @@
     </plugin-info>
 
     <!-- from our base plugin -->
-    <component-import key="myComponent" interface="pl.hycom.jira.plugins.gitlab.integration.controller.api.MyPluginComponent"/>
+    <component-import key="ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl"/>
 
     <!-- from the product container -->
     <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties" />
