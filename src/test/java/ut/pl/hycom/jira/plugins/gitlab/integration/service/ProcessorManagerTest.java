@@ -69,4 +69,9 @@ public class ProcessorManagerTest {
         manager.startProcessors(list);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void startProcessorsThrowsNPETest() {
+        manager.startProcessors(null);
+    }
+
 }
