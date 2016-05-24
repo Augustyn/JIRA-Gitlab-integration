@@ -55,9 +55,8 @@ public class ProcessorManager {
                 }
             }
         }
-        long stopTime = System.currentTimeMillis();
-        long elapsedTime = stopTime - startTime;
-        log.info("Method startProcessors in class " + ProcessorManager.class.getName() + " took " + elapsedTime + " ms to execute.");
+        log.info("Method startProcessors in class " + ProcessorManager.class.getName() + " took " +
+                (System.currentTimeMillis() - startTime) + " ms to execute.");
     }
 
 }
