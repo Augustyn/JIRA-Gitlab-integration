@@ -47,6 +47,7 @@ public class ProcessorManagerTest {
 
     private List<ProcessorInterface> processorsList;
 
+
     @Before
     public void setUp() {
         processorsList = new ArrayList<>();
@@ -56,6 +57,7 @@ public class ProcessorManagerTest {
                 log.info("inside processor execute, processing: " + commitInfo);
             }
         });
+//        manager.setReferenceToPackagePath("pl.hycom.jira.plugins.gitlab.integration.gitpanel");
     }
 
     @Test
@@ -66,4 +68,10 @@ public class ProcessorManagerTest {
         list.add(new Commit());
         manager.startProcessors(list);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void startProcessorsThrowsNPETest() {
+        manager.startProcessors(null);
+    }
+
 }
