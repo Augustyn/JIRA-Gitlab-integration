@@ -16,6 +16,7 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
@@ -35,25 +36,28 @@ import java.util.List;
 @Log4j
 public class ProcessorManager {
     @Setter
-    @NotNull
+    @Getter
     private List<ProcessorInterface> processorsList = new ArrayList<>();
 
-    public void startProcessors(List<CommitData> commitInfoList) {
-        log.info("Processor manager started. Tasks to process: "+ processorsList.size());
+    public void startProcessors(@NotNull List<CommitData> commitInfoList) {
+        log.info("Processor manager started. Processors to process: " +
+                processorsList.size()+". Commits to process: " + commitInfoList.size());
+
         long startTime = System.currentTimeMillis();
+
         for (CommitData commitInfo : commitInfoList) {
             for (ProcessorInterface processor : processorsList) {
                 ProcessorInterface interf = processor;
                 try {
                     interf.execute(commitInfo);
                 } catch (ProcessException e) {
-                    log.info("Processor throws exception but it was ignored");
+                    log.info("Processor throws exception but it was ignored" +e.getMessage());
                 }
             }
         }
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
-        log.info("Method startProcessors in class " + ProcessorManager.class.getName()+" took " +elapsedTime+" ms to execute." );
+        log.info("Method startProcessors in class " + ProcessorManager.class.getName() + " took " + elapsedTime + " ms to execute.");
     }
 
 }

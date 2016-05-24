@@ -17,6 +17,7 @@ package pl.hycom.jira.plugins.gitlab.integration.listeners;
  */
 
 import com.atlassian.sal.api.lifecycle.LifecycleAware;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,7 @@ import java.util.List;
  * Created by Karol Joachimiak on 26.04.2016.
  */
 @Component
+@Log4j
 public class PluginStartupListener implements LifecycleAware {
     @Autowired
     ProcessorManager processorManager;
