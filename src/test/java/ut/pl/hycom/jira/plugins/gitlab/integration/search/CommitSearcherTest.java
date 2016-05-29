@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.search;
+package ut.pl.hycom.jira.plugins.gitlab.integration.search;
 
 /*
  * <p>Copyright (c) 2016, Damian Deska
@@ -23,12 +23,11 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.InjectMocks;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitSearcher;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Damian Deska on 5/17/16.

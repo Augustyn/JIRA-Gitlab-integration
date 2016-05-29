@@ -17,28 +17,27 @@ package pl.hycom.jira.plugins.gitlab.integration.search;
  * limitations under the License.</p>
  */
 
-//import jdk.internal.org.objectweb.asm.tree.analysis.Analyzer;
+
 import lombok.extern.log4j.Log4j;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.Query;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.lucene.search.IndexSearcher;
 
 /**
  * Created by Damian Deska on 5/17/16.
@@ -55,21 +54,22 @@ public class CommitSearcher {
         int hitsPerPage = 10;
         List<Document> foundedCommitsList = new ArrayList<Document>();
 
-        Directory indexDirectory = FSDirectory.open(path);
-        Query query = new QueryParser(fieldName, analyzer).parse(fieldValue);
+        try (Directory indexDirectory = FSDirectory.open(path)) {
 
-        IndexReader reader = DirectoryReader.open(indexDirectory);
-        IndexSearcher searcher = new IndexSearcher(reader);
+            Query query = new QueryParser(fieldName, analyzer).parse(fieldValue);
+            IndexReader reader = DirectoryReader.open(indexDirectory);
+            IndexSearcher searcher = new IndexSearcher(reader);
 
-        TopDocs docs = searcher.search(query, hitsPerPage);
-        ScoreDoc[] hits = docs.scoreDocs;
+            TopDocs docs = searcher.search(query, hitsPerPage);
+            ScoreDoc[] hits = docs.scoreDocs;
 
-        for(int i = 0; i < hits.length; i++) {
-            int docId = hits[i].doc;
-            Document document = searcher.doc(docId);
-            foundedCommitsList.add(document);
+            for (ScoreDoc hit : hits) {
+                int docId = hit.doc;
+                Document document = searcher.doc(docId);
+                foundedCommitsList.add(document);
+            }
         }
-        reader.close();
+
 
         return foundedCommitsList;
     }
@@ -80,24 +80,25 @@ public class CommitSearcher {
         int hitsPerPage = 10;
         Query query = new QueryParser("id", analyzer).parse(idValue);
 
-        IndexReader reader = DirectoryReader.open(indexDirectory);
-        IndexSearcher searcher = new IndexSearcher(reader);
+        try (IndexReader reader = DirectoryReader.open(indexDirectory)) {
 
-        TopDocs docs = searcher.search(query, hitsPerPage);
-        ScoreDoc[] hits = docs.scoreDocs;
+            IndexSearcher searcher = new IndexSearcher(reader);
 
-        for(int i = 0; i < hits.length; i++) {
-            int docId = hits[i].doc;
-            Document document = searcher.doc(docId);
+            TopDocs docs = searcher.search(query, hitsPerPage);
+            ScoreDoc[] hits = docs.scoreDocs;
 
-            if(idValue.equals(document.get("id"))) {
-                reader.close();
-                return true;
+            for (ScoreDoc hit : hits) {
+                int docId = hit.doc;
+                Document document = searcher.doc(docId);
+
+                if (idValue.equals(document.get("id"))) {
+                    reader.close();
+                    return true;
+                }
             }
         }
-        reader.close();
-        return false;
 
+        return false;
 
 
     }

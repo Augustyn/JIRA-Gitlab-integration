@@ -18,10 +18,6 @@ package pl.hycom.jira.plugins.gitlab.integration.search;
  */
 
 import lombok.extern.log4j.Log4j;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -31,9 +27,11 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by Damian Deska on 25.04.2016.
@@ -42,16 +40,12 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 @Log4j
 public class CommitIndexer {
 
-    @Autowired
-    private IndexWriter indexWriter;
-
     public CommitIndexer() {
 
     }
 
     private Document getDocument (IndexWriter indexWriter, Commit commit) throws IOException {
         Document document = new Document();
-
         document.add(new TextField("id", commit.getId(), Field.Store.YES));
         document.add(new TextField("short_id", commit.getShort_id(), Field.Store.YES));
         document.add(new TextField("title", commit.getTitle(), Field.Store.YES));
@@ -59,7 +53,6 @@ public class CommitIndexer {
         document.add(new TextField("author_email", commit.getAuthor_email(), Field.Store.YES));
         document.add(new TextField("created_at", commit.getCreated_at(), Field.Store.YES));
         document.add(new TextField("message", commit.getMessage(), Field.Store.YES));
-
 
         return document;
     }
@@ -70,8 +63,7 @@ public class CommitIndexer {
         IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
         Path path = Paths.get("lucynatesty");
         Directory indexDirectory = FSDirectory.open(path);
-        indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
-
+        IndexWriter indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
         Document document = getDocument(indexWriter, commit);
         indexWriter.addDocument(document);
         indexWriter.close();

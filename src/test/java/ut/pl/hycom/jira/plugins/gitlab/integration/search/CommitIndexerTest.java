@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.search;
+package ut.pl.hycom.jira.plugins.gitlab.integration.search;
 
 /*
  * <p>Copyright (c) 2016, Damian Deska
