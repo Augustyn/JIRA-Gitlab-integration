@@ -2,7 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:atlassian-scanner="http://www.atlassian.com/schema/atlassian-scanner"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:osgi="http://www.springframework.org/schema/osgi"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -23,7 +22,8 @@
 
     <atlassian-scanner:scan-indexes/>
 
+    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.PluginStartupListener"
                   interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="pluginStartupListener"/>
-
+    <osgi:reference id="indexPathManager" interface="com.atlassian.jira.config.util.IndexPathManager"  />
 </beans>

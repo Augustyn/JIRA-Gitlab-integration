@@ -1,7 +1,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
 /*
- * <p>Copyright (c) 2016, Damian Deska
+ * <p>Copyright (c) 2016, Damian Deska & Kamil Rogowski
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +18,6 @@ package pl.hycom.jira.plugins.gitlab.integration.search;
  */
 
 import lombok.extern.log4j.Log4j;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -31,27 +27,26 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * Created by Damian Deska on 25.04.2016.
  */
 
 @Log4j
+@Service
 public class CommitIndexer {
 
     @Autowired
-    private IndexWriter indexWriter;
+    private LucenePathSearcher lucenePathSearcher;
 
-    public CommitIndexer() {
-
-    }
-
-    private Document getDocument (IndexWriter indexWriter, Commit commit) throws IOException {
+    private Document getDocument(IndexWriter indexWriter, Commit commit) throws IOException {
         Document document = new Document();
-
         document.add(new TextField("id", commit.getId(), Field.Store.YES));
         document.add(new TextField("short_id", commit.getShort_id(), Field.Store.YES));
         document.add(new TextField("title", commit.getTitle(), Field.Store.YES));
@@ -60,7 +55,6 @@ public class CommitIndexer {
         document.add(new TextField("created_at", commit.getCreated_at(), Field.Store.YES));
         document.add(new TextField("message", commit.getMessage(), Field.Store.YES));
 
-
         return document;
     }
 
@@ -68,13 +62,15 @@ public class CommitIndexer {
     public void indexFile(Commit commit) throws IOException {
         Analyzer analyzer = new StandardAnalyzer();
         IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
-        Path path = Paths.get("lucynatesty");
-        Directory indexDirectory = FSDirectory.open(path);
-        indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
+        Path path = lucenePathSearcher.getIndexPath();
 
+        Directory indexDirectory = FSDirectory.open(path);
+        IndexWriter indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
         Document document = getDocument(indexWriter, commit);
         indexWriter.addDocument(document);
         indexWriter.close();
 
     }
+
+
 }

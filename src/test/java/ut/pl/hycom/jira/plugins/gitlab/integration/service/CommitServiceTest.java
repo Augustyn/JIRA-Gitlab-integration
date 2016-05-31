@@ -41,20 +41,22 @@ public class CommitServiceTest {
 
     @InjectMocks
     private CommitRepository commitService;
+    private String urlMock = "https://gitlab.com/api/v3/projects/1063546/repository/commits";
+    private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
     @Mock
     private ICommitDao dao;
 
     @Test
     public void testGetNewCommits() throws Exception {
         int pageSize = 3;
-        List<Commit> commits = commitService.getNewCommits(pageSize, 3);
+        List<Commit> commits = commitService.getNewCommits(urlMock, privateTokenMock, pageSize, 3);
         assertThat("Commits size should be as ", commits.size(), is(equalTo(pageSize)));
     }
 
     @Test
     public void testGetOneCommit() throws Exception {
         String id = "404dd04e1d6279f76db51f64c80edf6c2bd96bf2";
-        Commit commit = commitService.getOneCommit("master");
+        Commit commit = commitService.getOneCommit(urlMock, privateTokenMock, "master");
         assertThat("Commit id's should be the same: ", commit.getId(), is(equalTo(id)));
     }
 }
