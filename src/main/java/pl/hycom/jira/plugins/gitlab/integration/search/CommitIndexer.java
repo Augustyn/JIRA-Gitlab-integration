@@ -27,24 +27,25 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Created by Damian Deska on 25.04.2016.
  */
 
 @Log4j
+@Service
 public class CommitIndexer {
 
-    public CommitIndexer() {
+    @Autowired
+    private LucenePathSearcher lucenePathSearcher;
 
-    }
-
-    private Document getDocument (IndexWriter indexWriter, Commit commit) throws IOException {
+    private Document getDocument(IndexWriter indexWriter, Commit commit) throws IOException {
         Document document = new Document();
         document.add(new TextField("id", commit.getId(), Field.Store.YES));
         document.add(new TextField("short_id", commit.getShort_id(), Field.Store.YES));
@@ -61,7 +62,8 @@ public class CommitIndexer {
     public void indexFile(Commit commit) throws IOException {
         Analyzer analyzer = new StandardAnalyzer();
         IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
-        Path path = Paths.get("lucynatesty");
+        Path path = lucenePathSearcher.getIndexPath();
+
         Directory indexDirectory = FSDirectory.open(path);
         IndexWriter indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
         Document document = getDocument(indexWriter, commit);
@@ -69,4 +71,6 @@ public class CommitIndexer {
         indexWriter.close();
 
     }
+
+
 }

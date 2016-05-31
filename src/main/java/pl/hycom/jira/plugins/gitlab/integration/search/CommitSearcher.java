@@ -32,10 +32,11 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,16 +45,20 @@ import java.util.List;
  */
 
 @Log4j
+@Service
 public class CommitSearcher {
 
     Analyzer analyzer = new StandardAnalyzer();
-    Path path = Paths.get("lucynatesty");
+
+
+    @Autowired
+    private LucenePathSearcher lucenePathSearcher;
 
     public List<Document> searchCommits(String fieldName, String fieldValue) throws ParseException, IOException {
 
         int hitsPerPage = 10;
         List<Document> foundedCommitsList = new ArrayList<Document>();
-
+        Path path = lucenePathSearcher.getIndexPath();
         try (Directory indexDirectory = FSDirectory.open(path)) {
 
             Query query = new QueryParser(fieldName, analyzer).parse(fieldValue);
@@ -75,7 +80,7 @@ public class CommitSearcher {
     }
 
     public boolean checkIfCommitIsIndexed(String idValue) throws ParseException, IOException {
-
+        Path path = lucenePathSearcher.getIndexPath();
         Directory indexDirectory = FSDirectory.open(path);
         int hitsPerPage = 10;
         Query query = new QueryParser("id", analyzer).parse(idValue);

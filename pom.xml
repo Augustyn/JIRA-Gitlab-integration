@@ -24,6 +24,9 @@
     <artifactId>gitlab-integration</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>jira-gitlab-plugin</name>
+    <organization>
+        <name>Lodz University of Technology</name>
+    </organization>
     <description>This plugin allows integration of GitLab inside JIRA issues</description>
     <developers>
         <developer>
