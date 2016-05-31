@@ -23,6 +23,7 @@
     <groupId>pl.hycom.jira.plugins</groupId>
     <artifactId>gitlab-integration</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <packaging>atlassian-plugin</packaging>
     <name>jira-gitlab-plugin</name>
     <description>This plugin allows integration of GitLab inside JIRA issues</description>
     <developers>
@@ -351,8 +352,7 @@
                         <Import-Package>
                                 pl.hycom.jira.plugins.gitlab.integration;version="0.0.0";resolution:="optional"
                             org.springframework.osgi.*;resolution:="optional",
-                            org.eclipse.gemini.blueprint.*;resolution:="optional",
-                            *
+                            org.eclipse.gemini.blueprint.*;resolution:="optional"
                         </Import-Package>
 
                         <!-- Ensure plugin is spring powered -->
