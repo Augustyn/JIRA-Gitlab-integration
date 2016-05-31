@@ -223,6 +223,7 @@
             <groupId>com.atlassian.jira.tests</groupId>
             <artifactId>jira-testkit-client</artifactId>
             <version>${testkit.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.atlassian.plugins.rest</groupId>
@@ -340,24 +341,7 @@
 
                     <!-- See here for an explanation of default instructions: -->
                     <!-- https://developer.atlassian.com/docs/advanced-topics/configuration-of-instructions-in-atlassian-plugins -->
-                    <instructions>
-                        <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
 
-                        <!-- Add package to export here -->
-                        <Export-Package>
-                            com.jira-gitlab-integration.plugin.api,
-                        </Export-Package>
-
-                        <!-- Add package import here -->
-                        <Import-Package>
-                                pl.hycom.jira.plugins.gitlab.integration;version="0.0.0";resolution:="optional"
-                            org.springframework.osgi.*;resolution:="optional",
-                            org.eclipse.gemini.blueprint.*;resolution:="optional"
-                        </Import-Package>
-
-                        <!-- Ensure plugin is spring powered -->
-                        <Spring-Context>*</Spring-Context>
-                    </instructions>
                 </configuration>
             </plugin>
             <plugin>
@@ -366,7 +350,7 @@
                 <version>2.6</version>
                 <configuration>
                     <archive>
-                        <index>true</index>
+                        <index>false</index>
                         <manifest>
                             <addClasspath>true</addClasspath>
                         </manifest>
