@@ -1,7 +1,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
 /*
- * <p>Copyright (c) 2016, Damian Deska
+ * <p>Copyright (c) 2016, Damian Deska & Kamil Rogowski
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
