@@ -3,29 +3,19 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:atlassian-scanner="http://www.atlassian.com/schema/atlassian-scanner"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:osgi="http://www.springframework.org/schema/osgi"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
         http://www.atlassian.com/schema/atlassian-scanner
-        http://www.atlassian.com/schema/atlassian-scanner/atlassian-scanner.xsd
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/osgi
-       http://www.springframework.org/schema/osgi/spring-osgi.xsd
-        "
+        http://www.atlassian.com/schema/atlassian-scanner/atlassian-scanner.xsd"
        default-autowire="autodetect">
 
-
-    <context:annotation-config/>
-    <context:component-scan base-package="pl.hycom.jira.plugins.gitlab.integration"/>
-
-    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     <atlassian-scanner:scan-indexes/>
     <context:annotation-config/>
     <context:component-scan base-package="pl.hycom.jira.plugins.gitlab.integration"/>
 
+    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.PluginStartupListener"
                   interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="pluginStartupListener"/>
-
+    <osgi:reference id="indexPathManager" interface="com.atlassian.jira.config.util.IndexPathManager"  />
 </beans>
