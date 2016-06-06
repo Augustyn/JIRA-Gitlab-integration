@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Component
 @Log4j
-public class PluginStartupListener implements LifecycleAware {
+public class ProcessorsConfigurer implements LifecycleAware {
     @Autowired
     ProcessorManager processorManager;
 
