@@ -1,76 +1,61 @@
+/*
+ * <p>Copyright (c) 2016, Authors
+ * Project:  gitlab-integration.</p>
+ *
+ * <p>Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at</p>
+ *
+ * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+ *
+ * <p>Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.</p>
+ */
+
 package pl.hycom.jira.plugins.gitlab.integration.controller;
-
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-import com.atlassian.plugin.webresource.impl.config.Config;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
+import pl.hycom.jira.plugins.gitlab.integration.rest.ErrorCollection;
+import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
 
-/**
- * A sample Action class.
- *
- * Webwork has an ActionSupport class that includes some commonly
- * encountered methods such as:
- *  doDefault, doValidation, doExecute,
- *  getErrorMessages, getErrors, getHasErrorMessages, getHasErrors,
- *  invalidInput, getRedirect
- * JIRA extends that class with JiraActionSupport and then JiraWebActionSupport.
- *
- * See the webwork-jira jar file shipped with JIRA and
- * https://svn.atlassian.com/svn/public/atlassian/vendor/webwork-1.4/trunk/src/main/webwork/action/ActionSupport.java
- *
- * Tip: many actions in JIRA extend subclasses of JiraWebActionSupport so be
- * careful about just copying them with reading their source.
- */
+
 public class JiraSectionAction extends JiraWebActionSupport {
 
-    // There is already a log variable in JiraActionSupport, so there's
-    // no need to define one here as well. To see log messages for this
-    // class, use the fully-qualified class name in log4j.properties,
-    // e.g. com.consultingtoolsmiths.jira.samples.webwork.ActionAlpha
 
-    /**
-     * Nothing is needed in this constructor, but many different
-     * JIRA components can be accessed using dependency injection
-     *  with pico containers. See
-     * http://confluence.atlassian.com/display/JIRA/Differences+between+Plugins1+and+Plugins2#DifferencesbetweenPlugins1andPlugins2-DependencyInjection
-     */
+    private Validator validator;
+    private String clientId = "clientId default";
+    private String clientSecret = "clientSecret default";
+    private String gitlabLink = "gitlabLink default";
+    private String projectId = "projectId default";
+
+
     public JiraSectionAction() {
     }
 
-    /**
-     * Validate the parameters in the
-     * javax.servlet.http.HttpServletRequest request. The HTML form
-     * may or may not have been submitted yet since doValidation() is
-     * always called when this Action's .jspa URL is invoked.
-     *
-     * If an error message is set and no input view exists,
-     * then doExecute is not called and the view element named "error" in
-     * atlassian-plugin.xml is used.
-     *
-     * If an error message is set and an input view does exist, then
-     * the input view is used instead of the error view.
-     *
-     * The URL displayed in the browser doesn't change for an error,
-     * just the view.
-     *
-     * No exceptions are thrown, instead errors and error messages are set.
-     */
+    public JiraSectionAction(String client_id, String client_secret, String gitlablink){
+        this.clientId = client_id;
+        this.clientSecret = client_secret;
+        this.gitlabLink = gitlablink;
+        this.projectId = projectId;
+    }
+
+
     protected void doValidation() {
-        log.debug("Entering doValidation");
+        log.warn("Entering doValidation");
         for (Enumeration e =   getHttpRequest().getParameterNames(); e.hasMoreElements() ;) {
             String n = (String)e.nextElement();
             String[] vals =  getHttpRequest().getParameterValues(n);
             log.debug("name " + n + ": " + vals[0]);
         }
 
-        // The underlying variable is set automatically if it is
-        // present in the request parameters. This is true for both
-        // form submission and HTTP GET requests.
         String sClientId = getClientId();
         String sClientSecret = getClientSecret();
         String sGitlabLink = getGitlabLink();
@@ -93,20 +78,11 @@ public class JiraSectionAction extends JiraWebActionSupport {
             return;
         }
 
-        // Trigger this artificial error case by using the string
-        // "bob" in the HTML input box or in the URL
         if (sClientId.indexOf("bob") != -1) {
             addErrorMessage("As expected, the text contained the string \"bob\"");
             log.debug("An error message has been set");
 
-            // From http://www.opensymphony.com/webwork_old/build/result/web/docs/api/webwork/action/ActionSupport.html
-            // addError() is used to attach an error message to a
-            // particular form field.  addErrorMessage() is used to add an
-            // error message to this action.
-            //
-            //addError("myfirstparameter", "As expected, the text contained the string \"bob\"");
 
-            //log.debug("An error has also been set");
         }
 
         if (sClientSecret.indexOf("bob") != -1) {
@@ -119,8 +95,6 @@ public class JiraSectionAction extends JiraWebActionSupport {
             log.debug("An error message has been set");
         }
 
-
-        // invalidInput() checks for error messages, and errors too.
         if (invalidInput()) {
             for (Iterator it = getErrorMessages().iterator(); it.hasNext();) {
                 String msg = (String)it.next();
@@ -132,89 +106,56 @@ public class JiraSectionAction extends JiraWebActionSupport {
                 log.debug("Error during validation: field=" + entry.getKey() + ", error=" + entry.getValue());
             }
         }
+
     }
 
-    /**
-     * This method is always called when this Action's .jspa URL is
-     * invoked if there were no errors in doValidation().
-     */
     protected String doExecute() throws Exception {
-        log.debug("Entering doExecute");
+        log.fatal("DEBUG: Entering doExecute");
         for (Enumeration e =   getHttpRequest().getParameterNames(); e.hasMoreElements() ;) {
             String n = (String)e.nextElement();
             String[] vals =  getHttpRequest().getParameterValues(n);
-            log.debug("name " + n + ": " + vals[0]);
+            log.warn("name " + n + ": " + vals[0]);
         }
-
-        // Test what happens if this method throws an exception.
-        // Answer: you get the exception message shown in the Standard JIRA
-        // System Error page
         if (false) {
             throw new Exception("doExecute raised this exception for some reason");
         }
         return SUCCESS;
     }
 
-    /**
-     * Set up default values, if any. If you don't have default
-     * values, this is not needed.
-     *
-     * If you want to have default values in your form's fields when it
-     * is loaded, then first call this method (or one with some other
-     * such name as doInit) and set the local variables. Then return
-     * "input" to use the input form view, and in the form use
-     * ${myfirstparameter} to call getMyfirstparameter() to load the
-     * local variables.
-     */
+
     public String doDefault() throws Exception {
         log.debug("Entering doDefault");
-
-        // If any of these parameter names match public set methods for local
-        // variables, then the local variable will have been set before this
-        // method is entered.
         for (Enumeration e =   getHttpRequest().getParameterNames(); e.hasMoreElements() ;) {
             String n = (String)e.nextElement();
             String[] vals =  getHttpRequest().getParameterValues(n);
             log.debug("Parameter " + n + "=" + vals[0]);
         }
+        Map<FormField, String> paramMap = new HashMap<>();
+
         String sClientId = getClientId();
         String sClientSecret = getClientSecret();
         String sGitlabLink = getGitlabLink();
         String sProjectId = getProjectId();
-        // You could also set a local variable to have a different value
-        // every time the Action is invoked here, e.g. a timestamp.
+        paramMap.put(FormField.CLIENTID, sClientId);
+        paramMap.put(FormField.CLIENTSECRET, sClientSecret);
+        paramMap.put(FormField.GITLABLINK, sGitlabLink);
+        paramMap.put(FormField.PROJECTID, sProjectId);
 
-        // This should be "input". If no input view exists, that's an error.
-        ConfigManagerDaoImpl myConfManager = new ConfigManagerDaoImpl();
-        myConfManager.updateProjectConfig(sProjectId, sGitlabLink, sClientSecret, sClientId);
-        String result = super.doDefault();
+        ErrorCollection errorCollection = validator.validate(paramMap);
+        if (errorCollection.isEmpty()){
+            ConfigManagerDaoImpl myConfManager = new ConfigManagerDaoImpl();
+            myConfManager.updateProjectConfig(sProjectId, sGitlabLink, sClientSecret, sClientId);
+            String result = super.doDefault();
 
 
-        log.debug("Exiting doDefault with a result of: " + result);
-        return result;
+            log.debug("Exiting doDefault with a result of: " + result);
+            return result;
+        }else{
+            throw new Exception("doDefault raised this exception due to failed validation");
+        }
+
     }
 
-    //
-    // Start of local variables and their get and set methods
-    //
-    // Note: booleans should use isVariableName() not getVariableName()
-    //
-
-    /**
-     * An example of a local variable that is set from HTTP request parameters.
-     */
-
-    private String clientId = "clientId default";
-    private String clientSecret = "clientSecret default";
-    private String gitlabLink = "gitlabLink default";
-    private String projectId = "projectId default";
-
-    /**
-     * This method is automatically discovered and called by JSP and Webwork
-     * if the name matches the id of a parameter passed in an HTML form.
-     * The class of the parameter (String) has to match, and the
-     * method has to be public or it is silently ignored.
-     */
 
 
     public void setClientId(String value) {
@@ -237,11 +178,6 @@ public class JiraSectionAction extends JiraWebActionSupport {
         log.debug("Setting projectId to: " + value);
         this.projectId = value;
     }
-    /**
-     * This is how the local variable is always accessed, since only this
-     * action knows that its name isn't really "myfirstparameter".
-     */
-
 
     public String getClientId() {
         log.debug("Getting clientId");
@@ -262,15 +198,6 @@ public class JiraSectionAction extends JiraWebActionSupport {
         log.debug("Getting projectId");
         return projectId;
     }
-
-
-    public JiraSectionAction(String client_id, String client_secret, String gitlablink){
-        this.clientId = client_id;
-        this.clientSecret = client_secret;
-        this.gitlabLink = gitlablink;
-        this.projectId = projectId;
-    }
-
 }
 
 
