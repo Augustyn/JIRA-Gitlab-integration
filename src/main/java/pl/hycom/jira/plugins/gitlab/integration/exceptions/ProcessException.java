@@ -17,7 +17,7 @@ package pl.hycom.jira.plugins.gitlab.integration.exceptions;
  */
 /**
  * Created by Karol Joachimiak on 10.05.2016.
- *
+ * This exception is meant to break operation of processor without processing remaining processors.
  */
 public class ProcessException extends Exception {
 
