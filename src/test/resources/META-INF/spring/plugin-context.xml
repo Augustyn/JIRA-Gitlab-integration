@@ -18,7 +18,9 @@
     <context:annotation-config/>
     <context:component-scan base-package="it.pl.hycom.jira.plugins.gitlab.integration"/>
 
-    <osgi:reference id="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" />
+    <!--
+    <osgi:reference id="configManagerDao" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" />
+    -->
 
 
     <atlassian-scanner:scan-indexes/>
