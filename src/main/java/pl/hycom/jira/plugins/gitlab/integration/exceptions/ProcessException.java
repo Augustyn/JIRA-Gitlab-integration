@@ -16,7 +16,8 @@ package pl.hycom.jira.plugins.gitlab.integration.exceptions;
  * limitations under the License.</p>
  */
 /**
- * Created by Thorgal on 10.05.2016.
+ * Created by Karol Joachimiak on 10.05.2016.
+ *
  */
 public class ProcessException extends Exception {
 

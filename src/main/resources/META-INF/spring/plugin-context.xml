@@ -25,7 +25,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="pl.hycom.jira.plugins.gitlab.integration"/>
 
-    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.PluginStartupListener"
-                  interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="pluginStartupListener"/>
+    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.ProcessorsConfigurer"
+                  interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="processorsConfigurer"/>
 
 </beans>
