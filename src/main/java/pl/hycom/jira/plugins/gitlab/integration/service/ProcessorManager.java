@@ -51,7 +51,7 @@ public class ProcessorManager {
                 try {
                     interf.execute(commitInfo);
                 } catch (ProcessException e) {
-                    log.error("Processor throws exception but it was ignored" +e);
+                    log.error("Processor throws exception but it was ignored: " + e.getMessage());
                 }
             }
         }
