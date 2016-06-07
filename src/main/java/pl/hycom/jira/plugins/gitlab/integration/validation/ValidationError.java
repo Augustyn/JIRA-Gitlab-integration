@@ -16,26 +16,21 @@
  */
 
 
-package pl.hycom.jira.plugins.gitlab.integration.rest;
+package pl.hycom.jira.plugins.gitlab.integration.validation;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Represents an error in configuration of specific field
  */
-@XmlRootElement
+
 public class ValidationError {
 
-    @XmlElement
     private String field;
 
-    @XmlElement
     private String error;
 
-    @XmlElement
     private Collection<String> params = new ArrayList<>();
 
     /**

@@ -15,9 +15,11 @@
  * limitations under the License.</p>
  */
 
-package pl.hycom.jira.plugins.gitlab.integration.rest;
+package pl.hycom.jira.plugins.gitlab.integration.validation;
 
 
+
+import pl.hycom.jira.plugins.gitlab.integration.validation.ValidationError;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
