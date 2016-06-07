@@ -48,7 +48,8 @@ import java.util.List;
 @Service
 public class CommitSearcher {
 
-    Analyzer analyzer = new StandardAnalyzer();
+    private Analyzer analyzer = new StandardAnalyzer();
+    public int hitsPerPage = 10;
 
 
     @Autowired
@@ -56,7 +57,6 @@ public class CommitSearcher {
 
     public List<Document> searchCommits(String fieldName, String fieldValue) throws ParseException, IOException {
 
-        int hitsPerPage = 10;
         List<Document> foundedCommitsList = new ArrayList<Document>();
         Path path = lucenePathSearcher.getIndexPath();
         try (Directory indexDirectory = FSDirectory.open(path)) {
@@ -82,7 +82,6 @@ public class CommitSearcher {
     public boolean checkIfCommitIsIndexed(String idValue) throws ParseException, IOException {
         Path path = lucenePathSearcher.getIndexPath();
         Directory indexDirectory = FSDirectory.open(path);
-        int hitsPerPage = 10;
         Query query = new QueryParser("id", analyzer).parse(idValue);
 
         try (IndexReader reader = DirectoryReader.open(indexDirectory)) {
