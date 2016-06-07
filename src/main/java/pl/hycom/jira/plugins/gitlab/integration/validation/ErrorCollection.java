@@ -19,27 +19,21 @@ package pl.hycom.jira.plugins.gitlab.integration.validation;
 
 
 
-import pl.hycom.jira.plugins.gitlab.integration.validation.ValidationError;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 
-@XmlRootElement
 public class ErrorCollection {
 
     /**
      * Generic error messages
      */
-    @XmlElement
     private Collection<String> errorMessages = new ArrayList<String>();
 
     /**
      * Errors specific to a certain field.
      */
-    @XmlElement
     private Collection<ValidationError> errors = new ArrayList<ValidationError>();
 
     public void addErrorMessage(String message) {

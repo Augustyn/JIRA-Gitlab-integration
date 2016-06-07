@@ -19,7 +19,7 @@ package pl.hycom.jira.plugins.gitlab.integration.controller;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
-import pl.hycom.jira.plugins.gitlab.integration.rest.ErrorCollection;
+import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
 
 import java.util.*;
@@ -29,6 +29,11 @@ import java.util.*;
 
 public class JiraSectionAction extends JiraWebActionSupport {
 
+
+    private static final String ERROR_INVALID_CLIENTID = "jirasection.action.error.invalid.cliendid";
+    private static final String ERROR_INVALID_CLIENTSECRET = "jirasection.action.error.invalid.cliendsecret";
+    private static final String ERROR_INVALID_PROJECTID = "jirasection.action.error.invalid.projectid";
+    private static final String ERROR_INVALID_GITLABLINK = "jirasection.action.error.invalid.gitlablink";
 
     private Validator validator;
     private String clientId = "clientId default";
@@ -125,10 +130,13 @@ public class JiraSectionAction extends JiraWebActionSupport {
 
     public String doDefault() throws Exception {
         log.debug("Entering doDefault");
+
+
         for (Enumeration e =   getHttpRequest().getParameterNames(); e.hasMoreElements() ;) {
             String n = (String)e.nextElement();
             String[] vals =  getHttpRequest().getParameterValues(n);
             log.debug("Parameter " + n + "=" + vals[0]);
+
         }
         Map<FormField, String> paramMap = new HashMap<>();
 
@@ -151,8 +159,13 @@ public class JiraSectionAction extends JiraWebActionSupport {
             log.debug("Exiting doDefault with a result of: " + result);
             return result;
         }else{
-            throw new Exception("doDefault raised this exception due to failed validation");
+            getJiraServiceContext().getErrorCollection().addError(FormField.CLIENTID.getFieldName(), getJiraServiceContext().getI18nBean().getText(ERROR_INVALID_CLIENTID));
+            getJiraServiceContext().getErrorCollection().addError(FormField.CLIENTSECRET.getFieldName(), getJiraServiceContext().getI18nBean().getText(ERROR_INVALID_CLIENTSECRET));
+            getJiraServiceContext().getErrorCollection().addError(FormField.PROJECTID.getFieldName(), getJiraServiceContext().getI18nBean().getText(ERROR_INVALID_PROJECTID));
+            getJiraServiceContext().getErrorCollection().addError(FormField.GITLABLINK.getFieldName(), getJiraServiceContext().getI18nBean().getText(ERROR_INVALID_GITLABLINK));
+            return ERROR;
         }
+
 
     }
 

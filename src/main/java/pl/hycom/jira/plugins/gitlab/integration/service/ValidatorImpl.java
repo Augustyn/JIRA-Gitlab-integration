@@ -21,8 +21,7 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
 
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.rest.ErrorCollection;
-import pl.hycom.jira.plugins.gitlab.integration.rest.ValidationError;
+import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,25 +44,21 @@ public class ValidatorImpl implements Validator {
 
         for (Map.Entry<FormField, String> entry : paramMap.entrySet()) {
             entry.getKey().validate(errorCollection, entry.getValue());
-            if(FormField.CLIENTID.equals(entry.getKey()) && !FormField.clientIdPattern.matcher(entry.getValue()).matches()){
-                log.error("ClientId uses wrong characters. Use aA-zZ, 0-9.");
-                errorCollection.addValidationError(new ValidationError(FormField.CLIENTID.getFieldName(),
-                        "jirasectionaction.errors.ClientIdError"));
-            }
-            if(FormField.CLIENTSECRET.equals(entry.getKey()) && !FormField.clientSecretPattern.matcher(entry.getValue()).matches()){
-                log.error("ClientSecret uses wrong characters. Use aA-zZ, 0-9.");
-                errorCollection.addValidationError(new ValidationError(FormField.CLIENTSECRET.getFieldName(),
-                        "jirasectionaction.errors.ClientSecretError"));
-            }
-            if(FormField.PROJECTID.equals(entry.getKey()) && !FormField.projectIdPattern.matcher(entry.getValue()).matches()){
-                log.error("ProjectId uses wrong characters. Use aA-zZ, 0-9.");
-                errorCollection.addValidationError(new ValidationError(FormField.PROJECTID.getFieldName(),
-                        "jirasectionaction.errors.ProjectIdError"));
-            }
-            if(FormField.GITLABLINK.equals(entry.getKey()) && !FormField.gitlabLinkPattern.matcher(entry.getValue()).matches()){
-                log.error("GitlabLink uses wrong characters.");
-                errorCollection.addValidationError(new ValidationError(FormField.GITLABLINK.getFieldName(),
-                        "jirasectionaction.errors.GitlabLinkError"));
+            switch(entry.getKey()) {
+                case CLIENTID:
+                    FormField.CLIENTID.validate(errorCollection, entry.getValue());
+                    break;
+                case CLIENTSECRET:
+                    FormField.CLIENTSECRET.validate(errorCollection, entry.getValue());
+                    break;
+                case PROJECTID:
+                    FormField.PROJECTID.validate(errorCollection, entry.getValue());
+                    break;
+                case GITLABLINK:
+                    FormField.GITLABLINK.validate(errorCollection, entry.getValue());
+                    break;
+                default:
+                    break;
             }
         }
         return errorCollection;

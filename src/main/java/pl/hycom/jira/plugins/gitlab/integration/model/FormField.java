@@ -18,8 +18,8 @@
 package pl.hycom.jira.plugins.gitlab.integration.model;
 
 
-import pl.hycom.jira.plugins.gitlab.integration.rest.ErrorCollection;
-import pl.hycom.jira.plugins.gitlab.integration.rest.ValidationError;
+import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
+import pl.hycom.jira.plugins.gitlab.integration.validation.ValidationError;
 import java.util.regex.Pattern;
 
 public enum FormField {
@@ -74,10 +74,10 @@ public enum FormField {
 
     private final static String ERROR_PREFIX = "jirasectionaction.errors.";
     private final static String EMPTY_FIELD = "emptyField";
-    public static final Pattern projectIdPattern = Pattern.compile("([aA-zZ]+[0-9]+)*", Pattern.CASE_INSENSITIVE);
+    public static final Pattern projectIdPattern = Pattern.compile("([0-9]+)*", Pattern.CASE_INSENSITIVE);
     public static final Pattern clientIdPattern = Pattern.compile("([aA-zZ]+[0-9]+)*", Pattern.CASE_INSENSITIVE);
     public static final Pattern clientSecretPattern = Pattern.compile("([aA-zZ]+[0-9]+)*", Pattern.CASE_INSENSITIVE);
-    public static final Pattern gitlabLinkPattern = Pattern.compile("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", Pattern.CASE_INSENSITIVE);
+    public static final Pattern gitlabLinkPattern = Pattern.compile("^(https?|ssh)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", Pattern.CASE_INSENSITIVE);
 
 
     private final String fieldName;
