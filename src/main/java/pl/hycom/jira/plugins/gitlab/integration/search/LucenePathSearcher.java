@@ -44,32 +44,25 @@ public class LucenePathSearcher {
 
     @PostConstruct
     public void init() {
-        if(getIndexPath() == null){
-            throw new NullPointerException("Cannot start plugin, indexPath is NULL");
-        } else {
-            Path path = Paths.get(indexPathManager.getPluginIndexRootPath(), File.separator, COMMIT_INDEXER_DIRECTORY);
-            if(path == null) {
-                throw new InvalidPathException(getIndexPathStr(), "Index path doesn't exists");
-            }
-            luceneIndexPath = path;
+        if(indexPathManager.getIndexRootPath() == null){
+            throw new NullPointerException("Cannot start plugin, index root path is NULL");
         }
-
-        final boolean ifDirectoryExists = luceneIndexPath.toFile().exists();
-
-        if (!ifDirectoryExists) {
-            final File file = new File(getIndexPathStr());
-            file.mkdir();
+        Path path = Paths.get(indexPathManager.getPluginIndexRootPath(), COMMIT_INDEXER_DIRECTORY);
+        if(path == null) {
+               throw new InvalidPathException(getIndexPathStr(), "Index path doesn't exists");
+        }
+        luceneIndexPath = path;
+        if (!luceneIndexPath.toFile().exists()) {
+            luceneIndexPath.toFile().mkdir();
         }
     }
 
 
     private String getIndexPathStr() {
-
         return luceneIndexPath.toString();
     }
 
     public Path getIndexPath(){
-
         return luceneIndexPath;
     }
 
