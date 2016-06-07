@@ -16,7 +16,9 @@ package pl.hycom.jira.plugins.gitlab.integration.exceptions;
  * limitations under the License.</p>
  */
 /**
- * Created by Thorgal on 10.05.2016.
+ * Created by Karol Joachimiak on 10.05.2016.
+ * This exception is meant to inform that a problem occurred during execution of processor.
+ * But it won't break execution of other processors.
  */
 public class ProcessException extends Exception {
 

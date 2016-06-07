@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Component
 @Log4j
-public class PluginStartupListener implements LifecycleAware {
+public class ProcessorsConfigurer implements LifecycleAware {
     @Autowired
     ProcessorManager processorManager;
 
@@ -44,7 +44,8 @@ public class PluginStartupListener implements LifecycleAware {
     public void onStart() {
 
         List<ProcessorInterface> processorsList = new ArrayList<>();
-
+        log.info("Started searching for processors");
+        long startTime = System.currentTimeMillis();
         String[] beans = context.getBeanNamesForType(ProcessorInterface.class);
         for (String name : Arrays.asList(beans)) {
             Object bean = context.getBean(name);
@@ -55,6 +56,8 @@ public class PluginStartupListener implements LifecycleAware {
         }
 
         processorManager.setProcessorsList(processorsList);
+        log.info("Found "+ processorsList.size() + " in " +
+                (System.currentTimeMillis() - startTime) + " ms.");
     }
 
     @Override
