@@ -1,6 +1,6 @@
-package pl.hycom.jira.plugins.gitlab.integration.service;
+package pl.hycom.jira.plugins.gitlab.integration.exceptions;
 /*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +15,11 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.util.List;
-
 /**
- * Created by Kamil Rogowski on 22.04.2016.
+ * Created by Karol Joachimiak on 10.05.2016.
+ * This exception is meant to inform that a problem occurred during execution of processor.
+ * But it won't break execution of other processors.
  */
-public interface ICommitService {
+public class ProcessException extends Exception {
 
-    List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber);
-    Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum);
 }

@@ -1,6 +1,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
+
 /*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,15 +16,30 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
-import java.util.List;
+import net.java.ao.RawEntity;
+import net.java.ao.schema.AutoIncrement;
+import net.java.ao.schema.NotNull;
+import net.java.ao.schema.PrimaryKey;
 
 /**
- * Created by Kamil Rogowski on 22.04.2016.
+ * Created by vagrant on 5/10/16.
  */
-public interface ICommitDao {
+public interface ConfigEntity extends RawEntity<Integer>
+{
+    @NotNull
+    @AutoIncrement
+    @PrimaryKey("ProjectID")
+    public Integer getProjectID();
 
-    List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber);
-    Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum);
+    public String getProjectName();
+
+    public String getLink();
+    public void setLink(String link);
+
+    public String getSecret();
+    public void setSecret(String secret);
+
+    public String getClientId();
+    public void setClientId(String clientId);
 }

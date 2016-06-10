@@ -1,6 +1,6 @@
-package pl.hycom.jira.plugins.gitlab.integration.service;
+package ut.pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 /*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,14 +17,16 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  */
 
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
- * Created by Kamil Rogowski on 22.04.2016.
+ * Created by Thorgal on 18.04.2016.
  */
-public interface ICommitService {
+public class ProcessorInterfaceImplementationTest implements ProcessorInterface {
+    @Override
+    public void execute(@NotNull Commit commitInfo) {
 
-    List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber);
-    Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum);
+    }
 }

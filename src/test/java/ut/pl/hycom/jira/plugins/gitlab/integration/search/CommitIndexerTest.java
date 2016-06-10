@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.search;
+package ut.pl.hycom.jira.plugins.gitlab.integration.search;
 
 /*
  * <p>Copyright (c) 2016, Damian Deska
@@ -17,27 +17,14 @@ package pl.hycom.jira.plugins.gitlab.integration.search;
  * limitations under the License.</p>
  */
 
-import lombok.extern.log4j.Log4j;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
-import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndexer;
-
-import java.io.IOException;
-import java.util.List;
-
 /**
  * Created by Damian Deska on 5/17/16.
  */
 
-@Log4j
-@RunWith(MockitoJUnitRunner.class)
+
 public class CommitIndexerTest {
 
-    @InjectMocks
+   /* @InjectMocks
     private Commit commit = new Commit();
     private CommitIndexer commitIndexer = new CommitIndexer();
     private CommitRepository commitRepository = new CommitRepository();
@@ -60,5 +47,5 @@ public class CommitIndexerTest {
         log.info(oneCommit.getId());
         commitIndexer.indexFile(oneCommit);
     }
-
+*/
 }
