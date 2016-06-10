@@ -18,6 +18,7 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
 
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -25,6 +26,6 @@ import java.util.List;
  */
 public interface ICommitService {
 
-    List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber);
-    Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum);
+    List<Commit> getNewCommits(Long projectId, int pageNumber) throws SQLException;
+    Commit getOneCommit(Long projectId, String shaSum) throws SQLException;
 }

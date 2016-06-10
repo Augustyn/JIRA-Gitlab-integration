@@ -19,9 +19,12 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -31,18 +34,19 @@ import java.util.List;
 @Log4j
 public class CommitService implements ICommitService {
 
-
     @Autowired
+    private ConfigManagerDaoImpl dao;
     private ICommitDao commitRepository;
 
-    @Override
-    public List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber) {
+    private int perPage;
 
-        return commitRepository.getNewCommits(repositoryUrl, privateToken, perPage, pageNumber);
+    @Override
+    public List<Commit> getNewCommits(Long projectId, int pageNumber) throws SQLException {
+        return commitRepository.getNewCommits(dao.getProjectConfig(projectId.intValue()), perPage, pageNumber);
     }
 
     @Override
-    public Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum) {
-        return commitRepository.getOneCommit(repositoryUrl, privateToken, shaSum);
+    public Commit getOneCommit(Long projectId, String shaSum) throws SQLException {
+        return commitRepository.getOneCommit(dao.getProjectConfig(projectId.intValue()), shaSum);
     }
 }
