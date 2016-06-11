@@ -25,6 +25,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueWorklogChangeProcessor;
 
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class CommitServiceTest {
     private CommitRepository commitService;
     private String urlMock = "https://gitlab.com/api/v3/projects/1063546/repository/commits";
     private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
+    @InjectMocks
+    private IssueWorklogChangeProcessor worklogChangeProcessor;
     @Mock
     private ICommitDao dao;
 
@@ -58,5 +61,15 @@ public class CommitServiceTest {
         String id = "404dd04e1d6279f76db51f64c80edf6c2bd96bf2";
         Commit commit = commitService.getOneCommit(urlMock, privateTokenMock, "master");
         assertThat("Commit id's should be the same: ", commit.getId(), is(equalTo(id)));
+    }
+    @Test
+    public void testGetPattern() throws Exception{
+        Commit commit = commitService.getOneCommit(urlMock, privateTokenMock, "master");
+        commit.setMessage("1y 10w 12d 1h 0m 32s");
+        StringBuilder expectedResult = new StringBuilder();
+        expectedResult.append("1y10w12d1h0m32s");
+        worklogChangeProcessor.execute(commit);
+        assertThat("expectedResult and extracted substring should be equal",worklogChangeProcessor.getExtractedMessage()
+                ,is(equalTo(expectedResult)));
     }
 }
