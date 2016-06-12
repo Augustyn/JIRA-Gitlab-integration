@@ -24,6 +24,7 @@
     <param name="plugin-logo">images/pluginLogo.png</param>
   </plugin-info>
   <!-- add our i18n resource -->
+    <resource type="i18n" name="mypluginprops" location="jira-gitlab-plugin"/>
   <resource type="i18n" name="i18n" location="gittab"/>
   <!-- add our web resources -->
   <web-resource key="gittab-resources" name="gittab Web Resources">
@@ -35,10 +36,36 @@
   </web-resource>
   <issue-tabpanel key="git-tab" name="Git Tab" i18n-name-key="git-tab.name" class="pl.hycom.jira.plugins.gitlab.integration.gitpanel.GitTab">
     <description key="git-tab.description">The Git Tab Plugin</description>
-    <label key="git-tab.label"></label>
+    <label key="git-tab.label"/>
     <order>10</order>
     <resource type="velocity" name="view" location="templates/tabpanels/git-tab.vm"/>
   </issue-tabpanel>
+  <web-section name="JIRA Gitlab plugin" i18n-name-key="configuration-section-for-jira-plugin i18n" key="configuration-section-for-jira-plugin" location="atl.jira.proj.config" weight="110">
+    <description key="i18n-web-section">JIRA Gitlab plugin 2016</description>
+    <label key="configuration-section-for-jira-plugin.name">
+      <param name="param0" value="value"/>
+      <param name="param1" value="key"/>
+    </label>
+    <resource name="development.zip" type="Download" location="https://github.com/Augustyn/JIRA-Gitlab-integration/archive/development.zip"/>
+    <tooltip key="key">
+      <param name="param0" value="Key"/>
+      <param name="param1" value="Name"/>
+    </tooltip>
+  </web-section>
+  <web-item name="Gitlab configuration" i18n-name-key="gitlab-configuration-module.name" key="gitlab-url" section="atl.jira.proj.config/configuration-section-for-jira-plugin" weight="10">
+    <description key="gitlab-configuration.description">Configuration module for JIRA plugin - Gitlab configuration</description>
+    <label key="gitlab-configuration-module.label"/>
+    <link linkId="gitlab-configuration-module-link">/secure/JiraSectionAction!default.jspa</link>
+    </web-item>
+  <webwork1 key="webworkkey" name="Edition and preview of JIRA-Gitlab configuration" class="java.lang.Object">
+    <actions>
+      <action name="pl.hycom.jira.plugins.gitlab.integration.controller.JiraSectionAction" alias="JiraSectionAction" roles-required="admin">
+        <view name="input">/templates/input.vm</view>
+        <view name="success">/templates/success.vm</view>
+        <view name="error">/templates/error.vm</view>
+      </action>
+    </actions>
+  </webwork1>
   <component-import key="ao" name="Active Objects service" interface="com.atlassian.activeobjects.external.ActiveObjects">
     <description>Component to access Active Objects functionality from the plugin</description>
   </component-import>

@@ -221,6 +221,12 @@
             <groupId>hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>1.8.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-api</artifactId>
+            <version>7.1.2</version>
         </dependency>
         <dependency>
             <groupId>com.atlassian.jira.tests</groupId>
