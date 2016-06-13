@@ -41,7 +41,6 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
 
     public ConfigEntity updateProjectConfig(int projectID,String gitlabLink,String gitlabSecret,String gitlabClientId) throws SQLException
     {
-        System.out.println(projectID);
         ConfigEntity projectConfig;
         if( entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?",projectID)) > 0 )
         {
@@ -57,7 +56,6 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
         projectConfig.setClientId(gitlabClientId);
 
         projectConfig.save();
-        System.out.println("entities " + entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?",projectID)));
         return  projectConfig;
     }
 
