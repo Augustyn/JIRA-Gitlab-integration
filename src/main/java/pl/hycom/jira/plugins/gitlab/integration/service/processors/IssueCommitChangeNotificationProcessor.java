@@ -18,12 +18,12 @@ package pl.hycom.jira.plugins.gitlab.integration.service.processors;
  */
 
 import com.atlassian.event.api.EventPublisher;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.event.issue.IssueEvent;
 import com.atlassian.jira.event.type.EventType;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.mock.issue.MockIssue;
 import com.atlassian.jira.user.ApplicationUser;
-//import com.atlassian.jira.user.MockApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import org.springframework.stereotype.Component;
@@ -32,25 +32,22 @@ import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInte
 import java.util.HashMap;
 import java.util.Map;
 
-//import com.atlassian.jira.user.DelegatingApplicationUser;
 @Component
 public class IssueCommitChangeNotificationProcessor implements ProcessorInterface
 {
     @Autowired
     private EventPublisher eventPublisherAccess;
 
-//    private ApplicationUser publishingUser = new MockApplicationUser("GitlabPluginEventPublisherUser");
-    //TODO replace with actual user
+    ApplicationUser publishingUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
 
     @Override
     public void execute(Commit commitInfo)
     {
         Issue currentIssue = new MockIssue(); //TODO retrieve issue from CommitInfo once commitData is implemented
+
+
         Map<String,Object> eventParameters = new HashMap<String,Object>();
-
-
-//        IssueEvent gitCommitEvent = new IssueEvent(currentIssue,eventParameters,publishingUser, EventType.ISSUE_UPDATED_ID);
-
-//        eventPublisherAccess.publish(gitCommitEvent);
+        IssueEvent gitCommitEvent = new IssueEvent(currentIssue,eventParameters,publishingUser, EventType.ISSUE_UPDATED_ID);
+        eventPublisherAccess.publish(gitCommitEvent);
     }
 }
