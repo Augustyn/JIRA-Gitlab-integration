@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Simple implementation of Validator.
  */
-@Component
+
 public class ValidatorImpl implements Validator {
 
     private static final Logger log = LoggerFactory.getLogger(ValidatorImpl.class);
