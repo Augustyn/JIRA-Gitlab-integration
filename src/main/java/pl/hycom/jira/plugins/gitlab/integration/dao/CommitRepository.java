@@ -36,7 +36,7 @@ public class CommitRepository implements ICommitDao {
 
     @Override
     public List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber) {
-        String repositoryUrlWithPageNumber = "{param1}" + "?per_page=" + "{param2}" + "&page=" + "{param3}";
+        String repositoryUrlWithPageNumber = "{param1}?per_page={param2}&page={param3}";
         HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateToken).build());
         ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(repositoryUrlWithPageNumber, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<Commit>>() {
@@ -47,7 +47,7 @@ public class CommitRepository implements ICommitDao {
 
     @Override
     public Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum) {
-        String oneCommitUrl = "{param1}" + "/" + "{param2}";
+        String oneCommitUrl = "{param1}/{param2}";
         HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateToken).build());
         ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(oneCommitUrl, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
