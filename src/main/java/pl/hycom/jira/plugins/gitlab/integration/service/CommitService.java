@@ -17,14 +17,19 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  */
 
 import lombok.extern.log4j.Log4j;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitSearcher;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,12 +42,26 @@ public class CommitService implements ICommitService {
     @Autowired
     private ConfigManagerDaoImpl dao;
     private ICommitDao commitRepository;
+    private CommitSearcher commitSearcher;
 
-    private int perPage;
+    private int perPage = 20;
 
     @Override
-    public List<Commit> getNewCommits(Long projectId, int pageNumber) throws SQLException {
-        return commitRepository.getNewCommits(dao.getProjectConfig(projectId.intValue()), perPage, pageNumber);
+    public List<Commit> getNewCommits(Long projectId) throws SQLException, ParseException, IOException {
+        int pageNumber = 1;
+        List<Commit> commitsList, resultList = new ArrayList<>();
+        commitAlreadyIndexed:
+        do {
+            commitsList = commitRepository.getNewCommits(dao.getProjectConfig(projectId.intValue()), perPage, pageNumber);
+            for(Commit commit : commitsList) {
+                if(commitSearcher.checkIfCommitIsIndexed(commit.getId())) {
+                    break commitAlreadyIndexed;
+                }
+            }
+            pageNumber++;
+            resultList.addAll(commitsList);
+        } while(commitsList.size() != perPage);
+        return resultList;
     }
 
     @Override
