@@ -17,6 +17,7 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.search;
  * limitations under the License.</p>
  */
 
+import lombok.extern.log4j.Log4j;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueAssigneeChangeProcessor;
@@ -24,16 +25,22 @@ import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueAssignee
 /**
  * Created by Damian Deska on 6/14/16.
  */
+@Log4j
 public class IssueAssigneeChangeProcessorTest {
 
     @InjectMocks
-    private IssueAssigneeChangeProcessor issueAssigneeChange;
     private String jiraUrlMock = "http://vagrant:2990";
     private String issueKeyMock = "PIP-1";
+    private String newAssigneeNameMock = "admin";
 
     @Test
     public void checkIssueAssigneeTest() {
-        issueAssigneeChange.changeIssueAssignee(jiraUrlMock, issueKeyMock);
+        try {
+            IssueAssigneeChangeProcessor issueAssigneeChangeProcessor = new IssueAssigneeChangeProcessor();
+            issueAssigneeChangeProcessor.changeIssueAssignee(jiraUrlMock, issueKeyMock, newAssigneeNameMock);
+        } catch (Exception e) {
+
+        }
     }
 
 }
