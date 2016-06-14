@@ -40,7 +40,7 @@ public class IssueWorklogChangeProcessor implements ProcessorInterface {
                 timesList.add(time);
                 extractedMessage+=onlyDigits+onlyChars;
             }
-            log.info("Found time logged: " + extractedMessage);
+            log.info("Found worklog: " + extractedMessage);
 
         }
         return timesList;
