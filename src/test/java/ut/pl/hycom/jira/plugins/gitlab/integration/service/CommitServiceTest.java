@@ -62,14 +62,5 @@ public class CommitServiceTest {
         Commit commit = commitService.getOneCommit(urlMock, privateTokenMock, "master");
         assertThat("Commit id's should be the same: ", commit.getId(), is(equalTo(id)));
     }
-    @Test
-    public void testGetPattern() throws Exception{
-        Commit commit = commitService.getOneCommit(urlMock, privateTokenMock, "master");
-        commit.setMessage("1y 10w 12d 1h 0m 32s");
-        StringBuilder expectedResult = new StringBuilder();
-        expectedResult.append("1y10w12d1h0m32s");
-        worklogChangeProcessor.execute(commit);
-        assertThat("expectedResult and extracted substring should be equal",worklogChangeProcessor.getExtractedMessage()
-                ,is(equalTo(expectedResult)));
-    }
+
 }
