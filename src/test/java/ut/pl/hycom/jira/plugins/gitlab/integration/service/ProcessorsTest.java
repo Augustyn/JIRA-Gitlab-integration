@@ -1,22 +1,16 @@
 package ut.pl.hycom.jira.plugins.gitlab.integration.service;
 
 import lombok.extern.log4j.Log4j;
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.w3c.dom.stylesheets.LinkStyle;
 import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueWorklogChangeProcessor;
 
 import java.util.List;
-import java.util.Scanner;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 
 /**
  * Created by Thorgal on 14.06.2016.
@@ -43,5 +37,13 @@ public class ProcessorsTest {
         }
         Assert.assertEquals(expectedResult ,extractedResult );
     }
-    
+    @Test
+    public void convertTimeToSecondsTest(){
+        Commit commit = commitService.getOneCommit(urlMock, privateTokenMock, "master");
+        commit.setMessage("1y 10w 12d 1h 0m 32s");
+        int expectedValue = 38645358;
+        Assert.assertEquals(expectedValue,
+                worklogChangeProcessor.getTimeConvertedToSeconds(worklogChangeProcessor.getExtractedMsg(commit)));
+    }
+
 }

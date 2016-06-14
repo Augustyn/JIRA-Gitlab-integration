@@ -9,7 +9,6 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +44,38 @@ public class IssueWorklogChangeProcessor implements ProcessorInterface {
         }
         return timesList;
     }
+    public int getTimeConvertedToSeconds(List<Time> timeFromMessageList){
+        int summedTime = 0;
+        for(Time time : timeFromMessageList){
+            switch(time){
+                case YEAR:{
+                    summedTime += time.getFieldValue()*31556926;
+                    break;
+                }
+                case WEEK:{
+                    summedTime+=time.getFieldValue()*604800;
+                    break;
+                }
+                case DAY:{
+                    summedTime+=time.getFieldValue()*86400;
+                    break;
+                }
+                case HOUR:{
+                    summedTime+=time.getFieldValue()*3600;
+                    break;
+                }
+                case MINUTE:{
+                    summedTime+=time.getFieldValue()*60;
+                    break;
+                }
+                case SECOND:{
+                    summedTime+=time.getFieldValue();
+                    break;
+                }
+            }
+        }
+        return summedTime;
+    }
 
     public enum Time {
         YEAR("y"),
@@ -64,7 +95,7 @@ public class IssueWorklogChangeProcessor implements ProcessorInterface {
             return fieldName;
         }
 
-        private Time(String fieldName2) {
+        Time(String fieldName2) {
             fieldName = fieldName2;
         }
 
