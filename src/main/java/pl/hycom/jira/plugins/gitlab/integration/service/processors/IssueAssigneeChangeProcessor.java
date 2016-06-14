@@ -38,25 +38,19 @@ import java.net.URLConnection;
 @Log4j
 public class IssueAssigneeChangeProcessor {
 
-    public void changeIssueAssignee(String jiraUrl, String issueKey) {
-        jiraUrl += "jira/rest/api/2/issue/" + issueKey;
-//        //HttpEntity<?> requestEntity = new HttpEntity<>()
-//        ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(jiraUrl, HttpMethod.PUT,
-//                new ParameterizedTypeReference<Commit>() {
-//                },repositoryUrl,shaSum);
+    public void changeIssueAssignee(String jiraUrl, String issueKey, String newAssigneeName) {
+        jiraUrl += "/jira/rest/api/2/issue/" + issueKey;
+
         try {
-            URI uri = new URI("the server address goes here");
             URL url = new URL(jiraUrl);
-            log.info(url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             Gson gson = new Gson();
-            String x = "{\"user\": \"lololo\"}";
+            String requestBody = "{\"update\": {\"assignee\": [{\"set\": { \"name\": \"" + newAssigneeName + "\" }}]}}";
             conn.setDoOutput(true);
             conn.setRequestMethod("PUT");
             conn.addRequestProperty("Content-Type", "application/json");
             OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-            out.write(gson.toJson(x));
-            log.info(gson.toJson(x));
+            out.write(gson.toJson(requestBody));
             out.close();
         } catch (Exception e) {
 
