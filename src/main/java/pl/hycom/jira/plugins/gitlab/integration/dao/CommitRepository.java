@@ -35,23 +35,23 @@ import java.util.List;
 public class CommitRepository implements ICommitDao {
 
     @Override
-    public List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber) {
-        String repositoryUrlWithPageNumber = "{param1}?per_page={param2}&page={param3}";
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateToken).build());
+    public List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber) {
+        String repositoryUrlWithPageNumber = "{param1}" + "?per_page=" + "{param2}" + "&page=" + "{param3}";
+        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
         ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(repositoryUrlWithPageNumber, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<Commit>>() {
-                }, repositoryUrl, Integer.toString(perPage), Integer.toString(pageNumber));
+                }, configEntity.getLink(), Integer.toString(perPage), Integer.toString(pageNumber));
 
         return response.getBody();
     }
 
     @Override
-    public Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum) {
-        String oneCommitUrl = "{param1}/{param2}";
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateToken).build());
+    public Commit getOneCommit(ConfigEntity configEntity, String shaSum) {
+        String oneCommitUrl = "{param1}" + "/" + "{param2}";
+        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
         ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(oneCommitUrl, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
-                },repositoryUrl,shaSum);
+                },configEntity.getLink(),shaSum);
 
         return response.getBody();
     }
