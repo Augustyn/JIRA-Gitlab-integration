@@ -31,7 +31,9 @@ import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.jsoup.helper.HttpConnection;
@@ -49,6 +51,23 @@ import java.util.List;
  */
 @Log4j
 public class IssueStatusChangeProcessor {
+    //TODO zamiana parametrow z wpisanych na sztywno na pobrane z konfiguracji pluginu
+    HttpClient client = HttpClientBuilder.create().build();
+
+    public void changeIssueStatus() {
+        String id = "41";
+        try {
+            HttpPost request = new HttpPost("http://vagrant:2990/jira/rest/api/2/issue/PIP-1/transitions\"");
+            StringEntity params =new StringEntity("{\"transitions\":{\"id\":\"" + id + "\"}}");
+            request.addHeader("content-type", "application/x-www-form-urlencoded");
+            request.setEntity(params);
+            HttpResponse response = client.execute(request);
+
+            // handle response here...
+        }catch (Exception ex) {
+            // handle exception here
+        }
+    }
 
     public List<String> getPossibleIssueStatuses() throws URISyntaxException, IOException {
 
@@ -59,7 +78,6 @@ public class IssueStatusChangeProcessor {
                 .build();
         HttpGet httpget = new HttpGet(uri);
         httpget.addHeader("Authorization", "Basic YWRtaW46YWRtaW4=");
-        HttpClient client = HttpClientBuilder.create().build();
 
         HttpResponse response = client.execute(httpget);
 
