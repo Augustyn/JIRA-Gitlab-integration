@@ -1,6 +1,5 @@
-package pl.hycom.jira.plugins.gitlab.integration.dao;
 /*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,15 +14,24 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
-import java.util.List;
+
+package pl.hycom.jira.plugins.gitlab.integration.service;
+
+
+import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
+import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
+import java.util.Map;
 
 /**
- * Created by Kamil Rogowski on 22.04.2016.
+ * Contains validation methods for gadget configuration.
  */
-public interface ICommitDao {
+public interface Validator {
 
-    List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber);
-    Commit getOneCommit(ConfigEntity configEntity, String shaSum);
+    ErrorCollection validate(Map<FormField, String> paramMap);
+    boolean checkIfProjectId(String value);
+    boolean checkIfClientId(String value);
+    boolean checkIfClientSecret(String value);
+    boolean checkIfGitlabLink(String value);
+
 }

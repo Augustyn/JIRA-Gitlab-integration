@@ -16,47 +16,56 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * limitations under the License.</p>
  */
 
-
 import lombok.extern.log4j.Log4j;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
-import pl.hycom.jira.plugins.gitlab.integration.listeners.Scheduler;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import com.atlassian.sal.api.scheduling.PluginJob;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitSearcher;
 
-import java.util.Date;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Kamil Rogowski on 22.04.2016.
  */
 @Service
 @Log4j
-public class CommitService implements ICommitService, PluginJob{
-
+public class CommitService implements ICommitService {
 
     @Autowired
+    private ConfigManagerDaoImpl dao;
     private ICommitDao commitRepository;
+    private CommitSearcher commitSearcher;
+
+    private int perPage = 20;
 
     @Override
-    public List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber) {
-
-        return commitRepository.getNewCommits(repositoryUrl, privateToken, perPage, pageNumber);
+    public List<Commit> getNewCommits(Long projectId) throws SQLException, ParseException, IOException {
+        int pageNumber = 1;
+        List<Commit> commitsList, resultList = new ArrayList<>();
+        commitAlreadyIndexed:
+        do {
+            commitsList = commitRepository.getNewCommits(dao.getProjectConfig(projectId.intValue()), perPage, pageNumber);
+            for(Commit commit : commitsList) {
+                if(commitSearcher.checkIfCommitIsIndexed(commit.getId())) {
+                    break commitAlreadyIndexed;
+                }
+            }
+            pageNumber++;
+            resultList.addAll(commitsList);
+        } while(commitsList.size() != perPage);
+        return resultList;
     }
 
     @Override
-    public Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum) {
-        return commitRepository.getOneCommit(repositoryUrl, privateToken, shaSum);
-    }
-
-    @Override
-    public void execute(Map<String, Object> map) {
-        final Scheduler job = (Scheduler) map.get(Scheduler.getKEY());
-        assert job != null;
-        job.setLastRun(new Date());
-        log.debug("Execute recurring issue job");
+    public Commit getOneCommit(Long projectId, String shaSum) throws SQLException {
+        return commitRepository.getOneCommit(dao.getProjectConfig(projectId.intValue()), shaSum);
     }
 }
-

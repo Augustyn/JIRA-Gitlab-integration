@@ -12,5 +12,5 @@ import java.sql.SQLException;
 public interface ConfigManagerDao
 {
     ConfigEntity getProjectConfig(int projectID) throws SQLException;
-    void updateProjectConfig(int projectID,String gitlabLink,String gitlabSecret,String gitlabClientId) throws SQLException;
+    ConfigEntity updateProjectConfig(int projectID,String gitlabLink,String gitlabSecret,String gitlabClientId) throws SQLException;
 }
