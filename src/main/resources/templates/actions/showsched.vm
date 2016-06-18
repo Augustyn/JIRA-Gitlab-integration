@@ -1,0 +1,131 @@
+#* @vtlvariable name="action" type="com.atlassian.jira.plugins.example.scheduler.action.ShowSchedulerInfo" *#
+#* @vtlvariable name="textutils" type="com.opensymphony.util.TextUtils" *#
+
+<html>
+<head>
+    <title>Scheduler Status</title>
+    <style>
+        table {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        table td, table th {
+            border: 1px solid black;
+        }
+        table td .x {
+            background-color: #333333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Scheduler Status</h2>
+
+    #if ($action.handleRemove())
+        <div class="aui-message success">
+            <p class="title">
+                <span class="aui-icon icon-success"></span>
+                <strong>Successfully removed all jobs for JobRunner '$action.remove'.</strong>
+            </p>
+        </div>
+    #end
+
+    #if ($action.hasErrorMessages)
+    <div id="error-container" class="aui-message error">
+        <span class="aui-icon icon-error"></span>
+        #foreach ($error in $action.getErrorMessages())
+            <p>$action.htmlEncode($error)</p>
+        #end
+    </div>
+    #end
+
+    <h3>Job information</h3>
+
+    #if ($action.allJobRunnerKeys.empty)
+        <p>You don't seem to have anything in the scheduler at all.  Something is probably very broken.</p>
+    #else
+        <table>
+            <thead>
+                <tr>
+                    <th>JobRunner</th>
+                    <th>Registered?</th>
+                    <th>Job ID</th>
+                    <th>Next Run Time</th>
+                    <th>Schedule</th>
+                    <th>Runnable?</th>
+                    <th>Parameters/Error</th>
+                    <th>Last Run</th>
+                    <th>Duration</th>
+                    <th>Outcome</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach ($key in $action.allJobRunnerKeys)
+                    #set ($jobs = $action.getJobs($key))
+                <tr>
+                    <td>$key</td>
+                    <td>
+                        #if ($action.isRegistered($key))
+                            <span class="aui-icon aui-icon-success"></span>
+                        #else
+                            <span class="aui-icon aui-icon-warning"></span>
+                            #* Note: XSS-able *#
+                            <a href="ShowSchedulerInfo.jspa?remove=$textutils.htmlEncode($key.toString())"><span class="aui-icon aui-icon-small aui-icon-close">Delete</span></a>
+                        #end
+                    </td>
+                    <td colspan="9" class="x">$jobs.size() #if ($jobs.size() == 1) job #else jobs #end</td>
+                </tr>
+                    #foreach ($job in $action.getJobs($key))
+                <tr>
+                    <td colspan="2" class="x">&nbsp;</td>
+                    <td>$job.jobId</td>
+                    <td>$job.nextRunTime</td>
+                    <td>
+                        #if ($job.schedule.type.name() == "INTERVAL")
+                            #if ($job.schedule.intervalScheduleInfo.intervalInMillis == 0)
+                                Run once at $job.schedule.intervalScheduleInfo.firstRunTime
+                            #else
+                                Run every $job.schedule.intervalScheduleInfo.intervalInMillis millis starting at $job.schedule.intervalScheduleInfo.firstRunTime
+                            #end
+                        #elseif ($job.schedule.type.name() == "CRON_EXPRESSION")
+                            Cron: $job.schedule.cronScheduleInfo.cronExpression ($job.schedule.cronScheduleInfo.timeZone.getID())
+                        #else
+                            <font color="red">Unexpected type: $job.schedule.type</font>
+                        #end
+                    </td>
+                    <td>
+                        #if ($job.runnable)
+                            <span class="aui-icon aui-icon-success">Yes</span>
+                        #else
+                            <span class="aui-icon aui-icon-warning">NO!</span>
+                        #end
+                    </td>
+                    <td>$action.getParameters($job)</td>
+                        #set ($lastRun = false)  #* Because velocity won't #set a null *#
+                        #set ($lastRun = $action.getLastRun($job.jobId))
+                        #if ($lastRun)
+                    <td>$lastRun.startTime</td>
+                    <td>$lastRun.durationInMillis</td>
+                        #set ($outcome = $lastRun.runOutcome.name())
+                    <td>
+                        #if ($outcome == "SUCCESS")
+                            <span class="aui-icon aui-icon-success"></span>
+                        #elseif ($outcome == "UNAVAILABLE")
+                            <span class="aui-icon aui-icon-warning"></span>
+                        #else
+                            <span class="aui-icon aui-icon-error"></span>
+                        #end
+                        $outcome
+                    </td>
+                    <td>$lastRun.message</td>
+                        #else
+                    <td colspan="4"><span class="aui-icon aui-icon-warning"></span>Never run</td>
+                        #end
+                </tr>
+                    #end
+                #end
+            </tbody>
+        </table>
+    #end
+</body>
+</html>
