@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -29,11 +28,4 @@
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     -->
     <osgi:reference id="indexPathManager" interface="com.atlassian.jira.config.util.IndexPathManager"  />
-
-    <osgi:reference id="schedulerService" interface="com.atlassian.scheduler.SchedulerService" />
-    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.Scheduler"
-                  interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="scheduler"/>
-    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.Scheduler"
-                  interface="pl.hycom.jira.plugins.gitlab.integration.listeners.IScheduler" ref="scheduler" />
-
 </beans>

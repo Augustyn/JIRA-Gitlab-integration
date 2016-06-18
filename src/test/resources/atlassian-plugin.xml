@@ -44,7 +44,7 @@
     <component-import key="ao" name="Active Objects service" interface="com.atlassian.activeobjects.external.ActiveObjects">
         <description>Component to access Active Objects functionality from the plugin</description>
     </component-import>
-    <ao key="ao-module">
+    <ao key="ao-module2">
         <description>The module configuring the Active Objects service used by this plugin</description>
         <entity>pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity</entity>
     </ao>
