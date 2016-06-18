@@ -78,14 +78,14 @@
   </component>
 
   <!-- Creates the webwork action for debugging atlassian-scheduler status -->
-  <webwork2 key="scheduler-example.actions" name="Scheduler Example Actions">
+  <webwork1 key="scheduler-example.actions" name="Scheduler Example Actions">
     <description>Scheduler Example Actions</description>
     <actions>
       <action name="pl.hycom.jira.plugins.gitlab.integration.scheduler.action.ShowSchedulerInfo" alias="ShowSchedulerInfo" roles-required="admin">
         <view name="success">/templates/actions/showsched.vm</view>
       </action>
     </actions>
-  </webwork2>
+  </webwork1>
 
   <!-- Components whose declarations are different when using the compat library -->
   <component key="awesomePluginJobRunner" class="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomePluginJobRunnerImpl">

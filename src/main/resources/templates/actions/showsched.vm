@@ -1,4 +1,4 @@
-#* @vtlvariable name="action" type="com.atlassian.jira.plugins.example.scheduler.action.ShowSchedulerInfo" *#
+#* @vtlvariable name="action" type="pl.hycom.jira.plugins.gitlab.integration.scheduler.action.ShowSchedulerInfo" *#
 #* @vtlvariable name="textutils" type="com.opensymphony.util.TextUtils" *#
 
 <html>

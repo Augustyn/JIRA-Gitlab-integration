@@ -22,6 +22,7 @@ import java.util.TreeSet;
  */
 public class ShowSchedulerInfo extends JiraWebActionSupport
 {
+
     private final SchedulerService schedulerService;
     private final SchedulerHistoryService schedulerHistoryService;
 

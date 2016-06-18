@@ -21,7 +21,5 @@
     <!--
     <osgi:reference id="configManagerDao" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" />
     -->
-
-
     <atlassian-scanner:scan-indexes/>
 </beans>
