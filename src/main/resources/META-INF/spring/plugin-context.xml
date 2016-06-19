@@ -30,6 +30,6 @@
     <osgi:reference id="indexPathManager" interface="com.atlassian.jira.config.util.IndexPathManager"  />
 
     <osgi:reference id="schedulerService" interface="com.atlassian.scheduler.SchedulerService" />
-    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.Example"
-                  interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="example"/>
+    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomeLauncher"
+                  interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="awesomeLauncher"/>
 </beans>
