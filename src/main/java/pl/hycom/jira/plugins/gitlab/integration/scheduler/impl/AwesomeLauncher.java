@@ -66,6 +66,8 @@ import org.springframework.beans.factory.InitializingBean;
  *
  * @since v1.0
  */
+
+@Component
 public class AwesomeLauncher implements LifecycleAware, InitializingBean, DisposableBean
 {
     private static final Logger LOG = LoggerFactory.getLogger(AwesomeLauncher.class);
