@@ -24,6 +24,7 @@ import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueStatusCh
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * Created by Damian Deska on 6/17/16.
@@ -32,8 +33,17 @@ import java.net.URISyntaxException;
 public class IssueStatusChangeProcessorTest {
 
     @Test
-    public void getPossibleStatuesTes() throws URISyntaxException, IOException {
+    public void getPossibleStatuesTest() throws URISyntaxException, IOException {
         IssueStatusChangeProcessor statusChanger = new IssueStatusChangeProcessor();
-        statusChanger.getPossibleIssueStatuses();
+        List<String> result = statusChanger.getPossibleIssueStatuses();
+        for(String statuses : result) {
+            log.info(statuses);
+        }
     }
+
+//    @Test
+//    public void changeIssueStatusTest(){
+//        IssueStatusChangeProcessor statusChanger = new IssueStatusChangeProcessor();
+//        statusChanger.changeIssueStatus();
+//    }
 }
