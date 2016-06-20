@@ -11,5 +11,5 @@ import java.sql.SQLException;
 public interface CommitManager
 {
     void updateCommitsForProject(int projectId) throws SQLException, ParseException, IOException;
-    void updateCommitsForAll();
+    void updateCommitsForAll() throws SQLException, ParseException, IOException;
 }

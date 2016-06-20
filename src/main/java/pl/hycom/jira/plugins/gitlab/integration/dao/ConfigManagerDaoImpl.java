@@ -24,7 +24,8 @@ import org.springframework.stereotype.Repository;
 
 
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Repository
@@ -36,6 +37,16 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
     public ConfigEntity getProjectConfig(int projectID) throws SQLException
     {
         return entityManager.get(ConfigEntity.class,projectID);    //returns null if no entities exist
+    }
+
+    public List<ConfigEntity> getAllProjectConfigs() throws SQLException
+    {
+        ArrayList<ConfigEntity> result = new ArrayList<ConfigEntity>();
+        ConfigEntity configs[] = entityManager.find(ConfigEntity.class);
+        for(ConfigEntity conf : configs){
+            result.add(conf);
+        }
+        return result;
     }
 
 

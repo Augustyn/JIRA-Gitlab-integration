@@ -2,6 +2,7 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
 
 
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.objectweb.carol.cmi.compiler.Conf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
@@ -40,7 +41,12 @@ public class CommitManagerImpl implements CommitManager
     }
 
     @Override
-    public void updateCommitsForAll() {
+    public void updateCommitsForAll() throws SQLException, ParseException, IOException
+    {
+        List<ConfigEntity> configList = configManager.getAllProjectConfigs();
+        for (ConfigEntity config : configList){
+            updateCommitsForProject(config.getProjectID());
+        }
 
     }
 }
