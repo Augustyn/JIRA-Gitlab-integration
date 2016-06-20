@@ -17,12 +17,12 @@
 
 package pl.hycom.jira.plugins.gitlab.integration.controller;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-import net.java.ao.schema.AutoIncrement;
+import org.springframework.beans.factory.annotation.Autowired;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+
 
 import java.util.*;
 
@@ -37,11 +37,13 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private static final String ERROR_INVALID_PROJECTID = "jirasection.action.error.invalid.projectid";
     private static final String ERROR_INVALID_GITLABLINK = "jirasection.action.error.invalid.gitlablink";
 
+    @Autowired(required = false)
     private Validator validator;
+
     private String clientId = "clientId default";
     private String clientSecret = "clientSecret default";
     private String gitlabLink = "gitlabLink default";
-    private String projectId = "projectId default";
+    private String projectId = "12345";
 
 
     public JiraSectionAction() {
@@ -147,6 +149,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
         String sGitlabLink = getGitlabLink();
         String sProjectId = getProjectId();
         int intProjectId = Integer.parseInt(sProjectId);
+        log.warn("Actual state of sProjectId = " + sProjectId + " Actual state of intProjectId = " + intProjectId);
 
         paramMap.put(FormField.CLIENTID, sClientId);
         paramMap.put(FormField.CLIENTSECRET, sClientSecret);
@@ -154,6 +157,8 @@ public class JiraSectionAction extends JiraWebActionSupport {
         paramMap.put(FormField.PROJECTID, sProjectId);
 
         ErrorCollection errorCollection = validator.validate(paramMap);
+        log.warn("Actual state of errorCollection " + errorCollection + "    ");
+
         if (errorCollection.isEmpty()){
             ConfigManagerDaoImpl myConfManager = new ConfigManagerDaoImpl();
             myConfManager.updateProjectConfig(intProjectId, sGitlabLink, sClientSecret, sClientId);

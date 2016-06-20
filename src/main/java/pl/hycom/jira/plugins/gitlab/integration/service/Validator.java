@@ -19,6 +19,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
 
 
+import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 import java.util.Map;
@@ -26,6 +27,7 @@ import java.util.Map;
 /**
  * Contains validation methods for gadget configuration.
  */
+
 public interface Validator {
 
     ErrorCollection validate(Map<FormField, String> paramMap);
