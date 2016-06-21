@@ -1,6 +1,9 @@
 package pl.hycom.jira.plugins.gitlab.integration.service.processors;
 
 
+import com.atlassian.crowd.model.authentication.AuthenticationContext;
+import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.user.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
@@ -21,7 +24,16 @@ public class IssueWorklogChangeProcessor implements ProcessorInterface {
     @Override
     public void execute(@NotNull Commit commitInfo) throws ProcessException {
         List<Time> timeFromMessage = getExtractedMsg(commitInfo);
+        ApplicationUser userFromCommit = getJiraUser(commitInfo);
+//        AuthenticationContext context = new
     }
+
+    public ApplicationUser getJiraUser(Commit commitInfo) {
+        String userEmail = commitInfo.getAuthor_email();
+        ApplicationUser user = UserUtils.getUserByEmail(userEmail);
+        return user;
+    }
+
 
     public List<Time> getExtractedMsg(@NotNull Commit commitInfo) {
         List<Time> timesList = new ArrayList<>();
@@ -32,44 +44,45 @@ public class IssueWorklogChangeProcessor implements ProcessorInterface {
         if (matcher.matches()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 String group = matcher.group(i);
-                String onlyChars = group.replaceAll("\\d+","");
+                String onlyChars = group.replaceAll("\\d+", "");
                 group = matcher.group(i);
-                String onlyDigits = group.replaceAll("(?i)[a-z]","");
+                String onlyDigits = group.replaceAll("(?i)[a-z]", "");
                 Time time = Time.getTime(onlyChars, Integer.parseInt(onlyDigits));
                 timesList.add(time);
-                extractedMessage+=onlyDigits+onlyChars;
+                extractedMessage += onlyDigits + onlyChars;
             }
             log.info("Found worklog: " + extractedMessage);
 
         }
         return timesList;
     }
-    public int getTimeConvertedToSeconds(List<Time> timeFromMessageList){
+
+    public int getTimeConvertedToSeconds(List<Time> timeFromMessageList) {
         int summedTime = 0;
-        for(Time time : timeFromMessageList){
-            switch(time){
-                case YEAR:{
-                    summedTime += time.getFieldValue()*31556926;
+        for (Time time : timeFromMessageList) {
+            switch (time) {
+                case YEAR: {
+                    summedTime += time.getFieldValue() * 31556926;
                     break;
                 }
-                case WEEK:{
-                    summedTime+=time.getFieldValue()*604800;
+                case WEEK: {
+                    summedTime += time.getFieldValue() * 604800;
                     break;
                 }
-                case DAY:{
-                    summedTime+=time.getFieldValue()*86400;
+                case DAY: {
+                    summedTime += time.getFieldValue() * 86400;
                     break;
                 }
-                case HOUR:{
-                    summedTime+=time.getFieldValue()*3600;
+                case HOUR: {
+                    summedTime += time.getFieldValue() * 3600;
                     break;
                 }
-                case MINUTE:{
-                    summedTime+=time.getFieldValue()*60;
+                case MINUTE: {
+                    summedTime += time.getFieldValue() * 60;
                     break;
                 }
-                case SECOND:{
-                    summedTime+=time.getFieldValue();
+                case SECOND: {
+                    summedTime += time.getFieldValue();
                     break;
                 }
             }
@@ -88,10 +101,11 @@ public class IssueWorklogChangeProcessor implements ProcessorInterface {
         private String fieldName;
         private int fieldValue;
 
-        public int getFieldValue(){
+        public int getFieldValue() {
             return fieldValue;
         }
-        public String getFieldName(){
+
+        public String getFieldName() {
             return fieldName;
         }
 
