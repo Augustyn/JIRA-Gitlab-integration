@@ -49,18 +49,22 @@ public class CommitService implements ICommitService {
     @Override
     public List<Commit> getNewCommits(Long projectId) throws SQLException, ParseException, IOException {
         int pageNumber = 1;
-        List<Commit> commitsList, resultList = new ArrayList<>();
-        commitAlreadyIndexed:
+        boolean indexedCommitEncountered = false;
+        List<Commit> commitsList = new ArrayList<>();
+        List<Commit> resultList = new ArrayList<>();
+
         do {
             commitsList = commitRepository.getNewCommits(dao.getProjectConfig(projectId.intValue()), perPage, pageNumber);
             for(Commit commit : commitsList) {
-                if(commitSearcher.checkIfCommitIsIndexed(commit.getId())) {
-                    break commitAlreadyIndexed;
+                if(!commitSearcher.checkIfCommitIsIndexed(commit.getId())) {
+                    resultList.add(commit);
+                } else {
+                    indexedCommitEncountered = true;
+                    break;
                 }
             }
             pageNumber++;
-            resultList.addAll(commitsList);
-        } while(commitsList.size() != perPage);
+        } while(commitsList.size() != perPage && !indexedCommitEncountered);
         return resultList;
     }
 
