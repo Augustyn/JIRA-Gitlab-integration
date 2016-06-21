@@ -15,6 +15,7 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+
 import lombok.extern.log4j.Log4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -34,23 +35,23 @@ import java.util.List;
 public class CommitRepository implements ICommitDao {
 
     @Override
-    public List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber) {
-        String repositoryUrlWithPageNumber = repositoryUrl + "?per_page=" + Integer.toString(perPage) + "&page=" + Integer.toString(pageNumber);
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateToken).build());
+    public List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber) {
+        String repositoryUrlWithPageNumber = "{param1}" + "?per_page=" + "{param2}" + "&page=" + "{param3}";
+        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
         ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(repositoryUrlWithPageNumber, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<Commit>>() {
-                });
+                }, configEntity.getLink(), Integer.toString(perPage), Integer.toString(pageNumber));
 
         return response.getBody();
     }
 
     @Override
-    public Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum) {
-        String oneCommitUrl = repositoryUrl + "/" + shaSum;
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateToken).build());
+    public Commit getOneCommit(ConfigEntity configEntity, String shaSum) {
+        String oneCommitUrl = "{param1}" + "/" + "{param2}";
+        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
         ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(oneCommitUrl, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
-                });
+                },configEntity.getLink(),shaSum);
 
         return response.getBody();
     }
