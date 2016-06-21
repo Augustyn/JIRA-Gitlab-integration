@@ -32,10 +32,10 @@ import java.util.Map;
 /**
  * Simple implementation of Validator.
  */
-
+@Component
 public class ValidatorImpl implements Validator {
 
-    private static final Logger log = LoggerFactory.getLogger(ValidatorImpl.class);
+    //private static final Logger log = LoggerFactory.getLogger(ValidatorImpl.class);
 
     @Override
     public ErrorCollection validate(Map<FormField, String> paramMap){

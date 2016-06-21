@@ -27,18 +27,19 @@ import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
 import java.util.List;
 
-/**
- * Created by Kamil Rogowski on 22.04.2016.
- */
+
 @Log4j
 @Repository
 public class CommitRepository implements ICommitDao {
 
+    private static final String COMMIT_BASE = "/api/v3/projects/{gitlabprojectid}/repository/commits";
+    private static final String COMMIT_URL =  COMMIT_BASE + "?per_page={perPage}&page={pageNumber}";
+    private static final String COMMIT_SINGLE_URL = COMMIT_BASE + "/{sha1sum}";
+
     @Override
     public List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber) {
-        String repositoryUrlWithPageNumber = "{param1}" + "?per_page=" + "{param2}" + "&page=" + "{param3}";
         HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
-        ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(repositoryUrlWithPageNumber, HttpMethod.GET, requestEntity,
+        ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + COMMIT_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<Commit>>() {
                 }, configEntity.getLink(), Integer.toString(perPage), Integer.toString(pageNumber));
 
@@ -47,11 +48,10 @@ public class CommitRepository implements ICommitDao {
 
     @Override
     public Commit getOneCommit(ConfigEntity configEntity, String shaSum) {
-        String oneCommitUrl = "{param1}" + "/" + "{param2}";
         HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
-        ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(oneCommitUrl, HttpMethod.GET, requestEntity,
+        ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
-                },configEntity.getLink(),shaSum);
+                }, shaSum);
 
         return response.getBody();
     }
