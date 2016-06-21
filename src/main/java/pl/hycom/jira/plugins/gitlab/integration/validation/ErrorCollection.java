@@ -47,4 +47,6 @@ public class ErrorCollection {
     public boolean isEmpty() {
         return errorMessages.isEmpty() && errors.isEmpty();
     }
+
+    public Collection<String> getErrorMessages() {return errorMessages; }
 }
