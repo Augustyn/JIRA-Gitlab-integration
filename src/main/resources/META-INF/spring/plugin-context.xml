@@ -33,19 +33,14 @@
     <osgi:reference id="activeObjects" interface="com.atlassian.activeobjects.external.ActiveObjects" />
     <osgi:reference id="eventPublisher" interface="com.atlassian.event.api.EventPublisher" />
     <osgi:reference id="eventListener" interface="com.atlassian.event.api.EventListener" />
-    <osgi:reference id="eventPublisher" interface="com.atlassian.event.api.EventPublisher" />
     <osgi:reference id="pluginEnabledEvent" interface="com.atlassian.plugin.event.events.PluginEnabledEvent" />
-    <osgi:reference id="lifecycleAware" interface="com.atlassian.sal.api.lifecycle.LifecycleAware" />
 
-
-
-
-    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomeLauncher"
+    <osgi:service id="LifecycleAware"
                   interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="awesomeLauncher"/>
 
-    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomeLauncher"
+    <osgi:service id="DisposableBean"
                   interface="org.springframework.beans.factory.DisposableBean" ref="awesomeLauncher"/>
 
-    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomeLauncher"
+    <osgi:service id="InitializingBean"
                   interface="org.springframework.beans.factory.InitializingBean" ref="awesomeLauncher"/>
 </beans>
