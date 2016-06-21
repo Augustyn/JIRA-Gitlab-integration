@@ -28,4 +28,8 @@
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     -->
     <osgi:reference id="indexPathManager" interface="com.atlassian.jira.config.util.IndexPathManager"  />
+    <osgi:reference id="userManager" interfac="com.atlassian.jira.user.util.UserManager" />
+    <osgi:reference id="authenticationContext" interfac="com.atlassian.jira.security.JiraAuthenticationContext" />
+    <osgi:reference id="issueInputParameters" interfac="com.atlassian.jira.issue.IssueInputParameters" />
+
 </beans>

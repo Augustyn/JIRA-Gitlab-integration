@@ -35,6 +35,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.osgi.service.component.annotations.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 import javax.inject.Inject;
@@ -47,10 +49,11 @@ import java.util.List;
  * Created by Damian Deska on 6/17/16.
  */
 @Log4j
+@Component
 public class IssueStatusChangeProcessor {
     //TODO zamiana parametrow z wpisanych na sztywno na pobrane z konfiguracji pluginu
     HttpClient client = HttpClientBuilder.create().build();
-    @Inject
+    @Autowired
     IssueService issueService;
     UserManager userManager;
     JiraAuthenticationContext authenticationContext;
