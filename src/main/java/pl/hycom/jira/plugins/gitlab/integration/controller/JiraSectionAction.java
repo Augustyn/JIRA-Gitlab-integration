@@ -40,8 +40,8 @@ public class JiraSectionAction extends JiraWebActionSupport {
 
     @Autowired
     private Validator validator;
-    private String clientId = "clientIddefault";
-    private String clientSecret = "clientSecretdefault";
+    private String clientId = "123";
+    private String clientSecret = "client123";
     private String gitlabLink = "https://github.com/";
     private String projectId = "123456";
 
@@ -137,6 +137,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
             getJiraServiceContext().getErrorCollection().addError(FormField.CLIENTSECRET.getFieldName(), getJiraServiceContext().getI18nBean().getText(ERROR_INVALID_CLIENTSECRET));
             getJiraServiceContext().getErrorCollection().addError(FormField.PROJECTID.getFieldName(), getJiraServiceContext().getI18nBean().getText(ERROR_INVALID_PROJECTID));
             getJiraServiceContext().getErrorCollection().addError(FormField.GITLABLINK.getFieldName(), getJiraServiceContext().getI18nBean().getText(ERROR_INVALID_GITLABLINK));
+            log.error("Error in " + errorCollection);
             return ERROR;
         }
     }
