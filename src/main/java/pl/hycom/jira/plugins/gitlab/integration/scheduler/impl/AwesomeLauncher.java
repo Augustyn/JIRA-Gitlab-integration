@@ -13,6 +13,7 @@ import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs;
 import com.atlassian.plugin.event.events.PluginEnabledEvent;
 import com.atlassian.sal.api.lifecycle.LifecycleAware;
 import com.atlassian.scheduler.SchedulerService;
+import org.springframework.stereotype.Component;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
