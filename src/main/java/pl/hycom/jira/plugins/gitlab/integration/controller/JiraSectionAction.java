@@ -17,14 +17,12 @@
 
 package pl.hycom.jira.plugins.gitlab.integration.controller;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-import net.java.ao.schema.AutoIncrement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
+import pl.hycom.jira.plugins.gitlab.integration.ao.GitlabComManDao;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 
 import java.util.*;
 
@@ -40,6 +38,12 @@ public class JiraSectionAction extends JiraWebActionSupport {
 
     @Autowired
     private Validator validator;
+
+    @Autowired
+    private ConfigManagerDao myConfManager;
+
+    @Autowired
+    private GitlabComManDao gitlabCommunicationManagerDao;
     private String clientId = "123";
     private String clientSecret = "client123";
     private String gitlabLink = "https://github.com/";
@@ -123,13 +127,9 @@ public class JiraSectionAction extends JiraWebActionSupport {
 
         int intProjectId = Integer.parseInt(projectId);
         final ErrorCollection errorCollection = doInternalValidate();
-        if (errorCollection.isEmpty()){
-            //TODO: porbranie ID projektu z GITLAB
-            ConfigManagerDaoImpl myConfManager = new ConfigManagerDaoImpl();
+        if (errorCollection.isEmpty() && gitlabCommunicationManagerDao.findProject(projectId) == true){
             myConfManager.updateProjectConfig(intProjectId, gitlabLink, clientSecret, clientId);
             String result = super.doDefault();
-
-
             log.debug("Exiting doDefault with a result of: " + result);
             return result;
         } else {
