@@ -16,6 +16,7 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * limitations under the License.</p>
  */
 
+import com.atlassian.jira.issue.Issue;
 import lombok.extern.log4j.Log4j;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class CommitService implements ICommitService {
     private ConfigManagerDaoImpl dao;
     private ICommitDao commitRepository;
     private CommitSearcher commitSearcher;
+    private CommitService commitService;
 
     private int perPage = 20;
 
@@ -62,6 +64,12 @@ public class CommitService implements ICommitService {
             resultList.addAll(commitsList);
         } while(commitsList.size() != perPage);
         return resultList;
+    }
+
+    @Override
+    public List<Commit> getAllIssueCommits(Issue jiraIssue) {
+        String issueKey = jiraIssue.getKey();
+        return commitService.getAllIssueCommits(jiraIssue);
     }
 
     @Override
