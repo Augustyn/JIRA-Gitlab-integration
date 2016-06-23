@@ -15,5 +15,7 @@ public class Commit {
     private String author_email;
     private String created_at;
     private String message;
+
+    private String issue;
 }
 
