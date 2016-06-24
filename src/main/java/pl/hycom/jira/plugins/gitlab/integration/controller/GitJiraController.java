@@ -61,7 +61,7 @@ public class GitJiraController {
 
 
     @Path("/listener")//zloz to z poprzednim pathem
-    @POSTo
+    @POST
     @Produces({MediaType.TEXT_HTML})
     @Consumes("application/json")
     public void getRequest(HttpServletRequest request, Push event){
