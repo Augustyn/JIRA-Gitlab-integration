@@ -75,8 +75,8 @@ public enum FormField {
     private final static String ERROR_PREFIX = "jirasectionaction.errors.";
     private final static String EMPTY_FIELD = "emptyField";
     public static final Pattern projectIdPattern = Pattern.compile("([0-9]+)*", Pattern.CASE_INSENSITIVE);
-    public static final Pattern clientIdPattern = Pattern.compile("([aA-zZ]+[0-9]+)*", Pattern.CASE_INSENSITIVE);
-    public static final Pattern clientSecretPattern = Pattern.compile("([aA-zZ]+[0-9]+)*", Pattern.CASE_INSENSITIVE);
+    public static final Pattern clientIdPattern = Pattern.compile("([aA-zZ]*[0-9]*)*", Pattern.CASE_INSENSITIVE);
+    public static final Pattern clientSecretPattern = Pattern.compile("([aA-zZ]*[0-9]*)*", Pattern.CASE_INSENSITIVE);
     public static final Pattern gitlabLinkPattern = Pattern.compile("^(https?|ssh)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", Pattern.CASE_INSENSITIVE);
 
 
