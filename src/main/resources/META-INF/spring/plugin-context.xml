@@ -32,8 +32,7 @@
     <osgi:reference id="schedulerService" interface="com.atlassian.scheduler.SchedulerService" />
     <osgi:reference id="activeObjects" interface="com.atlassian.activeobjects.external.ActiveObjects" />
     <osgi:reference id="eventPublisher" interface="com.atlassian.event.api.EventPublisher" />
-    <osgi:reference id="eventListener" interface="com.atlassian.event.api.EventListener" />
-    <osgi:reference id="pluginEnabledEvent" interface="com.atlassian.plugin.event.events.PluginEnabledEvent" />
+
 
     <osgi:service id="LifecycleAware"
                   interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="awesomeLauncher"/>
@@ -43,4 +42,10 @@
 
     <osgi:service id="InitializingBean"
                   interface="org.springframework.beans.factory.InitializingBean" ref="awesomeLauncher"/>
+
+
+    <osgi:service id="eventListener"
+                  interface="com.atlassian.event.api.EventListener" ref="awesomeLauncher"/>
+    <osgi:service id="pluginEnabledEvent"
+                  interface="com.atlassian.plugin.event.events.PluginEnabledEvent" ref="awesomeLauncher"/>
 </beans>

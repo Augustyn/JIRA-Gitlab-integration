@@ -118,7 +118,6 @@
   </component>
 
   <!-- Application-provided components -->
-  <component-import key="ao" interface="com.atlassian.activeobjects.external.ActiveObjects" />
   <component-import key="eventPublisher" interface="com.atlassian.event.api.EventPublisher" />
   <component-import key="pluginScheduler" interface="com.atlassian.sal.api.scheduling.PluginScheduler" />
   <component-import key="schedulerService" interface="com.atlassian.scheduler.SchedulerService" />
