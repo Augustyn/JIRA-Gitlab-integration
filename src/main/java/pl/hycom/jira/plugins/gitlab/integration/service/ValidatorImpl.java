@@ -19,11 +19,11 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
 
 
+import lombok.extern.log4j.Log4j;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 
 import java.util.Map;
@@ -33,9 +33,8 @@ import java.util.Map;
  * Simple implementation of Validator.
  */
 
+@Log4j
 public class ValidatorImpl implements Validator {
-
-    private static final Logger log = LoggerFactory.getLogger(ValidatorImpl.class);
 
     @Override
     public ErrorCollection validate(Map<FormField, String> paramMap){
