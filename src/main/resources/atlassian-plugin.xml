@@ -66,13 +66,17 @@
       </action>
     </actions>
   </webwork1>
-  <component-import key="ao" name="Active Objects service" interface="com.atlassian.activeobjects.external.ActiveObjects">
-    <description>Component to access Active Objects functionality from the plugin</description>
-  </component-import>
+
+
   <ao key="ao-module">
     <description>The module configuring the Active Objects service used by this plugin</description>
     <entity>pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity</entity>
   </ao>
+  <ao key="ao-module-awesome">
+    <description>Awesome active objects entity</description>
+    <entity>com.atlassian.jira.plugins.example.scheduler.AwesomeStuff</entity>
+  </ao>
+
 
   <!-- Creates the webwork action for debugging atlassian-scheduler status -->
   <webwork1 key="scheduler-example.actions" name="Scheduler Example Actions">
@@ -83,11 +87,6 @@
       </action>
     </actions>
   </webwork1>
-
-  <ao key="ao-module">
-    <description>Awesome active objects entity</description>
-    <entity>com.atlassian.jira.plugins.example.scheduler.AwesomeStuff</entity>
-  </ao>
 
   <!-- Components whose declarations are different when using the compat library -->
   <component key="awesomePluginJobRunner" class="com.atlassian.jira.plugins.example.scheduler.impl.AwesomePluginJobRunnerImpl">
