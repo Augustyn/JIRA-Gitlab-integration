@@ -1,3 +1,4 @@
+
 package pl.hycom.jira.plugins.gitlab.integration.model;
 
 /**
@@ -5,7 +6,6 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
  */
 
 import lombok.Data;
-import org.apache.lucene.document.Document;
 
 @Data
 public class Commit {
@@ -18,8 +18,4 @@ public class Commit {
     private String message;
 
     private String issue;
-    public Commit(Document doc){
-        this.id = doc.get("id");
-        //FIXME: pozostałe mapowanie
-    }
 }
