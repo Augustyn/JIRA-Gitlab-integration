@@ -34,11 +34,13 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Damian Deska on 5/17/16.
@@ -55,6 +57,19 @@ public class CommitSearcher {
     @Autowired
     private LucenePathSearcher lucenePathSearcher;
 
+    public List<Commit> searchCommits(String issueKey){
+        List<Commit> result = new ArrayList<>();
+        try {
+            List<Document> rawCommits = searchCommits("message", issueKey);
+            result = rawCommits.stream().map(Commit::new).collect(Collectors.toList());
+        } catch (ParseException e) {//FIXME: jaki commit nie udało się zamienić
+            log.error("Tutaj ładna wiadomość: " + e.getMessage(), e);
+        } catch (IOException e) {
+            log.error("ładny error log: "+ e.getMessage(), e);
+        }
+        return result;
+
+    }
     public List<Document> searchCommits(String fieldName, String fieldValue) throws ParseException, IOException {
 
         List<Document> foundedCommitsList = new ArrayList<Document>();
