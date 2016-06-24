@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!--
+        * <p>Copyright (c) 2016, Authors
+    * Project:  gitlab-integration.</p>
+        *
+        * <p>Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at</p>
+        *
+        * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+        *
+        * <p>Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.</p>
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -8,11 +23,12 @@
     <groupId>pl.hycom.jira.plugins</groupId>
     <artifactId>gitlab-integration</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-
-  
+    <packaging>atlassian-plugin</packaging>
     <name>jira-gitlab-plugin</name>
-    <description>This plugin allows integration of GitLab inside JIRA issues </description>
-   	
+    <organization>
+        <name>Lodz University of Technology</name>
+    </organization>
+    <description>This plugin allows integration of GitLab inside JIRA issues</description>
     <developers>
         <developer>
             <name>Kamil Rogowski</name>
@@ -22,28 +38,27 @@
             <name>Damian Deska</name>
             <email>189645@edu.p.lodz.pl</email>
         </developer>
-	 <developer>
+        <developer>
             <name>Adam Szczeciński</name>
             <email>189783@edu.p.lodz.pl</email>
-        </developer>  
-	 <developer>
+        </developer>
+        <developer>
             <name>Michał Kudlewski</name>
             <email>189707@edu.p.lodz.pl</email>
-        </developer>  
- 	<developer>
+        </developer>
+        <developer>
             <name>Liźniewicz Maciej</name>
             <email>189713@edu.p.lodz.pl</email>
-        </developer>  
-	<developer>
+        </developer>
+        <developer>
             <name>Jędzejewski Tomasz</name>
             <email>189675@edu.p.lodz.pl</email>
         </developer>
-	 <developer>
+        <developer>
             <name>Karol Joachimiak</name>
             <email>189676@edu.p.lodz.pl</email>
         </developer>
     </developers>
-
 
     <dependencies>
         <dependency>
@@ -51,53 +66,32 @@
             <artifactId>jira-api</artifactId>
             <version>${jira.version}</version>
             <scope>provided</scope>
-
         </dependency>
-
         <!-- Add dependency on jira-core if you want access to JIRA implementation classes as well as the sanctioned API. -->
         <!-- This is not normally recommended, but may be required eg when migrating a plugin originally developed against JIRA 4.x -->
-        <!--
-        <dependency>
+         <dependency>
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-core</artifactId>
             <version>${jira.version}</version>
             <scope>provided</scope>
         </dependency>
-        -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>com.atlassian.plugin</groupId>
             <artifactId>atlassian-spring-scanner-annotation</artifactId>
             <version>${atlassian.spring.scanner.version}</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>com.atlassian.plugin</groupId>
             <artifactId>atlassian-spring-scanner-runtime</artifactId>
             <version>${atlassian.spring.scanner.version}</version>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- WIRED TEST RUNNER DEPENDENCIES -->
-        <dependency>
-            <groupId>com.atlassian.plugins</groupId>
-            <artifactId>atlassian-plugins-osgi-testrunner</artifactId>
-            <version>${plugin.testrunner.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -110,20 +104,15 @@
             <artifactId>gson</artifactId>
             <version>2.2.2-atlassian-1</version>
         </dependency>
-
-		<!-- Uncomment to use TestKit in your project. Details at https://bitbucket.org/atlassian/jira-testkit -->
-		<!-- You can read more about TestKit at https://developer.atlassian.com/display/JIRADEV/Plugin+Tutorial+-+Smarter+integration+testing+with+TestKit -->
-		<!--
-		<dependency>
-			<groupId>com.atlassian.jira.tests</groupId>
-			<artifactId>jira-testkit-client</artifactId>
-			<version>${testkit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -133,8 +122,7 @@
             <version>${spring.version}</version>
             <scope>provided</scope>
         </dependency>
-
-   	<dependency>
+        <dependency>
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-rest-plugin</artifactId>
             <version>${jira.version}</version>
@@ -146,7 +134,116 @@
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${version.lombok}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${version.mockito}</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>6.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>6.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queries</artifactId>
+            <version>6.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>6.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Uncomment to use TestKit in your project. Details at https://bitbucket.org/atlassian/jira-testkit -->
+        <!-- You can read more about TestKit at https://developer.atlassian.com/display/JIRADEV/Plugin+Tutorial+-+Smarter+integration+testing+with+TestKit -->
+        <!--
+        <dependency>
+            <groupId>com.atlassian.jira.tests</groupId>
+            <artifactId>jira-testkit-client</artifactId>
+            <version>${testkit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        -->
+        <!-- WIRED TEST RUNNER DEPENDENCIES -->
+        <dependency>
+            <groupId>com.atlassian.plugins</groupId>
+            <artifactId>atlassian-plugins-osgi-testrunner</artifactId>
+            <version>${plugin.testrunner.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-tests</artifactId>
+            <version>${jira.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.activeobjects</groupId>
+            <artifactId>activeobjects-plugin</artifactId>
+            <version>${ao.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.activeobjects</groupId>
+            <artifactId>activeobjects-test</artifactId>
+            <version>${ao.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.jira.tests</groupId>
+            <artifactId>jira-testkit-client</artifactId>
+            <version>${testkit.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.plugins.rest</groupId>
+            <artifactId>atlassian-rest-common</artifactId>
+            <version>${rest.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
     </dependencies>
     <profiles>
@@ -185,53 +282,102 @@
         </profile>
     </profiles>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>${jdkLevel}</source>
+                    <target>${jdkLevel}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <injectAllReactorProjects>true</injectAllReactorProjects>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+                    </generateGitPropertiesFilename>
+                    <prefix>git</prefix> <!-- that's the default value -->
+                    <dateFormat>dd.MM.yyyy '@' HH:mm:ss z</dateFormat> <!-- that's the default value -->
+                    <verbose>true</verbose> <!-- false is default for this -->
+                    <dotGitDirectory>${project.basedir}/.git
+                    </dotGitDirectory> <!-- required, you have to specify this path -->
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-jira-plugin</artifactId>
                 <version>${amps.version}</version>
-		        <extensions>true</extensions>
+                <extensions>true</extensions>
                 <configuration>
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
-					<!-- Uncomment to install TestKit backdoor in JIRA. -->
-					<!--
-					<pluginArtifacts>
-						<pluginArtifact>
-							<groupId>com.atlassian.jira.tests</groupId>
-							<artifactId>jira-testkit-plugin</artifactId>
-							<version>${testkit.version}</version>
-						</pluginArtifact>
-					</pluginArtifacts>
-					-->
-                    <enableQuickReload>true</enableQuickReload>
-                    <enableFastdev>false</enableFastdev>
+                    <!-- Uncomment to install TestKit backdoor in JIRA. -->
+                    <!--
+                    <pluginArtifacts>
+                        <pluginArtifact>
+                            <groupId>com.atlassian.jira.tests</groupId>
+                            <artifactId>jira-testkit-plugin</artifactId>
+                            <version>${testkit.version}</version>
+                        </pluginArtifact>
+                    </pluginArtifacts>
+                    -->
+                    <enableQuickReload>false</enableQuickReload>
+                    <enableFastdev>true</enableFastdev>
 
                     <!-- See here for an explanation of default instructions: -->
                     <!-- https://developer.atlassian.com/docs/advanced-topics/configuration-of-instructions-in-atlassian-plugins -->
-                    <instructions>
-                        <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
 
-                        <!-- Add package to export here -->
-                        <Export-Package>
-                            com.jira-gitlab-integration.plugin.api,
-                        </Export-Package>
-
-                        <!-- Add package import here -->
-                        <Import-Package>
-                            org.springframework.osgi.*;resolution:="optional",
-                            org.eclipse.gemini.blueprint.*;resolution:="optional",
-                            *
-                        </Import-Package>
-
-                        <!-- Ensure plugin is spring powered -->
-                        <Spring-Context>*</Spring-Context>
-                    </instructions>
-		<source>${jdk.version}</source>
-		<target>${jdk.version}</target>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <archive>
+                        <index>false</index>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <git-build-user-email>${git.build.user.email}</git-build-user-email>
+                            <git-build-host>${git.build.host}</git-build-host>
+                            <git-remote-origin-url>${git.remote.origin.url}</git-remote-origin-url>
+                            <git-closest-tag-name>${git.closest.tag.name}</git-closest-tag-name>
+                            <git-commit-id-describe-short>${git.commit.id.describe-short}</git-commit-id-describe-short>
+                            <git-commit-user-email>${git.commit.user.email}</git-commit-user-email>
+                            <git-commit-time>${git.commit.time}</git-commit-time>
+                            <git-commit-message-full>${git.commit.message.full}</git-commit-message-full>
+                            <git-build-version>${git.build.version}</git-build-version>
+                            <git-commit-message-short>${git.remote.origin.url}</git-commit-message-short>
+                            <git-commit-id-abbrev>${git.commit.id.abbrev}</git-commit-id-abbrev>
+                            <git-branch>${git.branch}</git-branch>
+                            <git-build-user-name>${git.remote.origin.url}</git-build-user-name>
+                            <git-commit-id>${git.commit.id}</git-commit-id>
+                            <git-build-time>${git.build.time}</git-build-time>
+                            <git-commit-user-name>${git.commit.user.name}</git-commit-user-name>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.atlassian.plugin</groupId>
                 <artifactId>atlassian-spring-scanner-maven-plugin</artifactId>
@@ -256,25 +402,34 @@
             </plugin>
         </plugins>
     </build>
-
     <properties>
-	    <jdk.version>1.8</jdk.version>
-        <jira.version>7.1.2</jira.version>
-        <amps.version>6.2.3</amps.version>
-    	<spring.version>4.2.5.RELEASE</spring.version>
+        <jdkLevel>1.8</jdkLevel>
+        <jira.version>7.1.4</jira.version>
+        <amps.version>6.2.4</amps.version>
+        <spring.version>4.2.5.RELEASE</spring.version>
         <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
         <atlassian.spring.scanner.version>1.2.6</atlassian.spring.scanner.version>
         <!-- This key is used to keep the consistency between the key in atlassian-plugin.xml and the key to generate bundle. -->
         <atlassian.plugin.key>${project.groupId}.${project.artifactId}</atlassian.plugin.key>
-		<!-- TestKit version 6.x for JIRA 6.x -->
-	    <testkit.version>6.3.11</testkit.version>
+        <!-- TestKit version 6.x for JIRA 6.x -->
+        <testkit.version>7.2.9</testkit.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <version.junit>[4.12,)</version.junit>
+        <version.lombok>[1.16,)</version.lombok>
+        <version.mockito>[1.9,)</version.mockito>
+        <ao.version>1.1.5</ao.version>
+        <rest.version>2.7.1</rest.version>
     </properties>
-
     <repositories>
         <repository>
             <id>atlassian-public-1</id>
             <url>https://maven.atlassian.com/content/groups/public</url>
         </repository>
+        <repository>
+        <id>atlassian-public-56</id>
+        <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+    </repository>
         <repository>
             <id>atlassian-public-2</id>
             <url>https://m2proxy.atlassian.com/repository/public</url>

@@ -1,24 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+        * <p>Copyright (c) 2016, Authors
+    * Project:  gitlab-integration.</p>
+        *
+        * <p>Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at</p>
+        *
+        * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+        *
+        * <p>Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.</p>
+-->
 <atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
-    <plugin-info>
-        <description>${project.description}</description>
-        <version>${project.version}</version>
-        <vendor name="${project.organization.name}" url="${project.organization.url}" />
-        <param name="plugin-icon">images/pluginIcon.png</param>
-        <param name="plugin-logo">images/pluginLogo.png</param>
-    </plugin-info>
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <!-- add our i18n resource -->
+    <resource type="i18n" name="mypluginprops" location="jira-gitlab-plugin"/>
+  <resource type="i18n" name="i18n" location="gittab"/>
+  <!-- add our web resources -->
+  <web-resource key="gittab-resources" name="gittab Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="jira-gitlab-plugin.css" location="/css/jira-gitlab-plugin.css"/>
+    <resource type="download" name="jira-gitlab-plugin.js" location="/js/jira-gitlab-plugin.js"/>
+    <resource type="download" name="images/" location="/images"/>
+    <context>gittab</context>
+  </web-resource>
+  <issue-tabpanel key="git-tab" name="Git Tab" i18n-name-key="git-tab.name" class="pl.hycom.jira.plugins.gitlab.integration.gitpanel.GitTab">
+    <description key="git-tab.description">The Git Tab Plugin</description>
+    <label key="git-tab.label"/>
+    <order>10</order>
+    <resource type="velocity" name="view" location="templates/tabpanels/git-tab.vm"/>
+  </issue-tabpanel>
+  <web-section name="JIRA Gitlab plugin" i18n-name-key="configuration-section-for-jira-plugin i18n" key="configuration-section-for-jira-plugin" location="atl.jira.proj.config" weight="110">
+    <description key="i18n-web-section">JIRA Gitlab plugin 2016</description>
+    <label key="configuration-section-for-jira-plugin.name">
+      <param name="param0" value="value"/>
+      <param name="param1" value="key"/>
+    </label>
+    <resource name="development.zip" type="Download" location="https://github.com/Augustyn/JIRA-Gitlab-integration/archive/development.zip"/>
+    <tooltip key="key">
+      <param name="param0" value="Key"/>
+      <param name="param1" value="Name"/>
+    </tooltip>
+  </web-section>
+  <web-item name="Gitlab configuration" i18n-name-key="gitlab-configuration-module.name" key="gitlab-url" section="atl.jira.proj.config/configuration-section-for-jira-plugin" weight="10">
+    <description key="gitlab-configuration.description">Configuration module for JIRA plugin - Gitlab configuration</description>
+    <label key="gitlab-configuration-module.label"/>
+    <link linkId="gitlab-configuration-module-link">/secure/JiraSectionAction!default.jspa</link>
+    </web-item>
+  <webwork1 key="webworkkey" name="Edition and preview of JIRA-Gitlab configuration" class="java.lang.Object">
+    <actions>
+      <action name="pl.hycom.jira.plugins.gitlab.integration.controller.JiraSectionAction" alias="JiraSectionAction" roles-required="admin">
+        <view name="input">/templates/input.vm</view>
+        <view name="success">/templates/success.vm</view>
+        <view name="error">/templates/error.vm</view>
+      </action>
+    </actions>
+  </webwork1>
+  <component-import key="ao" name="Active Objects service" interface="com.atlassian.activeobjects.external.ActiveObjects">
+    <description>Component to access Active Objects functionality from the plugin</description>
+  </component-import>
+  <ao key="ao-module">
+    <description>The module configuring the Active Objects service used by this plugin</description>
+    <entity>pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity</entity>
+  </ao>
 
-    <!-- add our i18n resource -->
-    <resource type="i18n" name="i18n" location="jira-gitlab-plugin"/>
-    
-    <!-- add our web resources -->
-    <web-resource key="jira-gitlab-plugin-resources" name="jira-gitlab-plugin Web Resources">
-        <dependency>com.atlassian.auiplugin:ajs</dependency>
-        
-        <resource type="download" name="jira-gitlab-plugin.css" location="/css/jira-gitlab-plugin.css"/>
-        <resource type="download" name="jira-gitlab-plugin.js" location="/js/jira-gitlab-plugin.js"/>
-        <resource type="download" name="images/" location="/images"/>
 
-        <context>jira-gitlab-plugin</context>
-    </web-resource>
-    
+
+  <component key="configManagerDaoImpl" class="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" public="true">
+    <interface>pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao</interface>
+  </component>
+
+
 </atlassian-plugin>
