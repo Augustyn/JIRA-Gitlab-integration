@@ -22,6 +22,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
@@ -30,14 +31,14 @@ import java.util.List;
 
 @Log4j
 @Repository
-public class GitlabCom implements IGitlabComDao {
+public class GitlabComDao implements IGitlabComDao {
 
     private static final String PROJECT = "/api/v3/projects/owned";
 
     @Override
-    public List<GitlabProject> getGitlabProjects(GitlabComEntity gitlabComminucationEntity){
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(gitlabComminucationEntity.getClientId()).build());
-        ResponseEntity<List<GitlabProject>> response = new TemplateFactory().getRestTemplate().exchange(gitlabComminucationEntity.getProjectName() + PROJECT, HttpMethod.GET, requestEntity,
+    public List<GitlabProject> getGitlabProjects(ConfigEntity configEntity){
+        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
+        ResponseEntity<List<GitlabProject>> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getGitlabProjectName() + PROJECT, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<GitlabProject>>() {
                 });
         return response.getBody();

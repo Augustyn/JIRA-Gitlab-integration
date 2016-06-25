@@ -18,13 +18,17 @@ package pl.hycom.jira.plugins.gitlab.integration.ao;
 
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 
 @Service
 public interface GitlabComManDao
 {
+    public void updateGitlabProjectId(int jiraProjectId) throws SQLException;
+    /*
     GitlabComEntity getProject(String projectName);
     public List<GitlabComEntity> getAllProjects();
     public boolean findProject(String insertedProject);
+    */
 }

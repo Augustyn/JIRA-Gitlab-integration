@@ -17,11 +17,13 @@ package pl.hycom.jira.plugins.gitlab.integration.ao;
  * limitations under the License.</p>
  */
 
-import com.atlassian.activeobjects.external.ActiveObjects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
+import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -29,32 +31,25 @@ import java.util.List;
 public class GitlabComManDaoImpl implements GitlabComManDao
 {
     @Autowired
-    private ActiveObjects entityManager;
+    private GitlabComDao gitlabComDao;
+    @Autowired
+    private ConfigManagerDao configManagerDao;
 
-    public GitlabComEntity getProject(String projectName) {
-        return entityManager.get(GitlabComEntity.class,projectName);    //returns null if no entities exist
-    }
+    @Override
+    public void updateGitlabProjectId(int jiraProjectId) throws SQLException
+    {
+        List<GitlabProject> gitlabProjectList;
+        int gitlabProjectId=-1;
+        ConfigEntity configEntity = configManagerDao.getProjectConfig(jiraProjectId);
 
-    public List<GitlabComEntity> getAllProjects() {
-        ArrayList<GitlabComEntity> result = new ArrayList<GitlabComEntity>();
-        GitlabComEntity projectList[] = entityManager.find(GitlabComEntity.class);
-        for(GitlabComEntity proj : projectList){
-            result.add(proj);
-        }
-        return result;
-    }
+        gitlabProjectList = gitlabComDao.getGitlabProjects(configEntity);
 
-    public boolean findProject(String insertedProject) {
-        boolean equals = false;
-        List<GitlabComEntity> result = this.getAllProjects();
-        for(GitlabComEntity proj : result){
-            if(insertedProject.equalsIgnoreCase(proj.toString())){
-                equals = true;
-            }
-            else {
-                equals = false;
+        for(GitlabProject project : gitlabProjectList){
+            if(project.getGitlabProjectName().equalsIgnoreCase(configEntity.getGitlabProjectName())){
+                gitlabProjectId = Integer.parseInt(project.getGitlabProjectName());
             }
         }
-        return equals;
+
+        configManagerDao.updateGitlabProjectId(jiraProjectId,gitlabProjectId);
     }
 }

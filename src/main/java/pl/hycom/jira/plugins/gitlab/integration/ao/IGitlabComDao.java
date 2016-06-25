@@ -15,11 +15,12 @@ package pl.hycom.jira.plugins.gitlab.integration.ao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 
 import java.util.List;
 
 
 public interface IGitlabComDao {
-    List<GitlabProject> getGitlabProjects(GitlabComEntity gitlabComminucationEntity);
+    List<GitlabProject> getGitlabProjects(ConfigEntity configEntity);
 }

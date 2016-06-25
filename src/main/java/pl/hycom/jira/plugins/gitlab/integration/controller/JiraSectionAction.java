@@ -127,6 +127,8 @@ public class JiraSectionAction extends JiraWebActionSupport {
 
         int intProjectId = Integer.parseInt(projectId);
         final ErrorCollection errorCollection = doInternalValidate();
+        //FIXME
+        /*
         if (errorCollection.isEmpty() && gitlabCommunicationManagerDao.findProject(projectId) == true){
             myConfManager.updateProjectConfig(intProjectId, gitlabLink, clientSecret, clientId);
             String result = super.doDefault();
@@ -140,6 +142,8 @@ public class JiraSectionAction extends JiraWebActionSupport {
             log.error("Error in " + errorCollection);
             return ERROR;
         }
+        */
+        return "fixme";
     }
 
 
