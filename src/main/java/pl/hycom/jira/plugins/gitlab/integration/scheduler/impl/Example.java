@@ -2,6 +2,7 @@ package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
 import java.util.TimeZone;
 
+import lombok.extern.log4j.Log4j;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginScheduleManager;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
@@ -15,9 +16,6 @@ import com.atlassian.scheduler.config.RunMode;
 import com.atlassian.scheduler.config.Schedule;
 import com.atlassian.scheduler.status.JobDetails;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import static pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner.AWESOME_ID;
 import static pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomePluginScheduleManagerImpl.toJobId;
 
@@ -26,10 +24,9 @@ import static pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomePlu
  *
  * @since v1.0
  */
+@Log4j
 public class Example
 {
-    private static final Logger LOG = LoggerFactory.getLogger(Example.class);
-
     private static final long EXAMPLE_SCHEDULE_BASE_INTERVAL_MILLIS = 60000L;
     private static final int EXAMPLE_SCHEDULE_COUNT = 5;
 
@@ -58,17 +55,17 @@ public class Example
         final JobDetails existing = schedulerService.getJobDetails(toJobId(stuff));
         if (existing == null)
         {
-            LOG.info("Schedule for stuff id=" + stuff.getID() + " does not exist, so createScheduleIfAbsent will create it");
+            log.info("Schedule for stuff id=" + stuff.getID() + " does not exist, so createScheduleIfAbsent will create it");
             awesomePluginScheduleManager.createAwesomeSchedule(stuff, intervalInMillis);
         }
         else if (existing.getParameters().get(AWESOME_ID) instanceof Long)
         {
-            LOG.info("Schedule for id=" + stuff.getID() + " has a Long id instead of Integer.  Zapping it because it must be old...");
+            log.info("Schedule for id=" + stuff.getID() + " has a Long id instead of Integer.  Zapping it because it must be old...");
             awesomePluginScheduleManager.createAwesomeSchedule(stuff, intervalInMillis);
         }
         else
         {
-            LOG.info("Schedule for stuff id=" + stuff
+            log.info("Schedule for stuff id=" + stuff
                     .getID() + " already exists, so createScheduleIfAbsent is not going to do anything: " + existing);
         }
     }
@@ -80,11 +77,11 @@ public class Example
         final JobDetails existing = schedulerService.getJobDetails(toJobId(stuff));
         if (existing == null)
         {
-            LOG.info("Schedule for stuff id=" + stuff.getID() + " does not exist, so createScheduleIfAbsent will create it normally");
+            log.info("Schedule for stuff id=" + stuff.getID() + " does not exist, so createScheduleIfAbsent will create it normally");
         }
         else
         {
-            LOG.info("Schedule for stuff id=" + stuff.getID() + " already exists, so createOrUpdateSchedule is removing the existing one first: " + existing);
+            log.info("Schedule for stuff id=" + stuff.getID() + " already exists, so createOrUpdateSchedule is removing the existing one first: " + existing);
         }
         awesomePluginScheduleManager.createAwesomeSchedule(stuff, intervalInMillis);
     }
@@ -97,18 +94,18 @@ public class Example
     {
         try
         {
-            LOG.info("Setting up example data...");
+            log.info("Setting up example data...");
             for (int i=1; i<=EXAMPLE_SCHEDULE_COUNT; ++i)
             {
                 AwesomeStuff stuff = awesomeStuffDao.findById(i);
                 if (stuff == null)
                 {
                     stuff = awesomeStuffDao.create("Awesome stuff #" + i);
-                    LOG.info("Created: " + stuff);
+                    log.info("Created: " + stuff);
                 }
                 else
                 {
-                    LOG.info("Reusing: " + stuff);
+                    log.info("Reusing: " + stuff);
                 }
                 if ((i&1) == 0)
                 {
@@ -149,18 +146,18 @@ public class Example
                 // expression already uses an acceptable value, like "0" or "23", then it is accepted as-is.
                 // The behavior applies to interval schedules as well -- they are quantized to multiples of
                 // 60 seconds, rounding up if necessary.
-                LOG.info("Created the deliberately broken job");
+                log.info("Created the deliberately broken job");
             }
             else
             {
-                LOG.info("Broken job already exists; not setting it up...");
+                log.info("Broken job already exists; not setting it up...");
             }
         }
         catch (SchedulerServiceException sse)
         {
-            LOG.error("Could not set up the deliberately broken job", sse);
+            log.error("Could not set up the deliberately broken job", sse);
         }
-        LOG.info("Done setting up example schedules");
+        log.info("Done setting up example schedules");
     }
 
 }

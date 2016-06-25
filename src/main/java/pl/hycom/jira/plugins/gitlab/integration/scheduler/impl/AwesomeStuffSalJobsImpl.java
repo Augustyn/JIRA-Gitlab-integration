@@ -4,20 +4,18 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import lombok.extern.log4j.Log4j;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs;
 import com.atlassian.sal.api.scheduling.PluginScheduler;
 
 import com.google.common.collect.ImmutableMap;
 
-import org.slf4j.LoggerFactory;
-
+@Log4j
 public class AwesomeStuffSalJobsImpl implements AwesomeStuffSalJobs
 {
     static final String KEY = AwesomeStuffSalJobsImpl.class.getName() + ":instance";
     public static final String JOB_NAME = AwesomeStuffSalJobsImpl.class.getName() + ":job";
-
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(AwesomeStuffSalJobsImpl.class);
 
     private final AtomicBoolean scheduled = new AtomicBoolean();
     private final PluginScheduler pluginScheduler;  // provided by SAL
@@ -41,7 +39,7 @@ public class AwesomeStuffSalJobsImpl implements AwesomeStuffSalJobs
                 new Date(),                  // the time the job is to start
                 intervalInSeconds * 1000L);  // interval between repeats, in milliseconds
         scheduled.set(true);
-        LOG.info(String.format("Task monitor scheduled to run every %d seconds.", intervalInSeconds));
+        log.info(String.format("Task monitor scheduled to run every %d seconds.", intervalInSeconds));
     }
 
     public void unschedule()
@@ -55,7 +53,7 @@ public class AwesomeStuffSalJobsImpl implements AwesomeStuffSalJobs
         }
         catch (IllegalArgumentException iae)
         {
-            LOG.warn("Looks like the job was not scheduled, after all", iae);
+            log.warn("Looks like the job was not scheduled, after all", iae);
         }
     }
 
