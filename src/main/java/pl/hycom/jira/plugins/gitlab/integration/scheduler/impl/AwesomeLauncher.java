@@ -1,5 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
+import java.lang.annotation.Annotation;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import com.atlassian.activeobjects.external.ActiveObjects;
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
 import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs;
 import com.atlassian.plugin.event.events.PluginEnabledEvent;
@@ -69,33 +71,25 @@ import org.springframework.beans.factory.InitializingBean;
 
 @Component
 @Log4j
-public class AwesomeLauncher implements LifecycleAware, InitializingBean, DisposableBean
+public class AwesomeLauncher implements LifecycleAware, InitializingBean, DisposableBean, EventListener
 {
     private static final String PLUGIN_KEY = "com.atlassian.jira.plugins.atlassian-scheduler-jira-example";
 
-    private final AwesomePluginJobRunner jobRunner;
-    private final EventPublisher eventPublisher;
-    private final SchedulerService schedulerService;
-    private final ActiveObjects ao;
-    private final AwesomeStuffSalJobs awesomeStuffSalJobs;
-    private final Example example;
+    @Autowired
+    private AwesomePluginJobRunner jobRunner;
+    @Autowired
+    private EventPublisher eventPublisher;
+    @Autowired
+    private SchedulerService schedulerService;
+    @Autowired
+    private ActiveObjects ao;
+    @Autowired
+    private AwesomeStuffSalJobs awesomeStuffSalJobs;
+    @Autowired
+    private Example example;
 
     @GuardedBy("this")
     private final Set<LifecycleEvent> lifecycleEvents = EnumSet.noneOf(LifecycleEvent.class);
-
-
-
-    public AwesomeLauncher(final AwesomePluginJobRunner jobRunner, final EventPublisher eventPublisher,
-            final SchedulerService schedulerService, final ActiveObjects ao,
-            final AwesomeStuffSalJobs awesomeStuffSalJobs, final Example example)
-    {
-        this.jobRunner = jobRunner;
-        this.eventPublisher = eventPublisher;
-        this.schedulerService = schedulerService;
-        this.ao = ao;
-        this.awesomeStuffSalJobs = awesomeStuffSalJobs;
-        this.example = example;
-    }
 
 
     /**
@@ -129,6 +123,7 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      * This is received from the plugin system after the plugin is fully initialized.  It is not safe to use
      * Active Objects before this event is received.
      */
+
     @EventListener
     public void onPluginEnabled(PluginEnabledEvent event)
     {
@@ -262,6 +257,11 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
     {
         log.info("initActiveObjects");
         ao.flushAll();
+    }
+
+    @Override
+    public Class<? extends Annotation> annotationType() {
+        return null;
     }
 
 

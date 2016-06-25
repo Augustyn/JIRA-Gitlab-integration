@@ -29,23 +29,13 @@
     -->
     <osgi:reference id="indexPathManager" interface="com.atlassian.jira.config.util.IndexPathManager"  />
 
-    <osgi:reference id="schedulerService" interface="com.atlassian.scheduler.SchedulerService" />
-    <osgi:reference id="activeObjects" interface="com.atlassian.activeobjects.external.ActiveObjects" />
-    <osgi:reference id="eventPublisher" interface="com.atlassian.event.api.EventPublisher" />
 
-
-    <osgi:service id="LifecycleAware"
+    <osgi:service id="awesomeListenerLifecycleAware"
                   interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="awesomeLauncher"/>
 
-    <osgi:service id="DisposableBean"
+    <osgi:service id="awesomeListenerDisposableBean"
                   interface="org.springframework.beans.factory.DisposableBean" ref="awesomeLauncher"/>
 
-    <osgi:service id="InitializingBean"
+    <osgi:service id="awesomeListenerInitializingBean"
                   interface="org.springframework.beans.factory.InitializingBean" ref="awesomeLauncher"/>
-
-
-    <osgi:service id="eventListener"
-                  interface="com.atlassian.event.api.EventListener" ref="awesomeLauncher"/>
-    <osgi:service id="pluginEnabledEvent"
-                  interface="com.atlassian.plugin.event.events.PluginEnabledEvent" ref="awesomeLauncher"/>
 </beans>
