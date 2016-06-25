@@ -8,6 +8,7 @@ import javax.annotation.concurrent.GuardedBy;
 import com.atlassian.activeobjects.external.ActiveObjects;
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
+import lombok.extern.log4j.Log4j;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs;
 import com.atlassian.plugin.event.events.PluginEnabledEvent;
@@ -15,8 +16,6 @@ import com.atlassian.sal.api.lifecycle.LifecycleAware;
 import com.atlassian.scheduler.SchedulerService;
 import org.springframework.stereotype.Component;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -69,9 +68,9 @@ import org.springframework.beans.factory.InitializingBean;
  */
 
 @Component
+@Log4j
 public class AwesomeLauncher implements LifecycleAware, InitializingBean, DisposableBean
 {
-    private static final Logger LOG = LoggerFactory.getLogger(AwesomeLauncher.class);
     private static final String PLUGIN_KEY = "com.atlassian.jira.plugins.atlassian-scheduler-jira-example";
 
     private final AwesomePluginJobRunner jobRunner;
