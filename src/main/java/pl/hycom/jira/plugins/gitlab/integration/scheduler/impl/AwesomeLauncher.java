@@ -158,10 +158,10 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      */
     private void onLifecycleEvent(LifecycleEvent event)
     {
-        LOG.info("onLifecycleEvent: " + event);
+        log.info("onLifecycleEvent: " + event);
         if (isLifecycleReady(event))
         {
-            LOG.info("Got the last lifecycle event... Time to get started!");
+            log.info("Got the last lifecycle event... Time to get started!");
             unregisterListener();
 
             try
@@ -170,7 +170,7 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
             }
             catch (Exception ex)
             {
-                LOG.error("Unexpected error during launch", ex);
+                log.error("Unexpected error during launch", ex);
             }
         }
     }
@@ -199,50 +199,50 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      */
     private void launch() throws Exception
     {
-        LOG.info("LAUNCH!");
+        log.info("LAUNCH!");
         initActiveObjects();
         registerJobRunner();
         registerSalJobs();
 
         example.setUpExample();
-        LOG.info("launched successfully");
+        log.info("launched successfully");
     }
 
 
 
     private void registerListener()
     {
-        LOG.info("registerListeners");
+        log.info("registerListeners");
         eventPublisher.register(this);
     }
 
     private void unregisterListener()
     {
-        LOG.info("unregisterListeners");
+        log.info("unregisterListeners");
         eventPublisher.unregister(this);
     }
 
     private void registerJobRunner()
     {
-        LOG.info("registerJobRunner");
+        log.info("registerJobRunner");
         schedulerService.registerJobRunner(AwesomePluginJobRunner.AWESOME_JOB, jobRunner);
     }
 
     private void unregisterJobRunner()
     {
-        LOG.info("unregisterJobRunner");
+        log.info("unregisterJobRunner");
         schedulerService.unregisterJobRunner(AwesomePluginJobRunner.AWESOME_JOB);
     }
 
     private void registerSalJobs()
     {
-        LOG.info("registerSalJobs");
+        log.info("registerSalJobs");
         awesomeStuffSalJobs.reschedule(AwesomeStuffSalJobs.DEFAULT_INTERVAL_IN_SECONDS);
     }
 
     private void unregisterSalJobs()
     {
-        LOG.info("unregisterSalJob");
+        log.info("unregisterSalJob");
         awesomeStuffSalJobs.unschedule();
     }
 
@@ -260,7 +260,7 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      */
     private void initActiveObjects()
     {
-        LOG.info("initActiveObjects");
+        log.info("initActiveObjects");
         ao.flushAll();
     }
 
