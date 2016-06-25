@@ -28,6 +28,9 @@
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     -->
     <osgi:reference id="indexPathManager" interface="com.atlassian.jira.config.util.IndexPathManager"  />
+    <osgi:reference id="schedulerService" interface="com.atlassian.scheduler.SchedulerService" />
+    <osgi:reference id="activeObjects" interface="com.atlassian.activeobjects.external.ActiveObjects" />
+    <osgi:reference id="eventPublisher" interface="com.atlassian.event.api.EventPublisher" />
 
 
     <osgi:service id="awesomeListenerLifecycleAware"
@@ -38,4 +41,5 @@
 
     <osgi:service id="awesomeListenerInitializingBean"
                   interface="org.springframework.beans.factory.InitializingBean" ref="awesomeLauncher"/>
+
 </beans>
