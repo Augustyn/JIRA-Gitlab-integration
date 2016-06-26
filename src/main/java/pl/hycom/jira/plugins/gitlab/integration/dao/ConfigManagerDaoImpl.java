@@ -50,7 +50,8 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
     }
 
 
-    public ConfigEntity updateProjectConfig(int projectID,String gitlabLink,String gitlabSecret,String gitlabClientId) throws SQLException
+    public ConfigEntity updateProjectConfig(int projectID,String gitlabLink,String gitlabSecret,String gitlabClientId,
+                                            String gitlabProjectName) throws SQLException
     {
         ConfigEntity projectConfig;
         if( entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?",projectID)) > 0 )
@@ -65,10 +66,18 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
         projectConfig.setLink(gitlabLink);
         projectConfig.setSecret(gitlabSecret);
         projectConfig.setClientId(gitlabClientId);
+        projectConfig.setGitlabProjectName(gitlabProjectName);
 
         projectConfig.save();
         return  projectConfig;
     }
 
+    public void updateGitlabProjectId(int projectID, int gitlabProjectID)
+    {
+        ConfigEntity projectConfig;
+        projectConfig = entityManager.get(ConfigEntity.class,projectID);
+        projectConfig.setGitlabProjectId(gitlabProjectID);
+        projectConfig.save();
+    }
 
 }

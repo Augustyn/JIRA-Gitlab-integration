@@ -50,7 +50,7 @@ public class ConfigManagerDaoTest
         assertNotNull(entityManager);
 
 
-        ConfigEntity saved = configManager.updateProjectConfig(testProjectId,"testlink","testsecret","testid");
+        ConfigEntity saved = configManager.updateProjectConfig(testProjectId,"testlink","testsecret","testid","testname");
 
         ConfigEntity retrieved = configManager.getProjectConfig(testProjectId);
 
