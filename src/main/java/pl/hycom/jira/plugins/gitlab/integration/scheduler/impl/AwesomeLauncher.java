@@ -71,10 +71,10 @@ import org.springframework.beans.factory.InitializingBean;
 
 @Component
 @Log4j
-public class AwesomeLauncher implements LifecycleAware, InitializingBean, DisposableBean, EventListener
+public class AwesomeLauncher implements LifecycleAware, InitializingBean, DisposableBean
 {
-    private static final String PLUGIN_KEY = "com.atlassian.jira.plugins.atlassian-scheduler-jira-example";
-
+    @Autowired
+    private static String PLUGIN_KEY = "com.atlassian.jira.plugins.atlassian-scheduler-jira-example";
     @Autowired
     private AwesomePluginJobRunner jobRunner;
     @Autowired
@@ -153,7 +153,6 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      */
     private void onLifecycleEvent(LifecycleEvent event)
     {
-        log.info("onLifecycleEvent: " + event);
         if (isLifecycleReady(event))
         {
             log.info("Got the last lifecycle event... Time to get started!");
@@ -185,6 +184,19 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      */
     synchronized private boolean isLifecycleReady(LifecycleEvent event)
     {
+        log.error("size of lifecycleEvents: " + lifecycleEvents.size() + "/" +  LifecycleEvent.values().length);
+
+        if(lifecycleEvents.contains(event))
+            log.error("lifecycleEvents already has that event: " + event.name());
+        else
+            log.error("we add event called: " + event.name());
+
+        if(lifecycleEvents.add(event) == false)
+            log.error("lifecycleEvents.add(event) == false");
+
+        if(!(lifecycleEvents.size() == LifecycleEvent.values().length))
+            log.error("(lifecycleEvents.size() == LifecycleEvent.values().length) == false");
+
         return lifecycleEvents.add(event) && lifecycleEvents.size() == LifecycleEvent.values().length;
     }
 
@@ -259,18 +271,12 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
         ao.flushAll();
     }
 
-    @Override
-    public Class<? extends Annotation> annotationType() {
-        return null;
-    }
-
-
     /**
      * Used to keep track of everything that needs to happen before we are sure that it is safe
      * to talk to all of the components we need to use, particularly the {@code SchedulerService}
      * and Active Objects.  We will not try to initialize until all of them have happened.
      */
-    static enum LifecycleEvent
+    enum LifecycleEvent
     {
         AFTER_PROPERTIES_SET,
         PLUGIN_ENABLED,
