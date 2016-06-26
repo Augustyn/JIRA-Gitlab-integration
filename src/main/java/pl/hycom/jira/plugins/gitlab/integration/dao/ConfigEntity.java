@@ -17,7 +17,6 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * limitations under the License.</p>
  */
 
-import net.java.ao.Entity;
 import net.java.ao.RawEntity;
 import net.java.ao.schema.AutoIncrement;
 import net.java.ao.schema.NotNull;
