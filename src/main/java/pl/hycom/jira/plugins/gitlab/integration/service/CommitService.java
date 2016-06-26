@@ -42,9 +42,10 @@ public class CommitService implements ICommitService {
 
     @Autowired
     private ConfigManagerDaoImpl dao;
+    @Autowired
+    private CommitService commitService;
     private ICommitDao commitRepository;
     private CommitSearcher commitSearcher;
-    private CommitService commitService;
 
     private int perPage = 20;
 

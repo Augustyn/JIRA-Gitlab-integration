@@ -35,8 +35,10 @@ import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -80,7 +82,6 @@ public class CommitSearcher {
 
     public List<Commit> searchCommitsByIssue(String jiraIssueKey) throws IOException {
         List<Commit> foundedCommitsList = new ArrayList<Commit>();
-        Commit tmpCommit = new Commit();
         Path path = lucenePathSearcher.getIndexPath();
         try(Directory indexDirectory = FSDirectory.open(path)) {
 
@@ -89,22 +90,29 @@ public class CommitSearcher {
             IndexSearcher searcher = new IndexSearcher(reader);
 
             TopDocs docs = searcher.search(query, hitsPerPage);
-            ScoreDoc[] hits = docs.scoreDocs;
+            List<ScoreDoc> hitsList = Arrays.asList(docs.scoreDocs);
 
-            for(ScoreDoc hit: hits) {
-                int docId = hit.doc;
-                Document document = searcher.doc(docId);
+            hitsList.stream().forEach(hit -> {
+                try {
+                    int docId = hit.doc;
+                    Document document = searcher.doc(docId);
 
-                tmpCommit.setAuthor_email(document.get("author_name"));
-                tmpCommit.setAuthor_name(document.get("author_email"));
-                tmpCommit.setCreated_at(document.get("created_at"));
-                tmpCommit.setId(document.get("id"));
-                tmpCommit.setShort_id(document.get("short_id"));
-                tmpCommit.setMessage(document.get("message"));
-                tmpCommit.setTitle(document.get("title"));
+                    Commit tmpCommit = new Commit.CommitBuilder()
+                            .withId(document.get("id"))
+                            .withShortId(document.get("short_id"))
+                            .withTitle(document.get("title"))
+                            .withAuthorName(document.get("author_name"))
+                            .withAuthorEmail(document.get("author_email"))
+                            .withCreatedAt(document.get("created_at"))
+                            .withMessage(document.get("message"))
+                            .build();
 
-                foundedCommitsList.add(tmpCommit);
-            }
+                    foundedCommitsList.add(tmpCommit);
+                } catch(IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            });
+
         }
         return foundedCommitsList;
     }
