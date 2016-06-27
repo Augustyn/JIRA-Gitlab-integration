@@ -44,7 +44,10 @@
           <td class="jiraformbody">
           The current parameter value of gitlabLink is: $action.getGitlabLink().
           </td>
-        </tr>   
+          <td class="jiraformbody">
+          The current parameter value of gitlabProjectName is: $action.gitlabProjectName().
+          </td>
+          </tr>
       </table>
   </body>
 </html>

@@ -28,6 +28,9 @@ The value from the action-client_secret: ${clientSecret}
 The value from the action-gitlablink: ${gitlabLink}
 </p>
 <p>
+The value from the action-gitlabProjectName: ${gitlabProjectName}
+</p>
+<p>
 Or display the details of the error(s):
 </p>
 

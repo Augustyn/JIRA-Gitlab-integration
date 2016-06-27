@@ -18,7 +18,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.controller;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.hycom.jira.plugins.gitlab.integration.ao.GitlabComManDao;
+import pl.hycom.jira.plugins.gitlab.integration.dao.GitlabComManDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
@@ -35,6 +35,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private static final String ERROR_INVALID_CLIENTSECRET = "jirasection.action.error.invalid.cliendsecret";
     private static final String ERROR_INVALID_PROJECTID = "jirasection.action.error.invalid.projectid";
     private static final String ERROR_INVALID_GITLABLINK = "jirasection.action.error.invalid.gitlablink";
+    private static final String ERROR_INVALID_GITLABPROJECTNAME = "jirasection.action.error.invalid.gitlabprojectname";
 
     @Autowired
     private Validator validator;
@@ -48,6 +49,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private String clientSecret = "client123";
     private String gitlabLink = "https://github.com/";
     private String projectId = "123456";
+    private String gitlabProjectName = "newname";
 
 
     public JiraSectionAction() {
@@ -60,11 +62,13 @@ public class JiraSectionAction extends JiraWebActionSupport {
         String sClientSecret = getClientSecret();
         String sGitlabLink = getGitlabLink();
         String sProjectId = getProjectId();
+        String sGitlabProjectNamePattern = getGitlabProjectName();
 
         paramMap.put(FormField.CLIENTID, sClientId);
         paramMap.put(FormField.CLIENTSECRET, sClientSecret);
         paramMap.put(FormField.GITLABLINK, sGitlabLink);
         paramMap.put(FormField.PROJECTID, sProjectId);
+        paramMap.put(FormField.GITLABPROJECTNAME, sGitlabProjectNamePattern);
 
         final ErrorCollection validate = validator.validate(paramMap);
         validate.getErrorMessages().stream().forEach(e->this.getErrorMessages().add(this.getI18nHelper().getText(e)));
@@ -83,9 +87,11 @@ public class JiraSectionAction extends JiraWebActionSupport {
         String sClientId = getClientId();
         String sClientSecret = getClientSecret();
         String sGitlabLink = getGitlabLink();
+        String sGitlabProjectName = getGitlabProjectName();
         log.debug("The local variable client_id  is currently set to: " + sClientId);
         log.debug("The local variable client_secret is currently set to: " + sClientSecret);
         log.debug("The local variable gitlablink is currently set to: " + sGitlabLink);
+        log.debug("The local variable gitlabProjectName is currently set to: " + sGitlabProjectName);
 
 
         if (invalidInput()) {
@@ -127,10 +133,9 @@ public class JiraSectionAction extends JiraWebActionSupport {
 
         int intProjectId = Integer.parseInt(projectId);
         final ErrorCollection errorCollection = doInternalValidate();
-        //FIXME
-        /*
-        if (errorCollection.isEmpty() && gitlabCommunicationManagerDao.findProject(projectId) == true){
-            myConfManager.updateProjectConfig(intProjectId, gitlabLink, clientSecret, clientId);
+
+        if (errorCollection.isEmpty()){
+            myConfManager.updateProjectConfig(intProjectId, gitlabLink, clientSecret, clientId, gitlabProjectName);
             String result = super.doDefault();
             log.debug("Exiting doDefault with a result of: " + result);
             return result;
@@ -139,11 +144,10 @@ public class JiraSectionAction extends JiraWebActionSupport {
             getJiraServiceContext().getErrorCollection().addError(FormField.CLIENTSECRET.getFieldName(), getJiraServiceContext().getI18nBean().getText(ERROR_INVALID_CLIENTSECRET));
             getJiraServiceContext().getErrorCollection().addError(FormField.PROJECTID.getFieldName(), getJiraServiceContext().getI18nBean().getText(ERROR_INVALID_PROJECTID));
             getJiraServiceContext().getErrorCollection().addError(FormField.GITLABLINK.getFieldName(), getJiraServiceContext().getI18nBean().getText(ERROR_INVALID_GITLABLINK));
+            getJiraServiceContext().getErrorCollection().addError(FormField.GITLABPROJECTNAME.getFieldName(), getJiraServiceContext(). getI18nBean().getText((ERROR_INVALID_GITLABPROJECTNAME)));
             log.error("Error in " + errorCollection);
             return ERROR;
         }
-        */
-        return "fixme";
     }
 
 
@@ -156,6 +160,11 @@ public class JiraSectionAction extends JiraWebActionSupport {
     public void setClientSecret(String value) {
         log.debug("Setting clientSecret to: " + value);
         this.clientSecret = value;
+    }
+
+    public void setGitlabProjectName(String value){
+        log.debug("Setting gitlabProjectName to: " + value);
+        this.gitlabProjectName = value;
     }
 
     public void setGitlabLink(String value) {
@@ -188,6 +197,11 @@ public class JiraSectionAction extends JiraWebActionSupport {
     public String getProjectId() {
         log.debug("Getting projectId");
         return projectId;
+    }
+
+    public String getGitlabProjectName() {
+        log.debug("Getting GitlabProjectName");
+        return gitlabProjectName;
     }
 }
 

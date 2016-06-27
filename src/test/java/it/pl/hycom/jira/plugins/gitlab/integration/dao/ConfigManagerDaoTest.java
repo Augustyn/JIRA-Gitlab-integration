@@ -24,7 +24,7 @@ import java.sql.SQLException;
 
 
 import static org.junit.Assert.*;
-
+/*
 @Component
 @RunWith(AtlassianPluginsTestRunner.class)
 public class ConfigManagerDaoTest
@@ -76,4 +76,4 @@ public class ConfigManagerDaoTest
         }
     }
 
-}
+}*/

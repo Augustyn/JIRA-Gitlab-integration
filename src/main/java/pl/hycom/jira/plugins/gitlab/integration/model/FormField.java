@@ -70,6 +70,19 @@ public enum FormField {
                         ERROR_PREFIX + "invalidValue"));
             }
         }
+    }
+    ,
+    GITLABPROJECTNAME("gitlabProjectName") {
+        @Override
+        public void validate(ErrorCollection errorCollection, String value) {
+            if (value == null || value.isEmpty()) {
+                errorCollection.addValidationError(new ValidationError(FormField.GITLABPROJECTNAME.fieldName,
+                        ERROR_PREFIX + EMPTY_FIELD));
+            } else if (!gitlabProjectNamePattern.matcher(value).matches()) {
+                errorCollection.addValidationError(new ValidationError(FormField.GITLABPROJECTNAME.fieldName,
+                        ERROR_PREFIX + "invalidValue"));
+            }
+        }
     };
 
     private final static String ERROR_PREFIX = "jirasectionaction.errors.";
@@ -78,7 +91,7 @@ public enum FormField {
     public static final Pattern clientIdPattern = Pattern.compile("([aA-zZ]*[0-9]*)*", Pattern.CASE_INSENSITIVE);
     public static final Pattern clientSecretPattern = Pattern.compile("([aA-zZ]*[0-9]*)*", Pattern.CASE_INSENSITIVE);
     public static final Pattern gitlabLinkPattern = Pattern.compile("^(https?|ssh)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", Pattern.CASE_INSENSITIVE);
-
+    public static final Pattern gitlabProjectNamePattern = Pattern.compile("([aA-zZ]*[0-9]*)*", Pattern.CASE_INSENSITIVE);
 
     private final String fieldName;
 
