@@ -1,6 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 /*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,31 +27,31 @@ import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
 import java.util.List;
 
-/**
- * Created by Kamil Rogowski on 22.04.2016.
- */
+
 @Log4j
 @Repository
 public class CommitRepository implements ICommitDao {
 
+    private static final String COMMIT_BASE = "/api/v3/projects/{gitlabprojectid}/repository/commits";
+    private static final String COMMIT_URL =  COMMIT_BASE + "?per_page={perPage}&page={pageNumber}";
+    private static final String COMMIT_SINGLE_URL = COMMIT_BASE + "/{sha1sum}";
+
     @Override
-    public List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber) {
-        String repositoryUrlWithPageNumber = "{param1}?per_page={param2}&page={param3}";
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateToken).build());
-        ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(repositoryUrlWithPageNumber, HttpMethod.GET, requestEntity,
+    public List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber) {
+        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
+        ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + COMMIT_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<Commit>>() {
-                }, repositoryUrl, Integer.toString(perPage), Integer.toString(pageNumber));
+                }, configEntity.getLink(), Integer.toString(perPage), Integer.toString(pageNumber));
 
         return response.getBody();
     }
 
     @Override
-    public Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum) {
-        String oneCommitUrl = "{param1}/{param2}";
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(privateToken).build());
-        ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(oneCommitUrl, HttpMethod.GET, requestEntity,
+    public Commit getOneCommit(ConfigEntity configEntity, String shaSum) {
+        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
+        ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
-                },repositoryUrl,shaSum);
+                }, shaSum);
 
         return response.getBody();
     }

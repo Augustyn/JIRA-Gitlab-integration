@@ -24,7 +24,8 @@ import org.springframework.stereotype.Repository;
 
 
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Repository
@@ -38,8 +39,19 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
         return entityManager.get(ConfigEntity.class,projectID);    //returns null if no entities exist
     }
 
+    public List<ConfigEntity> getAllProjectConfigs() throws SQLException
+    {
+        ArrayList<ConfigEntity> result = new ArrayList<ConfigEntity>();
+        ConfigEntity configs[] = entityManager.find(ConfigEntity.class);
+        for(ConfigEntity conf : configs){
+            result.add(conf);
+        }
+        return result;
+    }
 
-    public ConfigEntity updateProjectConfig(int projectID,String gitlabLink,String gitlabSecret,String gitlabClientId) throws SQLException
+
+    public ConfigEntity updateProjectConfig(int projectID,String gitlabLink,String gitlabSecret,String gitlabClientId,
+                                            String gitlabProjectName) throws SQLException
     {
         ConfigEntity projectConfig;
         if( entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?",projectID)) > 0 )
@@ -54,10 +66,18 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
         projectConfig.setLink(gitlabLink);
         projectConfig.setSecret(gitlabSecret);
         projectConfig.setClientId(gitlabClientId);
+        projectConfig.setGitlabProjectName(gitlabProjectName);
 
         projectConfig.save();
         return  projectConfig;
     }
 
+    public void updateGitlabProjectId(int projectID, int gitlabProjectID)
+    {
+        ConfigEntity projectConfig;
+        projectConfig = entityManager.get(ConfigEntity.class,projectID);
+        projectConfig.setGitlabProjectId(gitlabProjectID);
+        projectConfig.save();
+    }
 
 }

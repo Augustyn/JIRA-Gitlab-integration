@@ -16,8 +16,12 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * limitations under the License.</p>
  */
 
+import com.atlassian.jira.issue.Issue;
+import org.apache.lucene.queryparser.classic.ParseException;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -25,6 +29,7 @@ import java.util.List;
  */
 public interface ICommitService {
 
-    List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber);
-    Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum);
+    List<Commit> getNewCommits(Long projectId) throws SQLException, ParseException, IOException;
+    Commit getOneCommit(Long projectId, String shaSum) throws SQLException;
+    List<Commit> getAllIssueCommits(Issue jiraIssue);
 }

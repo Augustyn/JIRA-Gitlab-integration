@@ -16,12 +16,21 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * limitations under the License.</p>
  */
 
+import com.atlassian.jira.issue.Issue;
 import lombok.extern.log4j.Log4j;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitSearcher;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,18 +40,45 @@ import java.util.List;
 @Log4j
 public class CommitService implements ICommitService {
 
-
     @Autowired
+    private ConfigManagerDaoImpl dao;
+    @Autowired
+    private CommitService commitService;
     private ICommitDao commitRepository;
+    private CommitSearcher commitSearcher;
+
+    private int perPage = 20;
 
     @Override
-    public List<Commit> getNewCommits(String repositoryUrl, String privateToken, int perPage, int pageNumber) {
+    public List<Commit> getNewCommits(Long projectId) throws SQLException, ParseException, IOException {
+        int pageNumber = 1;
+        boolean indexedCommitEncountered = false;
+        List<Commit> commitsList = new ArrayList<>();
+        List<Commit> resultList = new ArrayList<>();
 
-        return commitRepository.getNewCommits(repositoryUrl, privateToken, perPage, pageNumber);
+        do {
+            commitsList = commitRepository.getNewCommits(dao.getProjectConfig(projectId.intValue()), perPage, pageNumber);
+            for(Commit commit : commitsList) {
+                if(!commitSearcher.checkIfCommitIsIndexed(commit.getId())) {
+                    resultList.add(commit);
+                } else {
+                    indexedCommitEncountered = true;
+                    break;
+                }
+            }
+            pageNumber++;
+        } while(commitsList.size() != perPage && !indexedCommitEncountered);
+        return resultList;
     }
 
     @Override
-    public Commit getOneCommit(String repositoryUrl, String privateToken, String shaSum) {
-        return commitRepository.getOneCommit(repositoryUrl, privateToken, shaSum);
+    public List<Commit> getAllIssueCommits(Issue jiraIssue) {
+        String issueKey = jiraIssue.getKey();
+        return commitService.getAllIssueCommits(jiraIssue);
+    }
+
+    @Override
+    public Commit getOneCommit(Long projectId, String shaSum) throws SQLException {
+        return commitRepository.getOneCommit(dao.getProjectConfig(projectId.intValue()), shaSum);
     }
 }

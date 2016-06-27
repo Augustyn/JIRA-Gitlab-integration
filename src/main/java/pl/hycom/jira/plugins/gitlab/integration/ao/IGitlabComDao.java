@@ -1,7 +1,6 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
-
+package pl.hycom.jira.plugins.gitlab.integration.ao;
 /*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,36 +15,12 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import lombok.extern.log4j.Log4j;
-import org.springframework.stereotype.Service;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 
 import java.util.List;
 
 
-@Service
-@Log4j
-public class GitLabManager {
-
-    public GitLabManager() {
-
-    }
-
-    public void handleEvent() {
-        //TODO
-        runProcessors();
-    }
-
-    public List<Commit> parseCommitData() {
-        //TODO
-        return null;
-    }
-
-
-    public void runProcessors() {
-        //TODO
-
-    }
-
+public interface IGitlabComDao {
+    List<GitlabProject> getGitlabProjects(ConfigEntity configEntity);
 }

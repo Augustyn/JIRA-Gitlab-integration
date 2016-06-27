@@ -17,11 +17,11 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * limitations under the License.</p>
  */
 
-import net.java.ao.Entity;
 import net.java.ao.RawEntity;
 import net.java.ao.schema.AutoIncrement;
 import net.java.ao.schema.NotNull;
 import net.java.ao.schema.PrimaryKey;
+import net.spy.memcached.transcoders.IntegerTranscoder;
 
 /**
  * Created by vagrant on 5/10/16.
@@ -33,8 +33,6 @@ public interface ConfigEntity extends RawEntity<Integer>
     @PrimaryKey("ProjectID")
     public Integer getProjectID();
 
-    public String getProjectName();
-
     public String getLink();
     public void setLink(String link);
 
@@ -43,4 +41,13 @@ public interface ConfigEntity extends RawEntity<Integer>
 
     public String getClientId();
     public void setClientId(String clientId);
+
+
+
+    public String getGitlabProjectName();
+    public void setGitlabProjectName(String gitlabProjectName);
+
+    public Integer getGitlabProjectId();
+    public void setGitlabProjectId(int gitlabProjectId);
+
 }
