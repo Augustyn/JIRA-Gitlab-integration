@@ -26,9 +26,4 @@ import java.util.List;
 public interface GitlabComManDao
 {
     public void updateGitlabProjectId(int jiraProjectId) throws SQLException;
-    /*
-    GitlabComEntity getProject(String projectName);
-    public List<GitlabComEntity> getAllProjects();
-    public boolean findProject(String insertedProject);
-    */
 }

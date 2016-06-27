@@ -16,14 +16,13 @@
  */
 
 package pl.hycom.jira.plugins.gitlab.integration.controller;
-
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.hycom.jira.plugins.gitlab.integration.dao.IGitlabComManDao;
+import pl.hycom.jira.plugins.gitlab.integration.ao.GitlabComManDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
-import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
+import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
 
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -45,7 +44,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private ConfigManagerDao myConfManager;
 
     @Autowired
-    private IGitlabComManDao gitlabCommunicationManagerDao;
+    private GitlabComManDao gitlabCommunicationManagerDao;
     private String clientId = "123";
     private String clientSecret = "client123";
     private String gitlabLink = "https://github.com/";
