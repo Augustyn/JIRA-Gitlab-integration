@@ -34,6 +34,13 @@
     <osgi:reference id="eventPublisher" interface="com.atlassian.event.api.EventPublisher" />
     <osgi:reference id="eventListener" interface="com.atlassian.event.api.EventListener" />
     <osgi:reference id="pluginEnabledEvent" interface="com.atlassian.plugin.event.events.PluginEnabledEvent" />
+    <osgi:reference id="userManager" interface="com.atlassian.jira.user.util.UserManager" />
+    <osgi:reference id="authenticationContext" interface="com.atlassian.jira.security.JiraAuthenticationContext" />
+    <osgi:reference id="issueInputParameters" interface="com.atlassian.jira.issue.IssueInputParameters" />
+    <osgi:reference id="userUtils" interface="com.atlassian.jira.user.UserUtils" />
+    <osgi:reference id="issueManager" interface=" com.atlassian.jira.issue.IssueManager" />
+    <osgi:reference id="applicationUser" interface=" com.atlassian.jira.user.ApplicationUser" />
+    <osgi:reference id="issueRequestBuilder" interface=" com.atlassian.jira.issue.UpdateIssueRequest" />
 
     <osgi:service id="LifecycleAware"
                   interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="awesomeLauncher"/>
@@ -43,8 +50,5 @@
 
     <osgi:service id="InitializingBean"
                   interface="org.springframework.beans.factory.InitializingBean" ref="awesomeLauncher"/>
-    <osgi:reference id="userManager" interfac="com.atlassian.jira.user.util.UserManager" />
-    <osgi:reference id="authenticationContext" interfac="com.atlassian.jira.security.JiraAuthenticationContext" />
-    <osgi:reference id="issueInputParameters" interfac="com.atlassian.jira.issue.IssueInputParameters" />
 
 </beans>

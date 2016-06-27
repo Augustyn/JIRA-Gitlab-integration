@@ -17,43 +17,66 @@ package pl.hycom.jira.plugins.gitlab.integration.service.processors;
  * limitations under the License.</p>
  */
 
-import com.google.gson.Gson;
+import com.atlassian.jira.issue.IssueManager;
+import com.atlassian.jira.issue.MutableIssue;
+import com.atlassian.jira.issue.UpdateIssueRequest;
+import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.user.UserUtils;
+import com.atlassian.jira.user.util.UserManager;
 import lombok.extern.log4j.Log4j;
-import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.util.HttpURLConnection;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
+import pl.hycom.jira.plugins.gitlab.integration.service.CommitMessageParserImpl;
 
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
 
 /**
  * Created by Damian Deska on 6/14/16.
  */
 @Log4j
-public class IssueAssigneeChangeProcessor {
+public class IssueAssigneeChangeProcessor implements ProcessorInterface {
 
-    public void changeIssueAssignee(String jiraUrl, String issueKey, String newAssigneeName) {
-        jiraUrl += "/jira/rest/api/2/issue/" + issueKey;
+    @Autowired
+    UserUtils userUtils;
+    @Autowired
+    IssueManager issueManager;
+    @Autowired
+    ApplicationUser applicationUser;
+    @Autowired
+    ConfigEntity configEntity;
+    @Autowired
+    UserManager userManager;
+    @Autowired
+    JiraAuthenticationContext authenticationContext;
+    @Autowired
+    UpdateIssueRequest.UpdateIssueRequestBuilder issueRequestBuilder;
+    ConfigManagerDaoImpl configManagerDao;
+    CommitMessageParserImpl commitMessageParser;
+
+
+    public void execute(Commit commit){
+
+        ApplicationUser executer = userManager.getUserByKey("admin");
+        ApplicationUser newAssignee = userUtils.getUserByEmail(commit.getAuthorEmail());
+
+        if(newAssignee == null) {
+            log.warn("User not founded");
+            return;
+        }
+
+        String issueKey = commit.getIssueKey();
 
         try {
-            URL url = new URL(jiraUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            Gson gson = new Gson();
-            String requestBody = "{\"update\": {\"assignee\": [{\"set\": { \"name\": \"" + newAssigneeName + "\" }}]}}";
-            conn.setDoOutput(true);
-            conn.setRequestMethod("PUT");
-            conn.addRequestProperty("Content-Type", "application/json");
-            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
-            out.write(gson.toJson(requestBody));
-            out.close();
-        } catch (Exception e) {
 
+            MutableIssue issue = issueManager.getIssueObject(issueKey);
+            issue.setAssignee(newAssignee);
+
+            issueManager.updateIssue(executer, issue, issueRequestBuilder.build());
+
+        } catch (Exception e) {
+            log.info("Failed to update issue. Enable debug for more info. Exception message:\n" + e.getMessage());
         }
     }
 

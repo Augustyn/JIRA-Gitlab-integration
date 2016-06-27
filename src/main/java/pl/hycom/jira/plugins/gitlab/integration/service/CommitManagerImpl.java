@@ -34,7 +34,7 @@ public class CommitManagerImpl implements CommitManager
 
         for (Commit c : commitList){
             String issue = commitMessageParser.findIssue(c,projectId);
-            c.setIssue(issue);
+            c.setIssueKey(issue);
         }
 
         processorManager.startProcessors(commitList);
