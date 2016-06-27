@@ -74,7 +74,7 @@ import org.springframework.beans.factory.InitializingBean;
 public class AwesomeLauncher implements LifecycleAware, InitializingBean, DisposableBean
 {
     @Autowired
-    private static String PLUGIN_KEY = "com.atlassian.jira.plugins.atlassian-scheduler-jira-example";
+    private static String PLUGIN_KEY = "pl.hycom.jira.plugins.jira-gitlab-plugin";
     @Autowired
     private AwesomePluginJobRunner jobRunner;
     @Autowired
@@ -186,16 +186,19 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
     {
         log.error("size of lifecycleEvents: " + lifecycleEvents.size() + "/" +  LifecycleEvent.values().length);
 
-        if(lifecycleEvents.contains(event))
+        if(lifecycleEvents.contains(event)){
             log.error("lifecycleEvents already has that event: " + event.name());
-        else
+        }else{
             log.error("we add event called: " + event.name());
+        }
 
-        if(lifecycleEvents.add(event) == false)
+        if(lifecycleEvents.add(event) == false) {
             log.error("lifecycleEvents.add(event) == false");
+        }
 
-        if(!(lifecycleEvents.size() == LifecycleEvent.values().length))
+        if(!(lifecycleEvents.size() == LifecycleEvent.values().length)) {
             log.error("(lifecycleEvents.size() == LifecycleEvent.values().length) == false");
+        }
 
         return lifecycleEvents.add(event) && lifecycleEvents.size() == LifecycleEvent.values().length;
     }
