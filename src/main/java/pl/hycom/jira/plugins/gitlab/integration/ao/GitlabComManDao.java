@@ -19,7 +19,6 @@ package pl.hycom.jira.plugins.gitlab.integration.ao;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.List;
 
 
 @Service

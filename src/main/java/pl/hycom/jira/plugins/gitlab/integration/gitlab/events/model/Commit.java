@@ -1,11 +1,13 @@
 package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Generated;
-import javax.validation.Valid;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+
+import javax.annotation.Generated;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 /*
  * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>

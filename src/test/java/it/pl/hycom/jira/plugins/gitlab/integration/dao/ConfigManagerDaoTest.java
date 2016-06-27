@@ -5,25 +5,21 @@ package it.pl.hycom.jira.plugins.gitlab.integration.dao;
  */
 
 import com.atlassian.activeobjects.external.ActiveObjects;
-import com.atlassian.activeobjects.test.TestActiveObjects;
 import com.atlassian.plugins.osgi.test.AtlassianPluginsTestRunner;
-import net.java.ao.DBParam;
 import net.java.ao.EntityManager;
-import net.java.ao.Query;
 import net.java.ao.test.jdbc.DatabaseUpdater;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
+
 import java.sql.SQLException;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @Component
 @RunWith(AtlassianPluginsTestRunner.class)

@@ -21,15 +21,8 @@ package pl.hycom.jira.plugins.gitlab.integration.service.processors;
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
-import com.atlassian.jira.issue.IssueInputParameters;
 import com.atlassian.jira.user.util.UserManager;
 import lombok.extern.log4j.Log4j;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -38,8 +31,10 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.osgi.service.component.annotations.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-import javax.inject.Inject;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,25 +48,23 @@ import java.util.List;
 public class IssueStatusChangeProcessor {
     //TODO zamiana parametrow z wpisanych na sztywno na pobrane z konfiguracji pluginu
     HttpClient client = HttpClientBuilder.create().build();
-    @Autowired
-    IssueService issueService;
-    UserManager userManager;
-    JiraAuthenticationContext authenticationContext;
-    IssueInputParameters issueInputParameters;
+    @Autowired UserManager userManager;
+    @Autowired JiraAuthenticationContext authenticationContext;
+    @Autowired IssueService issueService;
 
     public void changeIssueStatus() {
         ApplicationUser user = userManager.getUserByKey("admin");
-        Long issueId = new Long(10000);
+        Long issueId = new Long(10000L);
         int status = 31;
         authenticationContext.setLoggedInUser(user);
-        issueService.validateTransition(user, issueId, status, issueInputParameters);
+        issueService.validateTransition(user, issueId, status, issueService.newIssueInputParameters());
     }
 
     public List<String> getPossibleIssueStatuses() throws URISyntaxException, IOException {
 
         URI uri = new URIBuilder()
                 .setScheme("http")
-                .setHost("vagrant:2990")
+                .setHost("localhost:2990")
                 .setPath("/jira/rest/api/2/issue/PIP-1/transitions")
                 .build();
         HttpGet httpget = new HttpGet(uri);

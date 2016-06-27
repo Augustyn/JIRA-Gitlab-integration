@@ -18,8 +18,8 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.service;
  */
 
 import lombok.extern.log4j.Log4j;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueStatusChangeProcessor;
 
 import java.io.IOException;
@@ -33,6 +33,7 @@ import java.util.List;
 public class IssueStatusChangeProcessorTest {
 
     @Test
+    @Ignore
     public void getPossibleStatuesTest() throws URISyntaxException, IOException {
         IssueStatusChangeProcessor statusChanger = new IssueStatusChangeProcessor();
         List<String> result = statusChanger.getPossibleIssueStatuses();
@@ -41,9 +42,10 @@ public class IssueStatusChangeProcessorTest {
         }
     }
 
-//    @Test
-//    public void changeIssueStatusTest(){
-//        IssueStatusChangeProcessor statusChanger = new IssueStatusChangeProcessor();
-//        statusChanger.changeIssueStatus();
-//    }
+    @Test
+    @Ignore
+    public void changeIssueStatusTest(){
+        IssueStatusChangeProcessor statusChanger = new IssueStatusChangeProcessor();
+        statusChanger.changeIssueStatus();
+    }
 }

@@ -15,16 +15,18 @@ package pl.hycom.jira.plugins.gitlab.integration.gitlab.events;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Generated;
-import javax.validation.Valid;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Project;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Repository;
+
+import javax.annotation.Generated;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>Copyright (c) 2016, Hycom S.A.

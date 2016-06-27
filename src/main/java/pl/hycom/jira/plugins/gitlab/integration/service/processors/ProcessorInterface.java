@@ -15,8 +15,9 @@ package pl.hycom.jira.plugins.gitlab.integration.service.processors;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
- import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
 import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import javax.validation.constraints.NotNull;
 

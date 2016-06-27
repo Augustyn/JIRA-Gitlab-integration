@@ -22,10 +22,12 @@ package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
  *
  * @author Augustyn Kończak <mailto:augustyn.konczak@hycom.pl> on 23.06.16.
  */
-import javax.annotation.Generated;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 @Data

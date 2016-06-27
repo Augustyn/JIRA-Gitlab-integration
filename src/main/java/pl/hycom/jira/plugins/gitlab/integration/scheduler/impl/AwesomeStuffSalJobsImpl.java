@@ -1,35 +1,28 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
+import com.atlassian.sal.api.scheduling.PluginScheduler;
+import com.google.common.collect.ImmutableMap;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs;
-import com.atlassian.sal.api.scheduling.PluginScheduler;
-
-import com.google.common.collect.ImmutableMap;
-
-import org.slf4j.LoggerFactory;
-
+@Log4j
+@Component
 public class AwesomeStuffSalJobsImpl implements AwesomeStuffSalJobs
 {
     static final String KEY = AwesomeStuffSalJobsImpl.class.getName() + ":instance";
     public static final String JOB_NAME = AwesomeStuffSalJobsImpl.class.getName() + ":job";
 
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(AwesomeStuffSalJobsImpl.class);
-
     private final AtomicBoolean scheduled = new AtomicBoolean();
-    private final PluginScheduler pluginScheduler;  // provided by SAL
-    private final AwesomeStuffDao awesomeStuffDao;
-
-    public AwesomeStuffSalJobsImpl(PluginScheduler pluginScheduler, AwesomeStuffDao awesomeStuffDao)
-    {
-        this.pluginScheduler = pluginScheduler;
-        this.awesomeStuffDao = awesomeStuffDao;
-    }
-
-
+    @Autowired
+    private PluginScheduler pluginScheduler;  // provided by SAL
+    @Autowired
+    private AwesomeStuffDao awesomeStuffDao;
 
     public void reschedule(int intervalInSeconds)
     {
@@ -41,7 +34,7 @@ public class AwesomeStuffSalJobsImpl implements AwesomeStuffSalJobs
                 new Date(),                  // the time the job is to start
                 intervalInSeconds * 1000L);  // interval between repeats, in milliseconds
         scheduled.set(true);
-        LOG.info(String.format("Task monitor scheduled to run every %d seconds.", intervalInSeconds));
+        log.info(String.format("Task monitor scheduled to run every %d seconds.", intervalInSeconds));
     }
 
     public void unschedule()
@@ -55,7 +48,7 @@ public class AwesomeStuffSalJobsImpl implements AwesomeStuffSalJobs
         }
         catch (IllegalArgumentException iae)
         {
-            LOG.warn("Looks like the job was not scheduled, after all", iae);
+            log.warn("Looks like the job was not scheduled, after all", iae);
         }
     }
 
