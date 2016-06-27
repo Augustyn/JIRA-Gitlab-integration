@@ -129,6 +129,7 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
     {
         if (PLUGIN_KEY.equals(event.getPlugin().getKey()))
         {
+            log.warn("Plugin enabled... ");
             onLifecycleEvent(LifecycleEvent.PLUGIN_ENABLED);
         }
     }
