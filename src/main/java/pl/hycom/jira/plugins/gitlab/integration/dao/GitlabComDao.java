@@ -37,7 +37,7 @@ public class GitlabComDao implements IGitlabComDao {
     @Override
     public List<GitlabProject> getGitlabProjects(ConfigEntity configEntity){
         HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
-        ResponseEntity<List<GitlabProject>> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getGitlabProjectName() + PROJECT, HttpMethod.GET, requestEntity,
+        ResponseEntity<List<GitlabProject>> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + PROJECT, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<GitlabProject>>() {
                 });
         return response.getBody();

@@ -1,4 +1,5 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
+
 /*
  * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
@@ -16,14 +17,36 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * limitations under the License.</p>
  */
 
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 
 import java.sql.SQLException;
 import java.util.List;
 
 
-@Service
-public interface GitlabComManDao
+@Repository
+public class GitlabComManDao implements IGitlabComManDao
 {
-    public void updateGitlabProjectId(int jiraProjectId) throws SQLException;
+    @Autowired
+    private GitlabComDao gitlabComDao;
+    @Autowired
+    private ConfigManagerDao configManagerDao;
+
+    @Override
+    public int findGitlabProjectId(int jiraProjectId) throws SQLException
+    {
+        int gitlabProjectId=-1;
+        ConfigEntity configEntity = configManagerDao.getProjectConfig(jiraProjectId);
+
+        List<GitlabProject> gitlabProjectList = gitlabComDao.getGitlabProjects(configEntity);
+
+        for(GitlabProject project : gitlabProjectList){
+            if(project.getGitlabProjectName().equalsIgnoreCase(configEntity.getGitlabProjectName())){
+                gitlabProjectId = project.getGitlabProjectId();
+            }
+        }
+        configManagerDao.updateGitlabProjectId(jiraProjectId,gitlabProjectId);
+        return gitlabProjectId;
+    }
 }

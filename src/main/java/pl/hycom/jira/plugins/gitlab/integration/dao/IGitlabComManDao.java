@@ -1,6 +1,6 @@
-package pl.hycom.jira.plugins.gitlab.integration.service;
+package pl.hycom.jira.plugins.gitlab.integration.dao;
 /*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +16,14 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * limitations under the License.</p>
  */
 
-import com.atlassian.jira.issue.Issue;
-import org.apache.lucene.queryparser.classic.ParseException;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by Kamil Rogowski on 22.04.2016.
- */
-public interface ICommitService {
 
-    List<Commit> getNewCommits(Long projectId) throws SQLException, ParseException, IOException;
-    Commit getOneCommit(Long projectId, String shaSum) throws SQLException;
-    List<Commit> getAllIssueCommits(Issue jiraIssue) throws IOException;
+@Service
+public interface IGitlabComManDao
+{
+    public int findGitlabProjectId(int jiraProjectId) throws SQLException;
 }

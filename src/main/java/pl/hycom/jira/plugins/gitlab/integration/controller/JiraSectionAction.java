@@ -18,7 +18,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.controller;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.hycom.jira.plugins.gitlab.integration.dao.GitlabComManDao;
+import pl.hycom.jira.plugins.gitlab.integration.dao.IGitlabComManDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
@@ -44,7 +44,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private ConfigManagerDao myConfManager;
 
     @Autowired
-    private GitlabComManDao gitlabCommunicationManagerDao;
+    private IGitlabComManDao gitlabCommunicationManagerDao;
     private String clientId = "123";
     private String clientSecret = "client123";
     private String gitlabLink = "https://github.com/";
@@ -134,7 +134,8 @@ public class JiraSectionAction extends JiraWebActionSupport {
         int intProjectId = Integer.parseInt(projectId);
         final ErrorCollection errorCollection = doInternalValidate();
 
-        if (errorCollection.isEmpty()){
+
+        if (errorCollection.isEmpty() && gitlabCommunicationManagerDao.findGitlabProjectId(intProjectId)>0){
             myConfManager.updateProjectConfig(intProjectId, gitlabLink, clientSecret, clientId, gitlabProjectName);
             String result = super.doDefault();
             log.debug("Exiting doDefault with a result of: " + result);
