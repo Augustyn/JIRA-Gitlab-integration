@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.ao;
+package pl.hycom.jira.plugins.gitlab.integration.dao;
 /*
  * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
@@ -22,6 +22,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import pl.hycom.jira.plugins.gitlab.integration.ao.IGitlabComDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;

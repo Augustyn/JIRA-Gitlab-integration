@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.ao;
+package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 /*
  * <p>Copyright (c) 2016, Authors
@@ -19,6 +19,8 @@ package pl.hycom.jira.plugins.gitlab.integration.ao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import pl.hycom.jira.plugins.gitlab.integration.ao.GitlabComDao;
+import pl.hycom.jira.plugins.gitlab.integration.ao.GitlabComManDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;

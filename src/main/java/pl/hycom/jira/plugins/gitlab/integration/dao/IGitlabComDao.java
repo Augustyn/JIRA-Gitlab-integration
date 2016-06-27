@@ -1,5 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.ao;
-
+package pl.hycom.jira.plugins.gitlab.integration.dao;
 /*
  * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
@@ -16,21 +15,12 @@ package pl.hycom.jira.plugins.gitlab.integration.ao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 
-import net.java.ao.RawEntity;
-import net.java.ao.schema.AutoIncrement;
-import net.java.ao.schema.NotNull;
-import net.java.ao.schema.PrimaryKey;
+import java.util.List;
 
 
-public interface GitlabComEntity extends RawEntity<String>
-{
-    @NotNull
-    @AutoIncrement
-    @PrimaryKey("ProjectName")
-    public String getProjectName();
-
-    public String getClientId();
-    public void setClientId(String clientId);
-
+public interface IGitlabComDao {
+    List<GitlabProject> getGitlabProjects(ConfigEntity configEntity);
 }
