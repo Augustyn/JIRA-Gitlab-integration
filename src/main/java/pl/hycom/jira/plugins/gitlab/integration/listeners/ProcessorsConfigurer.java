@@ -60,7 +60,6 @@ public class ProcessorsConfigurer implements LifecycleAware {
                 (System.currentTimeMillis() - startTime) + " ms.");
     }
 
-    @Override
     public void onStop() {
         //Nothing to see here. This method does nothing intentionally.
     }

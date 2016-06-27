@@ -1,6 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 /*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
