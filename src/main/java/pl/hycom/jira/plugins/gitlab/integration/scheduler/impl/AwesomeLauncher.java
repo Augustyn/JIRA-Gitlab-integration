@@ -1,24 +1,22 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
-import java.util.EnumSet;
-import java.util.Set;
-
-import javax.annotation.concurrent.GuardedBy;
-
 import com.atlassian.activeobjects.external.ActiveObjects;
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs;
 import com.atlassian.plugin.event.events.PluginEnabledEvent;
 import com.atlassian.sal.api.lifecycle.LifecycleAware;
 import com.atlassian.scheduler.SchedulerService;
-import org.springframework.stereotype.Component;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs;
+
+import javax.annotation.concurrent.GuardedBy;
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Coordinate all the startup information to decide when it is safe to do complicated work.
@@ -69,34 +67,19 @@ import org.springframework.beans.factory.InitializingBean;
  */
 
 @Component
+@Log4j
 public class AwesomeLauncher implements LifecycleAware, InitializingBean, DisposableBean
 {
-    private static final Logger LOG = LoggerFactory.getLogger(AwesomeLauncher.class);
-    private static final String PLUGIN_KEY = "com.atlassian.jira.plugins.atlassian-scheduler-jira-example";
+    private static final String PLUGIN_KEY = "pl.hycom.jira.plugins.gitlab.integration.jira-gitlab-integration";
 
-    private final AwesomePluginJobRunner jobRunner;
-    private final EventPublisher eventPublisher;
-    private final SchedulerService schedulerService;
-    private final ActiveObjects ao;
-    private final AwesomeStuffSalJobs awesomeStuffSalJobs;
-    private final Example example;
+    @Autowired private AwesomePluginJobRunner jobRunner;
+    @Autowired private EventPublisher eventPublisher;
+    @Autowired  private SchedulerService schedulerService;
+    @Autowired private ActiveObjects ao;
+    @Autowired private AwesomeStuffSalJobs awesomeStuffSalJobs;
 
     @GuardedBy("this")
     private final Set<LifecycleEvent> lifecycleEvents = EnumSet.noneOf(LifecycleEvent.class);
-
-
-
-    public AwesomeLauncher(final AwesomePluginJobRunner jobRunner, final EventPublisher eventPublisher,
-            final SchedulerService schedulerService, final ActiveObjects ao,
-            final AwesomeStuffSalJobs awesomeStuffSalJobs, final Example example)
-    {
-        this.jobRunner = jobRunner;
-        this.eventPublisher = eventPublisher;
-        this.schedulerService = schedulerService;
-        this.ao = ao;
-        this.awesomeStuffSalJobs = awesomeStuffSalJobs;
-        this.example = example;
-    }
 
 
     /**
@@ -159,10 +142,10 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      */
     private void onLifecycleEvent(LifecycleEvent event)
     {
-        LOG.info("onLifecycleEvent: " + event);
+        log.info("onLifecycleEvent: " + event);
         if (isLifecycleReady(event))
         {
-            LOG.info("Got the last lifecycle event... Time to get started!");
+            log.info("Got the last lifecycle event... Time to get started!");
             unregisterListener();
 
             try
@@ -171,7 +154,7 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
             }
             catch (Exception ex)
             {
-                LOG.error("Unexpected error during launch", ex);
+                log.error("Unexpected error during launch", ex);
             }
         }
     }
@@ -200,50 +183,50 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      */
     private void launch() throws Exception
     {
-        LOG.info("LAUNCH!");
+        log.info("LAUNCH!");
         initActiveObjects();
         registerJobRunner();
         registerSalJobs();
 
-        example.setUpExample();
-        LOG.info("launched successfully");
+        //example.setUpExample();
+        log.info("launched successfully");
     }
 
 
 
     private void registerListener()
     {
-        LOG.info("registerListeners");
+        log.info("registerListeners");
         eventPublisher.register(this);
     }
 
     private void unregisterListener()
     {
-        LOG.info("unregisterListeners");
+        log.info("unregisterListeners");
         eventPublisher.unregister(this);
     }
 
     private void registerJobRunner()
     {
-        LOG.info("registerJobRunner");
+        log.info("registerJobRunner");
         schedulerService.registerJobRunner(AwesomePluginJobRunner.AWESOME_JOB, jobRunner);
     }
 
     private void unregisterJobRunner()
     {
-        LOG.info("unregisterJobRunner");
+        log.info("unregisterJobRunner");
         schedulerService.unregisterJobRunner(AwesomePluginJobRunner.AWESOME_JOB);
     }
 
     private void registerSalJobs()
     {
-        LOG.info("registerSalJobs");
+        log.info("registerSalJobs");
         awesomeStuffSalJobs.reschedule(AwesomeStuffSalJobs.DEFAULT_INTERVAL_IN_SECONDS);
     }
 
     private void unregisterSalJobs()
     {
-        LOG.info("unregisterSalJob");
+        log.info("unregisterSalJob");
         awesomeStuffSalJobs.unschedule();
     }
 
@@ -261,7 +244,7 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      */
     private void initActiveObjects()
     {
-        LOG.info("initActiveObjects");
+        log.info("initActiveObjects");
         ao.flushAll();
     }
 

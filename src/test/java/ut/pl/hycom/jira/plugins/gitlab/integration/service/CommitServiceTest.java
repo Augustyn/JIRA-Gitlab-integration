@@ -17,22 +17,6 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.service;
  * limitations under the License.</p>
  */
 
-import lombok.extern.log4j.Log4j;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
 //TODO poprawić testy gdy bedzie juz dzialac ConfigManagerDaoImpl
 /**
  * Created by Kamil Rogowski on 22.04.2016.

@@ -1,19 +1,19 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
-import java.util.Map;
-
+import com.atlassian.sal.api.scheduling.PluginJob;
+import lombok.extern.log4j.Log4j;
+import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao;
-import com.atlassian.sal.api.scheduling.PluginJob;
 
-import org.slf4j.LoggerFactory;
+import java.util.Map;
 
 import static com.atlassian.jira.util.dbc.Assertions.notNull;
-
+@Log4j
+@Component
 public class AwesomeStuffSalJob implements PluginJob
 {
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(AwesomeStuffSalJob.class);
 
     public void execute(Map<String, Object> jobDataMap)
     {
@@ -22,15 +22,15 @@ public class AwesomeStuffSalJob implements PluginJob
         AwesomeStuffDao awesomeStuffDao = monitor.getAwesomeStuffDao();
         notNull("awesomeStuffDao", awesomeStuffDao);
 
-        LOG.info("Checking our awesome stuff...");
+        log.info("Checking our awesome stuff...");
         try
         {
             AwesomeStuff[] awesomeStuffs = awesomeStuffDao.findByAll();
-            LOG.info("We've got " + awesomeStuffs.length + " awesome stuff...");
+            log.info("We've got " + awesomeStuffs.length + " awesome stuff...");
         }
         catch (AwesomeException e)
         {
-            LOG.error("Error retrieving all the awesome stuff: " + e.getMessage(), e);
+            log.error("Error retrieving all the awesome stuff: " + e.getMessage(), e);
         }
     }
 }

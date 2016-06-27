@@ -1,28 +1,21 @@
 package pl.hycom.jira.plugins.gitlab.integration.controller;
 
-import com.atlassian.jira.bc.issue.search.SearchService;
-import com.atlassian.jira.ofbiz.OfBizDelegator;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.sal.api.message.I18nResolver;
-import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j;
-import org.apache.commons.httpclient.util.HttpURLConnection;
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.Push;
 import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
 /*
  * <p>Copyright (c) 2016, Authors

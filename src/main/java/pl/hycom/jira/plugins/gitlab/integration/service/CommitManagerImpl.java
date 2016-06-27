@@ -2,11 +2,10 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
 
 
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.objectweb.carol.cmi.compiler.Conf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;

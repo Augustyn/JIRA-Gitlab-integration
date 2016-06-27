@@ -19,13 +19,9 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
 
 
-import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
-
 
 import java.util.Map;
 

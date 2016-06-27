@@ -21,7 +21,6 @@ import net.java.ao.RawEntity;
 import net.java.ao.schema.AutoIncrement;
 import net.java.ao.schema.NotNull;
 import net.java.ao.schema.PrimaryKey;
-import net.spy.memcached.transcoders.IntegerTranscoder;
 
 /**
  * Created by vagrant on 5/10/16.

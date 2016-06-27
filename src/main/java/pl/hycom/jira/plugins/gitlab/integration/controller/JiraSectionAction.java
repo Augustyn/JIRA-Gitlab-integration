@@ -16,17 +16,18 @@
  */
 
 package pl.hycom.jira.plugins.gitlab.integration.controller;
+
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.hycom.jira.plugins.gitlab.integration.dao.IGitlabComManDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
-import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
+import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 
-import java.util.*;
-
-
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JiraSectionAction extends JiraWebActionSupport {
 

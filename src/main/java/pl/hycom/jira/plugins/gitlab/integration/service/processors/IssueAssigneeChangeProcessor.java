@@ -26,19 +26,21 @@ import com.atlassian.jira.user.UserUtils;
 import com.atlassian.jira.user.util.UserManager;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.controller.JiraSectionAction;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.service.CommitMessageParserImpl;
+import pl.hycom.jira.plugins.gitlab.integration.service.CommitMessageParser;
 
 
 /**
  * Created by Damian Deska on 6/14/16.
  */
 @Log4j
+@Component
 public class IssueAssigneeChangeProcessor implements ProcessorInterface {
 
-    @Autowired
-    UserUtils userUtils;
     @Autowired
     IssueManager issueManager;
     @Autowired
@@ -46,30 +48,31 @@ public class IssueAssigneeChangeProcessor implements ProcessorInterface {
     @Autowired
     JiraAuthenticationContext authenticationContext;
     @Autowired
-    UpdateIssueRequest.UpdateIssueRequestBuilder issueRequestBuilder;
-    CommitMessageParserImpl commitMessageParser;
+    ConfigManagerDao configManagerDao;
+    @Autowired
+    CommitMessageParser commitMessageParser;
+    //FIXME: gettin clientid and project id
     JiraSectionAction jiraSectionAction;
 
 
     public void execute(Commit commit){
 
-        ApplicationUser executer = userManager.getUserByKey(jiraSectionAction.getClientId());
-        authenticationContext.setLoggedInUser(executer);
-        ApplicationUser newAssignee = userUtils.getUserByEmail(commit.getAuthorEmail());
+        ApplicationUser executor = userManager.getUserByKey(jiraSectionAction.getClientId());
+        authenticationContext.setLoggedInUser(executor);
+        ApplicationUser newAssignee = UserUtils.getUserByEmail(commit.getAuthorEmail());
 
         if(newAssignee == null) {
-            log.warn("User not founded");
+            log.info("User with email " + commit.getAuthorEmail() + "not found. Skipping assignee change");
             return;
         }
 
         String issueKey = commit.getIssueKey() != null ? commit.getIssueKey() : commitMessageParser.findIssue(commit, Integer.getInteger(jiraSectionAction.getProjectId()));
 
         try {
-
             MutableIssue issue = issueManager.getIssueObject(issueKey);
             issue.setAssignee(newAssignee);
 
-            issueManager.updateIssue(executer, issue, issueRequestBuilder.build());
+            issueManager.updateIssue(executor, issue, UpdateIssueRequest.builder().build());
 
         } catch (Exception e) {
             log.info("Failed to update issue. Enable debug for more info. Exception message:\n" + e.getMessage());

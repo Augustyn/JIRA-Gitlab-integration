@@ -20,6 +20,7 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
 
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ValidationError;
+
 import java.util.regex.Pattern;
 
 public enum FormField {

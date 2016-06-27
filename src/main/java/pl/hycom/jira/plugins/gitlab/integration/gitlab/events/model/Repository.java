@@ -16,10 +16,11 @@ package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
  * limitations under the License.</p>
  */
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
+
+import javax.annotation.Generated;
 
 /**
  * <p>Copyright (c) 2016, Hycom S.A.

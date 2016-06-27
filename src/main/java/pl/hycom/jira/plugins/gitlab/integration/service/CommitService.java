@@ -40,11 +40,9 @@ import java.util.List;
 @Log4j
 public class CommitService implements ICommitService {
 
-    @Autowired
-    private ConfigManagerDaoImpl dao;
-
-    private ICommitDao commitRepository;
-    private CommitSearcher commitSearcher;
+    @Autowired private ConfigManagerDao dao;
+    @Autowired private ICommitDao commitRepository;
+    @Autowired private CommitSearcher commitSearcher;
 
     private int perPage = 20;
 
