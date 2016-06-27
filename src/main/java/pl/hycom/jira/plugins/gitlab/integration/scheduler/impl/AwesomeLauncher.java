@@ -185,20 +185,24 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      */
     synchronized private boolean isLifecycleReady(LifecycleEvent event)
     {
-        log.error("size of lifecycleEvents: " + lifecycleEvents.size() + "/" +  LifecycleEvent.values().length);
+        log.warn("size of lifecycleEvents: " + lifecycleEvents.size() + "/" +  LifecycleEvent.values().length);
 
         if(lifecycleEvents.contains(event)){
-            log.error("lifecycleEvents already has that event: " + event.name());
+            log.warn("lifecycleEvents already has that event: " + event.name());
         }else{
-            log.error("we add event called: " + event.name());
+            log.warn("we add event called: " + event.name());
         }
 
         if(lifecycleEvents.add(event) == false) {
             log.error("lifecycleEvents.add(event) == false");
+        }else{
+            log.warn("lifecycleEvents.add(event) == true");
         }
 
         if(!(lifecycleEvents.size() == LifecycleEvent.values().length)) {
             log.error("(lifecycleEvents.size() == LifecycleEvent.values().length) == false");
+        }else{
+            log.warn("(lifecycleEvents.size() == LifecycleEvent.values().length) == true");
         }
 
         return lifecycleEvents.add(event) && lifecycleEvents.size() == LifecycleEvent.values().length;
