@@ -26,8 +26,7 @@ import com.atlassian.jira.user.UserUtils;
 import com.atlassian.jira.user.util.UserManager;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
+import pl.hycom.jira.plugins.gitlab.integration.controller.JiraSectionAction;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.CommitMessageParserImpl;
 
@@ -43,22 +42,19 @@ public class IssueAssigneeChangeProcessor implements ProcessorInterface {
     @Autowired
     IssueManager issueManager;
     @Autowired
-    ApplicationUser applicationUser;
-    @Autowired
-    ConfigEntity configEntity;
-    @Autowired
     UserManager userManager;
     @Autowired
     JiraAuthenticationContext authenticationContext;
     @Autowired
     UpdateIssueRequest.UpdateIssueRequestBuilder issueRequestBuilder;
-    ConfigManagerDaoImpl configManagerDao;
     CommitMessageParserImpl commitMessageParser;
+    JiraSectionAction jiraSectionAction;
 
 
     public void execute(Commit commit){
 
-        ApplicationUser executer = userManager.getUserByKey("admin");
+        ApplicationUser executer = userManager.getUserByKey(jiraSectionAction.getClientId());
+        authenticationContext.setLoggedInUser(executer);
         ApplicationUser newAssignee = userUtils.getUserByEmail(commit.getAuthorEmail());
 
         if(newAssignee == null) {
@@ -66,7 +62,7 @@ public class IssueAssigneeChangeProcessor implements ProcessorInterface {
             return;
         }
 
-        String issueKey = commit.getIssueKey();
+        String issueKey = commit.getIssueKey() != null ? commit.getIssueKey() : commitMessageParser.findIssue(commit, Integer.getInteger(jiraSectionAction.getProjectId()));
 
         try {
 
