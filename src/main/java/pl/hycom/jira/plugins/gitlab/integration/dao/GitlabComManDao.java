@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.ao;
+package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 /*
  * <p>Copyright (c) 2016, Authors
@@ -19,8 +19,6 @@ package pl.hycom.jira.plugins.gitlab.integration.ao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 
 import java.sql.SQLException;
@@ -28,7 +26,7 @@ import java.util.List;
 
 
 @Repository
-public class GitlabComManDaoImpl implements GitlabComManDao
+public class GitlabComManDao implements IGitlabComManDao
 {
     @Autowired
     private GitlabComDao gitlabComDao;
@@ -36,20 +34,19 @@ public class GitlabComManDaoImpl implements GitlabComManDao
     private ConfigManagerDao configManagerDao;
 
     @Override
-    public void updateGitlabProjectId(int jiraProjectId) throws SQLException
+    public int findGitlabProjectId(int jiraProjectId) throws SQLException
     {
-        List<GitlabProject> gitlabProjectList;
         int gitlabProjectId=-1;
         ConfigEntity configEntity = configManagerDao.getProjectConfig(jiraProjectId);
 
-        gitlabProjectList = gitlabComDao.getGitlabProjects(configEntity);
+        List<GitlabProject> gitlabProjectList = gitlabComDao.getGitlabProjects(configEntity);
 
         for(GitlabProject project : gitlabProjectList){
             if(project.getGitlabProjectName().equalsIgnoreCase(configEntity.getGitlabProjectName())){
-                gitlabProjectId = Integer.parseInt(project.getGitlabProjectName());
+                gitlabProjectId = project.getGitlabProjectId();
             }
         }
-
         configManagerDao.updateGitlabProjectId(jiraProjectId,gitlabProjectId);
+        return gitlabProjectId;
     }
 }

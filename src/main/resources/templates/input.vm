@@ -94,6 +94,20 @@
               <br>
               <font size="1">An example of a text parameter.</font>
 	    </td>
+	    <td align="fieldLabelArea">
+                      GitlabProjectName:&nbsp;
+                    </td>
+
+        	    <td class="fieldValueArea">
+                      <input type="text"
+                             id="gitlabProjectName"
+                             name="gitlabProjectName"
+                             value="$textutils.htmlEncode(${gitlabProjectName})"
+                             size="60"
+                             />
+                      <br>
+                      <font size="1">An example of a text parameter.</font>
+        	    </td>
 
 	  </tr>
           <tr>

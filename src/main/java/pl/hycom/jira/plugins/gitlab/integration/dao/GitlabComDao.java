@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.ao;
+package pl.hycom.jira.plugins.gitlab.integration.dao;
 /*
  * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
@@ -22,7 +22,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
@@ -38,7 +37,7 @@ public class GitlabComDao implements IGitlabComDao {
     @Override
     public List<GitlabProject> getGitlabProjects(ConfigEntity configEntity){
         HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
-        ResponseEntity<List<GitlabProject>> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getGitlabProjectName() + PROJECT, HttpMethod.GET, requestEntity,
+        ResponseEntity<List<GitlabProject>> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + PROJECT, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<GitlabProject>>() {
                 });
         return response.getBody();
