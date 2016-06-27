@@ -18,6 +18,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.controller;
 
 import com.atlassian.jira.web.action.JiraWebActionSupport;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.hycom.jira.plugins.gitlab.integration.dao.IGitlabComManDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
@@ -28,24 +29,18 @@ import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-
+@Log4j
 public class JiraSectionAction extends JiraWebActionSupport {
-
-
     private static final String ERROR_INVALID_CLIENTID = "jirasection.action.error.invalid.cliendid";
     private static final String ERROR_INVALID_CLIENTSECRET = "jirasection.action.error.invalid.cliendsecret";
     private static final String ERROR_INVALID_PROJECTID = "jirasection.action.error.invalid.projectid";
     private static final String ERROR_INVALID_GITLABLINK = "jirasection.action.error.invalid.gitlablink";
     private static final String ERROR_INVALID_GITLABPROJECTNAME = "jirasection.action.error.invalid.gitlabprojectname";
 
-    @Autowired
-    private Validator validator;
+    @Autowired private Validator validator;
+    @Autowired private ConfigManagerDao myConfManager;
+    @Autowired private IGitlabComManDao gitlabCommunicationManagerDao;
 
-    @Autowired
-    private ConfigManagerDao myConfManager;
-
-    @Autowired
-    private IGitlabComManDao gitlabCommunicationManagerDao;
     private String clientId = "123";
     private String clientSecret = "client123";
     private String gitlabLink = "https://github.com/";
@@ -75,7 +70,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
         validate.getErrorMessages().stream().forEach(e->this.getErrorMessages().add(this.getI18nHelper().getText(e)));
         return validate;
     }
-    
+
     protected void doValidation() {
         ErrorCollection errorCollection  = doInternalValidate();
         log.warn("Entering doValidation");
@@ -135,8 +130,14 @@ public class JiraSectionAction extends JiraWebActionSupport {
         int intProjectId = Integer.parseInt(projectId);
         final ErrorCollection errorCollection = doInternalValidate();
 
+        //trying
+        myConfManager.updateProjectConfig(intProjectId, gitlabLink, clientSecret, clientId, gitlabProjectName);
+        String result = super.doDefault();
+        log.debug("Exiting doDefault with a result of: " + result);
+        return result;
+        //
 
-        if (errorCollection.isEmpty() && gitlabCommunicationManagerDao.findGitlabProjectId(intProjectId)>0){
+        /*if (errorCollection.isEmpty() && gitlabCommunicationManagerDao.findGitlabProjectId(intProjectId)>0){
             myConfManager.updateProjectConfig(intProjectId, gitlabLink, clientSecret, clientId, gitlabProjectName);
             String result = super.doDefault();
             log.debug("Exiting doDefault with a result of: " + result);
@@ -149,7 +150,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
             getJiraServiceContext().getErrorCollection().addError(FormField.GITLABPROJECTNAME.getFieldName(), getJiraServiceContext(). getI18nBean().getText((ERROR_INVALID_GITLABPROJECTNAME)));
             log.error("Error in " + errorCollection);
             return ERROR;
-        }
+        }*/
     }
 
 

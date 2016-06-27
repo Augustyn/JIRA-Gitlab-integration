@@ -69,7 +69,7 @@ public class CommitService implements ICommitService {
     }
 
     @Override
-    public List<Commit> getAllIssueCommits(Issue jiraIssue) {
+    public List<Commit> getAllIssueCommits(Issue jiraIssue) throws IOException {
         String issueKey = jiraIssue.getKey();
         return commitSearcher.searchCommitsByIssue(issueKey);
     }
