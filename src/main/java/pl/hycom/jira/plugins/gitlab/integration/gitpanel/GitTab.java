@@ -22,6 +22,8 @@ import com.atlassian.jira.issue.tabpanels.GenericMessageAction;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.user.ApplicationUser;
 import lombok.extern.log4j.Log4j;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.service.CommitService;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,8 +33,13 @@ public class GitTab extends AbstractIssueTabPanel implements IssueTabPanel
 {
 
     public List getActions(Issue issue, ApplicationUser remoteUser) {
+        CommitService commitService = new CommitService();
+        List<Commit> commitsListForIssue = commitService.getAllIssueCommits(issue);
+        Commit commit = commitsListForIssue.get(0);
+        log.warn("Commit: " + commit);
         return Collections.singletonList(new GenericMessageAction("Tu będzie znajdować się zawartość zakładki GitTab"));
     }
+
 
     public boolean showPanel(Issue issue, ApplicationUser remoteUser)
     {
