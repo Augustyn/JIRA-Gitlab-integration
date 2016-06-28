@@ -1,6 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 /*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,10 +38,11 @@ public class CommitRepository implements ICommitDao {
 
     @Override
     public List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber) {
+        log.info("Trying to reach url: {}, with projectId: {}");
         HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
         ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + COMMIT_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<Commit>>() {
-                }, configEntity.getLink(), Integer.toString(perPage), Integer.toString(pageNumber));
+                }, configEntity.getGitlabProjectId(), Integer.toString(perPage), Integer.toString(pageNumber));
 
         return response.getBody();
     }

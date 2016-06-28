@@ -1,16 +1,17 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
-import java.util.Map;
-
+import com.atlassian.sal.api.scheduling.PluginJob;
 import lombok.extern.log4j.Log4j;
+import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao;
-import com.atlassian.sal.api.scheduling.PluginJob;
+
+import java.util.Map;
 
 import static com.atlassian.jira.util.dbc.Assertions.notNull;
-
 @Log4j
+@Component
 public class AwesomeStuffSalJob implements PluginJob
 {
 

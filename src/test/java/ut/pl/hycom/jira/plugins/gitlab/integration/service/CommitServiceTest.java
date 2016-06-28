@@ -17,13 +17,15 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.service;
  */
 
 import lombok.extern.log4j.Log4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
@@ -32,36 +34,41 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
-//TODO poprawić testy gdy bedzie juz dzialac ConfigManagerDaoImpl
+
 /**
  * Created by Kamil Rogowski on 22.04.2016.
  */
-/*
 @Log4j
 @RunWith(MockitoJUnitRunner.class)
 public class CommitServiceTest {
 
-
     @InjectMocks
     private CommitRepository commitService;
-    private String urlMock = "https://gitlab.com/api/v3/projects/1063546/repository/commits";
+    private String urlMock = "https://gitlab.com/";
     private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
     @Mock
     private ICommitDao dao;
+    @Mock private ConfigEntity config;
 
+    public void setUp() {
+        Mockito.when(config.getLink()).thenReturn(urlMock);
+        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
+        Mockito.when(config.getSecret()).thenReturn(privateTokenMock);
+    }
 
     @Test
+    @Ignore
     public void testGetNewCommits() throws Exception {
         int pageSize = 3;
-        List<Commit> commits = commitService.getNewCommits(urlMock, privateTokenMock, pageSize, 3);
+        List<Commit> commits = commitService.getNewCommits(config, pageSize, 3);
         assertThat("Commits size should be as ", commits.size(), is(equalTo(pageSize)));
     }
 
     @Test
+    @Ignore
     public void testGetOneCommit() throws Exception {
         String id = "404dd04e1d6279f76db51f64c80edf6c2bd96bf2";
-        Commit commit = commitService.getOneCommit(urlMock, privateTokenMock, "master");
+        Commit commit = commitService.getOneCommit(config, id);
         assertThat("Commit id's should be the same: ", commit.getId(), is(equalTo(id)));
     }
 }
-*/

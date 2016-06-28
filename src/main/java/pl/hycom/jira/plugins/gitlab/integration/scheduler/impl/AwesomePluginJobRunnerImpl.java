@@ -1,17 +1,18 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-
+import com.atlassian.scheduler.JobRunnerRequest;
+import com.atlassian.scheduler.JobRunnerResponse;
+import com.atlassian.scheduler.status.JobDetails;
 import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao;
-import com.atlassian.scheduler.JobRunnerRequest;
-import com.atlassian.scheduler.JobRunnerResponse;
-import com.atlassian.scheduler.status.JobDetails;
+
+import javax.annotation.Nonnull;
+import java.util.Random;
 
 /**
  * Implements the job scheduling service as well as the {@code JobRunner} implementation.
@@ -42,6 +43,7 @@ import com.atlassian.scheduler.status.JobDetails;
  */
 
 @Log4j
+@Component
 public class AwesomePluginJobRunnerImpl implements AwesomePluginJobRunner
 {
 
@@ -49,19 +51,8 @@ public class AwesomePluginJobRunnerImpl implements AwesomePluginJobRunner
     private static final Random RANDOM = new Random();
 
     // Injected dependencies
-    private final AwesomeStuffDao awesomeStuffDao;
-
-
-
-
-    public AwesomePluginJobRunnerImpl(final AwesomeStuffDao awesomeStuffDao)
-    {
-        this.awesomeStuffDao = awesomeStuffDao;
-
-        log.info("Job runner instance created");
-    }
-
-
+    @Autowired
+    private  AwesomeStuffDao awesomeStuffDao;
 
     @Override
     public JobRunnerResponse runJob(JobRunnerRequest request)

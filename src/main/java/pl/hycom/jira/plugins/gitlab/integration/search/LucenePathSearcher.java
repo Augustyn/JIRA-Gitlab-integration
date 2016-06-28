@@ -18,16 +18,15 @@ package pl.hycom.jira.plugins.gitlab.integration.search;
  */
 
 import com.atlassian.jira.config.util.IndexPathManager;
-import com.sun.istack.NotNull;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 
 /**
  * Created by Kamil Rogowski on 31.05.2016.

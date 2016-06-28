@@ -27,12 +27,24 @@
     <component-import key="ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao"/>
 
 
+    <component-import key="pluginScheduler">
+        <description>SAL Scheduler</description>
+        <interface>com.atlassian.sal.api.scheduling.PluginScheduler</interface>
+    </component-import>
+
+<!--    <component key="schedulerComponent" class="pl.hycom.jira.plugins.gitlab.integration.listeners.Scheduler"
+               system="true" public="true">
+        <description>The task scheduler</description>
+        <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
+        <interface>com.atlassian.example.scheduling.TwitterMonitor</interface>
+    </component>-->
+
     <!-- from the product container -->
     <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
     <component-import key="ao" name="Active Objects service" interface="com.atlassian.activeobjects.external.ActiveObjects">
         <description>Component to access Active Objects functionality from the plugin</description>
     </component-import>
-    <ao key="ao-module">
+    <ao key="ao-module2">
         <description>The module configuring the Active Objects service used by this plugin</description>
         <entity>pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity</entity>
     </ao>

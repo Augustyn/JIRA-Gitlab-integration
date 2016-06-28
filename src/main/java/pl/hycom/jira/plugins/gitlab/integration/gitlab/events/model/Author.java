@@ -1,5 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
-
+package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
 /*
  * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
@@ -16,29 +15,29 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import lombok.extern.log4j.Log4j;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
-//TODO end tests
-
 /**
- * Created by Damian Deska on 4/17/16.
+ * <p>Copyright (c) 2016, Hycom S.A.
+ * Project:  gitlab-integration.</p>
+ * <p>All rights reserved.</p>
+ *
+ * @author Augustyn Kończak <mailto:augustyn.konczak@hycom.pl> on 23.06.16.
  */
-@Log4j
-@RunWith(MockitoJUnitRunner.class)
-public class GitLabManagerTest {
 
-    @Before
-    public void setUp() {
-    }
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import lombok.Data;
 
-    @Test
-    public void parseCommitData() {
+import javax.annotation.Generated;
 
-    }
+@Generated("org.jsonschema2pojo")
+@Data
+public class Author {
+
+    @SerializedName("name")
+    @Expose
+    public String name;
+    @SerializedName("email")
+    @Expose
+    public String email;
 
 }

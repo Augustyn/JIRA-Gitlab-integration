@@ -73,20 +73,12 @@ import org.springframework.beans.factory.InitializingBean;
 @Log4j
 public class AwesomeLauncher implements LifecycleAware, InitializingBean, DisposableBean
 {
-    @Autowired
     private static String PLUGIN_KEY = "pl.hycom.jira.plugins.jira-gitlab-plugin";
-    @Autowired
-    private AwesomePluginJobRunner jobRunner;
-    @Autowired
-    private EventPublisher eventPublisher;
-    @Autowired
-    private SchedulerService schedulerService;
-    @Autowired
-    private ActiveObjects ao;
-    @Autowired
-    private AwesomeStuffSalJobs awesomeStuffSalJobs;
-    @Autowired
-    private Example example;
+    @Autowired private AwesomePluginJobRunner jobRunner;
+    @Autowired private EventPublisher eventPublisher;
+    @Autowired  private SchedulerService schedulerService;
+    @Autowired private ActiveObjects ao;
+    @Autowired private AwesomeStuffSalJobs awesomeStuffSalJobs;
 
     @GuardedBy("this")
     private final Set<LifecycleEvent> lifecycleEvents = EnumSet.noneOf(LifecycleEvent.class);
@@ -154,6 +146,7 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      */
     private void onLifecycleEvent(LifecycleEvent event)
     {
+        log.info("onLifecycleEvent: " + event);
         if (isLifecycleReady(event))
         {
             log.info("Got the last lifecycle event... Time to get started!");
@@ -219,7 +212,7 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
         registerJobRunner();
         registerSalJobs();
 
-        example.setUpExample();
+        //example.setUpExample();
         log.info("launched successfully");
     }
 
@@ -284,7 +277,7 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
      * to talk to all of the components we need to use, particularly the {@code SchedulerService}
      * and Active Objects.  We will not try to initialize until all of them have happened.
      */
-    enum LifecycleEvent
+    static enum LifecycleEvent
     {
         AFTER_PROPERTIES_SET,
         PLUGIN_ENABLED,

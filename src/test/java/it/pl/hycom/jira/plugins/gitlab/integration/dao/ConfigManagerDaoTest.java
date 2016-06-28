@@ -17,13 +17,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import java.sql.SQLException;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @Component
 @RunWith(AtlassianPluginsTestRunner.class)
@@ -50,7 +51,7 @@ public class ConfigManagerDaoTest
         assertNotNull(entityManager);
 
 
-        ConfigEntity saved = configManager.updateProjectConfig(testProjectId,"testlink","testsecret","testid");
+        ConfigEntity saved = configManager.updateProjectConfig(testProjectId,"testlink","testsecret","testid","testname");
 
         ConfigEntity retrieved = configManager.getProjectConfig(testProjectId);
 

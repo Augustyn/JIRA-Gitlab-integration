@@ -16,10 +16,10 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;

@@ -31,5 +31,5 @@ public interface ICommitService {
 
     List<Commit> getNewCommits(Long projectId) throws SQLException, ParseException, IOException;
     Commit getOneCommit(Long projectId, String shaSum) throws SQLException;
-    List<Commit> getAllIssueCommits(Issue jiraIssue);
+    List<Commit> getAllIssueCommits(Issue jiraIssue) throws IOException;
 }

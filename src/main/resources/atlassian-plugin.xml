@@ -67,16 +67,15 @@
     </actions>
   </webwork1>
 
-
   <ao key="ao-module">
-    <description>The module configuring the Active Objects service used by this plugin</description>
-    <entity>pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity</entity>
-  </ao>
-  <ao key="ao-module-awesome">
     <description>Awesome active objects entity</description>
     <entity>pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff</entity>
   </ao>
 
+  <ao key="ao-module2">
+    <description>The module configuring the Active Objects service used by this plugin</description>
+    <entity>pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity</entity>
+  </ao>
 
   <!-- Creates the webwork action for debugging atlassian-scheduler status -->
   <webwork1 key="scheduler-example.actions" name="Scheduler Example Actions">
@@ -87,46 +86,4 @@
       </action>
     </actions>
   </webwork1>
-
-  <!-- Components whose declarations are different when using the compat library -->
-  <component key="awesomePluginJobRunner" class="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomePluginJobRunnerImpl">
-    <description>The job runner for processing scheduled tasks</description>
-    <interface>pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner</interface>
-  </component>
-
-  <!-- Components whose declarations are the same when using the compat library -->
-  <component key="awesomeExample" class="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.Example">
-    <description>Creates this plugin's example data</description>
-  </component>
-  <component key="awesomePluginScheduleManager" class="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomePluginScheduleManagerImpl">
-    <description>Manages the creation and deletion of schedules</description>
-    <interface>pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginScheduleManager</interface>
-  </component>
-  <component key="awesomeStuffDao" class="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomeStuffDaoImpl">
-    <description>Active Objects data storage example</description>
-    <interface>pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao</interface>
-  </component>
-  <component key="awesomeStuffSalJobs" class="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomeStuffSalJobsImpl">
-    <description>Creates a local-only schedule directly in SAL</description>
-    <interface>pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs</interface>
-  </component>
-
-  <!-- Note: This MUST be public and registered under the LifecycleAware interface to work! -->
-  <component key="awesomeLauncher" class="pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomeLauncher" public="true">
-    <description>Manages this plugin's lifecycle.</description>
-    <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
-  </component>
-
-  <!-- Application-provided components -->
-  <component-import key="eventPublisher" interface="com.atlassian.event.api.EventPublisher" />
-  <component-import key="pluginScheduler" interface="com.atlassian.sal.api.scheduling.PluginScheduler" />
-  <component-import key="schedulerService" interface="com.atlassian.scheduler.SchedulerService" />
-  <component-import key="schedulerHistoryService" interface="com.atlassian.scheduler.SchedulerHistoryService" />
-
-
-  <component key="configManagerDaoImpl" class="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" public="true">
-    <interface>pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao</interface>
-  </component>
-
-
 </atlassian-plugin>

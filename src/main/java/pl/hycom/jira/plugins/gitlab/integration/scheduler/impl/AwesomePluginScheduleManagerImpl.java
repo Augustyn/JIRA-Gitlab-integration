@@ -1,17 +1,5 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Map;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-
-import lombok.extern.log4j.Log4j;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginScheduleManager;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.ExtraInfo;
 import com.atlassian.scheduler.SchedulerService;
 import com.atlassian.scheduler.SchedulerServiceException;
 import com.atlassian.scheduler.config.JobConfig;
@@ -19,18 +7,31 @@ import com.atlassian.scheduler.config.JobId;
 import com.atlassian.scheduler.config.RunMode;
 import com.atlassian.scheduler.config.Schedule;
 import com.atlassian.scheduler.status.JobDetails;
-
 import com.google.common.collect.ImmutableMap;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginScheduleManager;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.ExtraInfo;
 
-import static pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner.AWESOME_ID;
-import static pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner.AWESOME_JOB;
+import javax.annotation.Nonnull;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Map;
+import java.util.Random;
+
 import static com.atlassian.scheduler.config.RunMode.RUN_LOCALLY;
 import static com.atlassian.scheduler.config.RunMode.RUN_ONCE_PER_CLUSTER;
+import static pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner.AWESOME_ID;
+import static pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner.AWESOME_JOB;
 
 /**
  * @since v1.0
  */
 @Log4j
+@Component
 public class AwesomePluginScheduleManagerImpl implements AwesomePluginScheduleManager
 {
     private static final Random RANDOM = new Random();
@@ -59,13 +60,9 @@ public class AwesomePluginScheduleManagerImpl implements AwesomePluginScheduleMa
     private static final String JOB_ID_PREFIX = "AwesomeJob for id=";
 
 
+    @Autowired
+    private SchedulerService schedulerService;
 
-    private final SchedulerService schedulerService;
-
-    public AwesomePluginScheduleManagerImpl(final SchedulerService schedulerService)
-    {
-        this.schedulerService = schedulerService;
-    }
 
     @Override
     public void createAwesomeSchedule(@Nonnull AwesomeStuff stuff, long intervalInMillis) throws AwesomeException

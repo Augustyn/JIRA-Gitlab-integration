@@ -22,6 +22,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -47,12 +48,12 @@ public class CommitIndexer {
 
     private Document getDocument(IndexWriter indexWriter, Commit commit) throws IOException {
         Document document = new Document();
-        document.add(new TextField("id", commit.getId(), Field.Store.YES));
-        document.add(new TextField("short_id", commit.getShort_id(), Field.Store.YES));
+        document.add(new StringField("id", commit.getId(), Field.Store.YES));
+        document.add(new StringField("short_id", commit.getShortId(), Field.Store.YES));
         document.add(new TextField("title", commit.getTitle(), Field.Store.YES));
-        document.add(new TextField("author_name", commit.getAuthor_name(), Field.Store.YES));
-        document.add(new TextField("author_email", commit.getAuthor_email(), Field.Store.YES));
-        document.add(new TextField("created_at", commit.getCreated_at(), Field.Store.YES));
+        document.add(new StringField("author_name", commit.getAuthorName(), Field.Store.YES));
+        document.add(new TextField("author_email", commit.getAuthorEmail(), Field.Store.YES));
+        document.add(new TextField("created_at", commit.getCreatedAt(), Field.Store.YES));
         document.add(new TextField("message", commit.getMessage(), Field.Store.YES));
 
         return document;

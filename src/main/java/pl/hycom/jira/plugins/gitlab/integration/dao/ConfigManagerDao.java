@@ -13,5 +13,6 @@ public interface ConfigManagerDao
 {
     ConfigEntity getProjectConfig(int projectID) throws SQLException;
     public List<ConfigEntity> getAllProjectConfigs() throws SQLException;
-    ConfigEntity updateProjectConfig(int projectID,String gitlabLink,String gitlabSecret,String gitlabClientId) throws SQLException;
+    ConfigEntity updateProjectConfig(int projectID,String gitlabLink,String gitlabSecret,String gitlabClientId,String gitlabProjectName) throws SQLException;
+    public void updateGitlabProjectId(int projectID, int gitlabProjectID);
 }
