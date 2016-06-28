@@ -29,7 +29,7 @@ public class IssueWorklogChangeProcessor implements ProcessorInterface {
     }
 
     public ApplicationUser getJiraUser(Commit commitInfo) {
-        String userEmail = commitInfo.getAuthor_email();
+        String userEmail = commitInfo.getAuthorEmail();
         ApplicationUser user = UserUtils.getUserByEmail(userEmail);
         return user;
     }

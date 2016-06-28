@@ -23,9 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 
 /**
  * Created by Kamil Rogowski on 31.05.2016.
@@ -36,42 +37,32 @@ public class LucenePathSearcher {
 
     @Autowired
     private IndexPathManager indexPathManager;
+    private Path luceneIndexPath;
 
     private static final String COMMIT_INDEXER_DIRECTORY = "gitlab-integration";
 
     @PostConstruct
     public void init() {
-        final boolean ifDirectoryExists = indexDirectoryExists();
-        if(getIndexPath() == null){
-            throw new NullPointerException("Cannot start plugin, indexPath is NULL");
+        if(indexPathManager.getIndexRootPath() == null){
+            throw new NullPointerException("Cannot start plugin, index root path is NULL");
         }
-        if (!ifDirectoryExists) {
-            final File file = new File(getIndexPathStr());
-            file.mkdir();
+        Path path = Paths.get(indexPathManager.getPluginIndexRootPath(), COMMIT_INDEXER_DIRECTORY);
+        if(path == null) {
+               throw new InvalidPathException(getIndexPathStr(), "Index path doesn't exists");
         }
-    }
-
-    private boolean indexDirectoryExists() {
-        try {
-            File file = new File(getIndexPathStr());
-            return file.exists();
-        } catch (Exception e) {
-            return false;
+        luceneIndexPath = path;
+        if (!luceneIndexPath.toFile().exists()) {
+            luceneIndexPath.toFile().mkdir();
         }
     }
 
 
     private String getIndexPathStr() {
-        String indexPath = null;
-        String rootIndexPath = indexPathManager.getPluginIndexRootPath();
-        if (rootIndexPath != null) {
-            indexPath = rootIndexPath + System.getProperty("file.separator") + COMMIT_INDEXER_DIRECTORY;
-        }
-
-        return indexPath;
+        return luceneIndexPath.toString();
     }
 
     public Path getIndexPath(){
-      return Paths.get(getIndexPathStr());
+        return luceneIndexPath;
     }
+
 }

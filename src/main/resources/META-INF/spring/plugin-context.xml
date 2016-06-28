@@ -4,26 +4,31 @@
        xmlns:atlassian-scanner="http://www.atlassian.com/schema/atlassian-scanner"
        xmlns:osgi="http://www.springframework.org/schema/osgi"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-        http://www.atlassian.com/schema/atlassian-scanner
-        http://www.atlassian.com/schema/atlassian-scanner/atlassian-scanner.xsd
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/osgi
-        http://www.springframework.org/schema/osgi/spring-osgi.xsd"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.atlassian.com/schema/atlassian-scanner http://www.atlassian.com/schema/atlassian-scanner/atlassian-scanner.xsd
+        http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
        default-autowire="autodetect">
 
-
     <context:annotation-config/>
     <context:component-scan base-package="pl.hycom.jira.plugins.gitlab.integration"/>
 
-
-
-    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     <atlassian-scanner:scan-indexes/>
-    <context:annotation-config/>
-    <context:component-scan base-package="pl.hycom.jira.plugins.gitlab.integration"/>
+
+    <osgi:reference id="indexPathManager" interface="com.atlassian.jira.config.util.IndexPathManager"  />
+    <osgi:reference id="schedulerService" interface="com.atlassian.scheduler.SchedulerService" />
+    <osgi:reference id="activeObjects" interface="com.atlassian.activeobjects.external.ActiveObjects" />
+    <osgi:reference id="userManager" interface="com.atlassian.jira.user.util.UserManager" />
+    <osgi:reference id="i18nResolver" interface="com.atlassian.sal.api.message.I18nResolver" />
+    <osgi:reference id="pluginScheduler" interface="com.atlassian.sal.api.scheduling.PluginScheduler" />
+    <osgi:reference id="authenticationContext" interface="com.atlassian.jira.security.JiraAuthenticationContext" />
+    <osgi:reference id="issueManager" interface=" com.atlassian.jira.issue.IssueManager" />
+
+    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.ProcessorsConfigurer" interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="processorsConfigurer" />
+    <osgi:service id="awesomeLauncherLifecycleAware" interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="awesomeLauncher" />
+    <osgi:service id="awesomeLauncherDisposableBean" interface="org.springframework.beans.factory.DisposableBean" ref="awesomeLauncher" />
+    <osgi:service id="awesomeLauncherInitializingBean" interface="org.springframework.beans.factory.InitializingBean" ref="awesomeLauncher" />
 
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.ProcessorsConfigurer"
                   interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="processorsConfigurer"/>

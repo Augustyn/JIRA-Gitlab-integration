@@ -23,9 +23,7 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.util.List;
 
-/**
- * Created by anon on 17.04.16.
- */
+
 @Service
 @Log4j
 public class GitLabManager {
