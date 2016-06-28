@@ -40,12 +40,9 @@ import java.util.List;
 @Log4j
 public class CommitService implements ICommitService {
 
-    @Autowired
-    private ConfigManagerDaoImpl dao;
-    @Autowired
-    private CommitService commitService;
-    private ICommitDao commitRepository;
-    private CommitSearcher commitSearcher;
+    @Autowired private ConfigManagerDao dao;
+    @Autowired private ICommitDao commitRepository;
+    @Autowired private CommitSearcher commitSearcher;
 
     private int perPage = 20;
 
@@ -72,9 +69,9 @@ public class CommitService implements ICommitService {
     }
 
     @Override
-    public List<Commit> getAllIssueCommits(Issue jiraIssue) {
+    public List<Commit> getAllIssueCommits(Issue jiraIssue) throws IOException {
         String issueKey = jiraIssue.getKey();
-        return commitService.getAllIssueCommits(jiraIssue);
+        return commitSearcher.searchCommitsByIssue(issueKey);
     }
 
     @Override

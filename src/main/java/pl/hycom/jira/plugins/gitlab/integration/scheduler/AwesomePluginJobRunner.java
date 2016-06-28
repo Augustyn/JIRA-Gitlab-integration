@@ -1,8 +1,8 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler;
 
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomePluginJobRunnerImpl;
 import com.atlassian.scheduler.JobRunner;
 import com.atlassian.scheduler.config.JobRunnerKey;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomePluginJobRunnerImpl;
 
 /**
  * @since v1.0

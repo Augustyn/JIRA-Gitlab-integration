@@ -23,8 +23,6 @@ import lombok.extern.log4j.Log4j;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
-import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
-
 
 import java.util.Map;
 

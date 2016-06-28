@@ -1,4 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.ao;
+package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
 /*
  * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
@@ -15,20 +15,29 @@ package pl.hycom.jira.plugins.gitlab.integration.ao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+/**
+ * <p>Copyright (c) 2016, Hycom S.A.
+ * Project:  gitlab-integration.</p>
+ * <p>All rights reserved.</p>
+ *
+ * @author Augustyn Kończak <mailto:augustyn.konczak@hycom.pl> on 23.06.16.
+ */
 
-import org.springframework.stereotype.Service;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import lombok.Data;
 
-import java.sql.SQLException;
-import java.util.List;
+import javax.annotation.Generated;
 
+@Generated("org.jsonschema2pojo")
+@Data
+public class Author {
 
-@Service
-public interface GitlabComManDao
-{
-    public void updateGitlabProjectId(int jiraProjectId) throws SQLException;
-    /*
-    GitlabComEntity getProject(String projectName);
-    public List<GitlabComEntity> getAllProjects();
-    public boolean findProject(String insertedProject);
-    */
+    @SerializedName("name")
+    @Expose
+    public String name;
+    @SerializedName("email")
+    @Expose
+    public String email;
+
 }

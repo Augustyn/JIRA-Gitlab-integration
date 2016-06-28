@@ -1,11 +1,9 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
 
-import com.atlassian.jira.ComponentManager;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.project.Project;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.service.CommitMessageParser;
-import com.atlassian.jira.component.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

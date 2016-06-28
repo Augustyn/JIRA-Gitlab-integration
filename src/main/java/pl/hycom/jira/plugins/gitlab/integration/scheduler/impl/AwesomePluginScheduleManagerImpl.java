@@ -1,16 +1,5 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Map;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginScheduleManager;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.ExtraInfo;
 import com.atlassian.scheduler.SchedulerService;
 import com.atlassian.scheduler.SchedulerServiceException;
 import com.atlassian.scheduler.config.JobConfig;
@@ -18,23 +7,33 @@ import com.atlassian.scheduler.config.JobId;
 import com.atlassian.scheduler.config.RunMode;
 import com.atlassian.scheduler.config.Schedule;
 import com.atlassian.scheduler.status.JobDetails;
-
 import com.google.common.collect.ImmutableMap;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginScheduleManager;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.ExtraInfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.annotation.Nonnull;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Map;
+import java.util.Random;
 
-import static pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner.AWESOME_ID;
-import static pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner.AWESOME_JOB;
 import static com.atlassian.scheduler.config.RunMode.RUN_LOCALLY;
 import static com.atlassian.scheduler.config.RunMode.RUN_ONCE_PER_CLUSTER;
+import static pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner.AWESOME_ID;
+import static pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner.AWESOME_JOB;
 
 /**
  * @since v1.0
  */
+@Log4j
+@Component
 public class AwesomePluginScheduleManagerImpl implements AwesomePluginScheduleManager
 {
-    private static final Logger LOG = LoggerFactory.getLogger(AwesomePluginScheduleManagerImpl.class);
     private static final Random RANDOM = new Random();
 
     // A minimum amount of time, in milliseconds, to wait before the job runs for the first time.  If you
@@ -61,13 +60,9 @@ public class AwesomePluginScheduleManagerImpl implements AwesomePluginScheduleMa
     private static final String JOB_ID_PREFIX = "AwesomeJob for id=";
 
 
+    @Autowired
+    private SchedulerService schedulerService;
 
-    private final SchedulerService schedulerService;
-
-    public AwesomePluginScheduleManagerImpl(final SchedulerService schedulerService)
-    {
-        this.schedulerService = schedulerService;
-    }
 
     @Override
     public void createAwesomeSchedule(@Nonnull AwesomeStuff stuff, long intervalInMillis) throws AwesomeException
@@ -85,7 +80,7 @@ public class AwesomePluginScheduleManagerImpl implements AwesomePluginScheduleMa
                                              .withSchedule(Schedule.forInterval(intervalInMillis, firstRun))
                                              .withRunMode(runMode)
                                              .withParameters(parameters);
-        LOG.info("Scheduling job with jitter=" + jitter + ": " + jobConfig);
+        log.info("Scheduling job with jitter=" + jitter + ": " + jobConfig);
 
         try
         {
@@ -93,13 +88,13 @@ public class AwesomePluginScheduleManagerImpl implements AwesomePluginScheduleMa
             final JobDetails existing = schedulerService.getJobDetails(jobId);
             if (existing != null)
             {
-                LOG.info("We will be replacing an existing job with jobId=" + jobId + ": " + existing);
+                log.info("We will be replacing an existing job with jobId=" + jobId + ": " + existing);
                 // Note that we don't need to delete the existing job first; scheduleJob will replace the previous one
                 // deleteAwesomeSchedule(existing);
             }
 
             schedulerService.scheduleJob(jobId, jobConfig);
-            LOG.info("Successfully scheduled jobId=" + jobId);
+            log.info("Successfully scheduled jobId=" + jobId);
         }
         catch (SchedulerServiceException sse)
         {

@@ -17,9 +17,79 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
  */
 
 import lombok.Data;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Generated("org.jsonschema2pojo")
+@JsonPropertyOrder({
+        "gitlabProjectName",
+        "gitlabProjectId"
+})
 public class GitlabProject {
+
+    @JsonProperty("gitlabProjectName")
     private String gitlabProjectName;
-    private String gitlabProjectId;
+    @JsonProperty("gitlabProjectId")
+    private Integer gitlabProjectId;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    /**
+     *
+     * @return
+     * The gitlabProjectName
+     */
+    @JsonProperty("gitlabProjectName")
+    public String getGitlabProjectName() {
+        return gitlabProjectName;
+    }
+
+    /**
+     *
+     * @param gitlabProjectName
+     * The gitlabProjectName
+     */
+    @JsonProperty("gitlabProjectName")
+    public void setGitlabProjectName(String gitlabProjectName) {
+        this.gitlabProjectName = gitlabProjectName;
+    }
+
+    /**
+     *
+     * @return
+     * The gitlabProjectId
+     */
+    @JsonProperty("gitlabProjectId")
+    public Integer getGitlabProjectId() {
+        return gitlabProjectId;
+    }
+
+    /**
+     *
+     * @param gitlabProjectId
+     * The gitlabProjectId
+     */
+    @JsonProperty("gitlabProjectId")
+    public void setGitlabProjectId(Integer gitlabProjectId) {
+        this.gitlabProjectId = gitlabProjectId;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
 }

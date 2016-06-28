@@ -32,12 +32,12 @@
         <interface>com.atlassian.sal.api.scheduling.PluginScheduler</interface>
     </component-import>
 
-    <component key="schedulerComponent" class="pl.hycom.jira.plugins.gitlab.integration.listeners.Scheduler"
+<!--    <component key="schedulerComponent" class="pl.hycom.jira.plugins.gitlab.integration.listeners.Scheduler"
                system="true" public="true">
         <description>The task scheduler</description>
         <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
         <interface>com.atlassian.example.scheduling.TwitterMonitor</interface>
-    </component>
+    </component>-->
 
     <!-- from the product container -->
     <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>

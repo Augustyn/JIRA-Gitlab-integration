@@ -1,19 +1,18 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-
+import com.atlassian.scheduler.JobRunnerRequest;
+import com.atlassian.scheduler.JobRunnerResponse;
+import com.atlassian.scheduler.status.JobDetails;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao;
-import com.atlassian.scheduler.JobRunnerRequest;
-import com.atlassian.scheduler.JobRunnerResponse;
-import com.atlassian.scheduler.status.JobDetails;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.annotation.Nonnull;
+import java.util.Random;
 
 /**
  * Implements the job scheduling service as well as the {@code JobRunner} implementation.
@@ -42,27 +41,18 @@ import org.slf4j.LoggerFactory;
  *
  * @since v1.0
  */
+
+@Log4j
+@Component
 public class AwesomePluginJobRunnerImpl implements AwesomePluginJobRunner
 {
-    private static final Logger LOG = LoggerFactory.getLogger(AwesomePluginJobRunnerImpl.class);
 
     // These are only used by the example objects and wouldn't be useful to most real plugins
     private static final Random RANDOM = new Random();
 
     // Injected dependencies
-    private final AwesomeStuffDao awesomeStuffDao;
-
-
-
-
-    public AwesomePluginJobRunnerImpl(final AwesomeStuffDao awesomeStuffDao)
-    {
-        this.awesomeStuffDao = awesomeStuffDao;
-
-        LOG.info("Job runner instance created");
-    }
-
-
+    @Autowired
+    private  AwesomeStuffDao awesomeStuffDao;
 
     @Override
     public JobRunnerResponse runJob(JobRunnerRequest request)
@@ -90,7 +80,7 @@ public class AwesomePluginJobRunnerImpl implements AwesomePluginJobRunner
 
     private String process(@Nonnull AwesomeStuff stuff, @Nonnull JobRunnerRequest request) throws AwesomeException
     {
-        LOG.info("Running job for awesome stuff '" + stuff.getName() + "': " + request);
+        log.info("Running job for awesome stuff '" + stuff.getName() + "': " + request);
 
         // Do really interesting stuff.  All we're going to do is generate a random number
         // and return a short (limited to 255 chars!) message about it.  Although returning

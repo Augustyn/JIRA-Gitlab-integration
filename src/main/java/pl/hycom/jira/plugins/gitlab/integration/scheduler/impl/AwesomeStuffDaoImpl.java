@@ -1,8 +1,8 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
-import java.util.List;
-
 import com.atlassian.activeobjects.external.ActiveObjects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao;
@@ -12,14 +12,11 @@ import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao;
  *
  * @since v1.0
  */
+@Component
 public class AwesomeStuffDaoImpl implements AwesomeStuffDao
 {
-    private final ActiveObjects ao;
-
-    public AwesomeStuffDaoImpl(final ActiveObjects ao)
-    {
-        this.ao = ao;
-    }
+    @Autowired
+    private ActiveObjects ao;
 
     @Override
     public AwesomeStuff findById(int id) throws AwesomeException

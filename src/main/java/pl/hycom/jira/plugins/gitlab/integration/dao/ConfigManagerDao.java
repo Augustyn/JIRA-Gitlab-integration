@@ -9,7 +9,6 @@ import java.util.List;
  * Created by vagrant on 5/17/16.
  */
 
-@Service
 public interface ConfigManagerDao
 {
     ConfigEntity getProjectConfig(int projectID) throws SQLException;
