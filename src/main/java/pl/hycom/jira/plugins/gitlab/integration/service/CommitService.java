@@ -21,7 +21,9 @@ import lombok.extern.log4j.Log4j;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.search.CommitSearcher;
@@ -38,11 +40,9 @@ import java.util.List;
 @Log4j
 public class CommitService implements ICommitService {
 
-    @Autowired
-    private ConfigManagerDao dao;
-    @Autowired
-    private ICommitDao commitRepository;
-    private CommitSearcher commitSearcher;
+    @Autowired private ConfigManagerDao dao;
+    @Autowired private ICommitDao commitRepository;
+    @Autowired private CommitSearcher commitSearcher;
 
     private int perPage = 20;
 
