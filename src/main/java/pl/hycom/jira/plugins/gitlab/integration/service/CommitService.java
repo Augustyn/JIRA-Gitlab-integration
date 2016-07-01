@@ -1,7 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
-/*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
- * Project:  gitlab-integration.</p>
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,11 +49,11 @@ public class CommitService implements ICommitService {
     public List<Commit> getNewCommits(Long projectId) throws SQLException, ParseException, IOException {
         int pageNumber = 1;
         boolean indexedCommitEncountered = false;
-        List<Commit> commitsList = new ArrayList<>();
+        List<Commit> commitsList;
         List<Commit> resultList = new ArrayList<>();
 
         do {
-            commitsList = commitRepository.getNewCommits(dao.getProjectConfig(projectId.intValue()), perPage, pageNumber);
+            commitsList = commitRepository.getNewCommits(dao.getProjectConfig(projectId), perPage, pageNumber);
             for(Commit commit : commitsList) {
                 if(!commitSearcher.checkIfCommitIsIndexed(commit.getId())) {
                     resultList.add(commit);
@@ -76,6 +75,6 @@ public class CommitService implements ICommitService {
 
     @Override
     public Commit getOneCommit(Long projectId, String shaSum) throws SQLException {
-        return commitRepository.getOneCommit(dao.getProjectConfig(projectId.intValue()), shaSum);
+        return commitRepository.getOneCommit(dao.getProjectConfig(projectId), shaSum);
     }
 }

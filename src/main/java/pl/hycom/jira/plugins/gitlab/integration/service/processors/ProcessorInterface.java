@@ -20,6 +20,7 @@ import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import javax.validation.constraints.NotNull;
+import java.sql.SQLException;
 
 /**
  * Created by Karol Joachimiak on 08.04.2016.

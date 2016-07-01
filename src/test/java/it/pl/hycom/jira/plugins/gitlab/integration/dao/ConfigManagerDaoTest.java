@@ -46,7 +46,7 @@ public class ConfigManagerDaoTest
     @Test
     public void allInOneTest() throws SQLException
     {
-        int testProjectId = 9999;
+        Long testProjectId = 9999L;
         assertNotNull(configManager);
         assertNotNull(entityManager);
 
@@ -56,7 +56,7 @@ public class ConfigManagerDaoTest
         ConfigEntity retrieved = configManager.getProjectConfig(testProjectId);
 
 
-        assertEquals( (Integer) testProjectId,retrieved.getProjectID());
+        assertEquals( testProjectId,retrieved.getProjectID());
         assertEquals( "testlink", retrieved.getLink());
         assertEquals( "testsecret",retrieved.getSecret());
         assertEquals( "testid",retrieved.getClientId());

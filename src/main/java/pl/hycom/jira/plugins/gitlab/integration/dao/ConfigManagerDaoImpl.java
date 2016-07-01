@@ -35,9 +35,9 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
     @Autowired
     private ActiveObjects entityManager;
 
-    public ConfigEntity getProjectConfig(int projectID) throws SQLException
+    public ConfigEntity getProjectConfig(Long projectID) throws SQLException
     {
-        return entityManager.get(ConfigEntity.class,projectID);    //returns null if no entities exist
+        return entityManager.get(ConfigEntity.class, projectID.intValue());    //returns null if no entities exist
     }
 
     public List<ConfigEntity> getAllProjectConfigs() throws SQLException
@@ -51,17 +51,17 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
     }
 
 
-    public ConfigEntity updateProjectConfig(int projectID,String gitlabLink,String gitlabSecret,String gitlabClientId,
+    public ConfigEntity updateProjectConfig(Long projectID,String gitlabLink,String gitlabSecret,String gitlabClientId,
                                             String gitlabProjectName) throws SQLException
     {
         ConfigEntity projectConfig;
-        if( entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?",projectID)) > 0 )
+        if( entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?", projectID)) > 0 )
         {
-            projectConfig = entityManager.get(ConfigEntity.class,projectID);
+            projectConfig = entityManager.get(ConfigEntity.class,projectID.intValue());
         }
         else
         {
-            projectConfig = entityManager.create(ConfigEntity.class,new DBParam("PROJECT_ID",projectID));
+            projectConfig = entityManager.create(ConfigEntity.class,new DBParam("PROJECT_ID", projectID));
         }
 
         projectConfig.setLink(gitlabLink);
@@ -73,10 +73,10 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
         return  projectConfig;
     }
 
-    public void updateGitlabProjectId(int projectID, int gitlabProjectID)
+    public void updateGitlabProjectId(Long projectID, int gitlabProjectID)
     {
         ConfigEntity projectConfig;
-        projectConfig = entityManager.get(ConfigEntity.class,projectID);
+        projectConfig = entityManager.get(ConfigEntity.class, projectID.intValue());
         projectConfig.setGitlabProjectId(gitlabProjectID);
         projectConfig.save();
     }

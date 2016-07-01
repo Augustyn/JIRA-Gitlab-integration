@@ -2,12 +2,28 @@
 package pl.hycom.jira.plugins.gitlab.integration.model;
 
 /**
- * Created by anon on 19.04.2016.
+ * <p>Copyright (c) 2016, Authors</p>
+ *
+ * <p>Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at</p>
+ *
+ * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+ *
+ * <p>Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.</p>
  */
 
 import lombok.Data;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.Transient;
 
+/**
+ * Base model for commit message from any DVCS
+ */
 @Data
 public class Commit {
     private String id;
@@ -21,73 +37,54 @@ public class Commit {
     @JsonProperty("created_at")
     private String createdAt;
     private String message;
+    @Transient
     private String issueKey;
+    @Transient
+    private Long gitProjectID;
 
-    public Commit(CommitBuilder commitBuilder) {
-        this.id = commitBuilder.id;
-        this.shortId = commitBuilder.shortId;
-        this.title = commitBuilder.title;
-        this.authorName = commitBuilder.authorName;
-        this.authorEmail = commitBuilder.authorEmail;
-        this.createdAt = commitBuilder.createdAt;
-        this.message = commitBuilder.message;
-        this.issueKey = commitBuilder.issueKey;
+    public Commit withId(String id) {
+        this.id = id;
+        return this;
     }
 
-    public static class CommitBuilder {
-        private String id;
-        private String shortId;
-        private String title;
-        private String authorName;
-        private String authorEmail;
-        private String createdAt;
-        private String message;
-        private String issueKey;
+    public Commit withShortId(String shortId) {
+        this.shortId = shortId;
+        return this;
+    }
 
-        public CommitBuilder withId(String id) {
-            this.id = id;
-            return this;
-        }
+    public Commit withTitle(String title) {
+        this.title = title;
+        return this;
+    }
 
-        public CommitBuilder withShortId(String shortId) {
-            this.shortId = shortId;
-            return this;
-        }
+    public Commit withAuthorName(String authorName) {
+        this.authorName = authorName;
+        return this;
+    }
 
-        public CommitBuilder withTitle(String title) {
-            this.title = title;
-            return this;
-        }
+    public Commit withAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
+        return this;
+    }
 
-        public CommitBuilder withAuthorName(String authorName) {
-            this.authorName = authorName;
-            return this;
-        }
+    public Commit withCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
 
-        public CommitBuilder withAuthorEmail(String authorEmail) {
-            this.authorEmail = authorEmail;
-            return this;
-        }
+    public Commit withMessage(String message) {
+        this.message = message;
+        return this;
+    }
 
-        public CommitBuilder withCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
+    public Commit withIssueKey(String issueKey) {
+        this.issueKey = issueKey;
+        return this;
+    }
 
-        public CommitBuilder withMessage(String message) {
-            this.message = message;
-            return this;
-        }
-
-        public CommitBuilder withIssueKey(String issueKey) {
-            this.issueKey = issueKey;
-            return this;
-        }
-
-        public Commit build() {
-            return new Commit(this);
-        }
-
+    public Commit withGitProject(Long project) {
+        this.gitProjectID = project;
+        return this;
     }
 }
 

@@ -26,6 +26,7 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
 import javax.validation.constraints.NotNull;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

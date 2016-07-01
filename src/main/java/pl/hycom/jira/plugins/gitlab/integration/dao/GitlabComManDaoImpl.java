@@ -1,8 +1,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
-/*
- * <p>Copyright (c) 2016, Authors
- * Project:  gitlab-integration.</p>
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +32,7 @@ public class GitlabComManDaoImpl implements IGitlabComManDao {
     private ConfigManagerDao configManagerDao;
 
     @Override
-    public int findGitlabProjectId(int jiraProjectId) throws SQLException {
+    public int findGitlabProjectId(Long jiraProjectId) throws SQLException {
         int gitlabProjectId=-1;
         ConfigEntity configEntity = configManagerDao.getProjectConfig(jiraProjectId);
 

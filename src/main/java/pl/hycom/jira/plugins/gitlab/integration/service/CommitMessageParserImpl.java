@@ -16,9 +16,9 @@ import java.util.regex.Pattern;
 @Component
 public class CommitMessageParserImpl implements CommitMessageParser {
     @Override
-    public String findIssue(Commit commit, int projectID)
+    public String findIssue(Commit commit, Long projectID)
     {
-        Project currentProject = ComponentAccessor.getProjectManager().getProjectObj( (long) projectID);
+        Project currentProject = ComponentAccessor.getProjectManager().getProjectObj(projectID);
         String currentProjectKey = currentProject.getKey();
         String commitMessage = commit.getMessage();
 

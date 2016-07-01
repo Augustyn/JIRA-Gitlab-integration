@@ -1,7 +1,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
-/*
- * <p>Copyright (c) 2016, Damian Deska & Kamil Rogowski
+/**
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,14 +48,15 @@ public class CommitIndexer {
 
     private Document getDocument(IndexWriter indexWriter, Commit commit) throws IOException {
         Document document = new Document();
-        document.add(new StringField("id", commit.getId(), Field.Store.YES));
-        document.add(new StringField("short_id", commit.getShortId(), Field.Store.YES));
-        document.add(new TextField("title", commit.getTitle(), Field.Store.YES));
-        document.add(new StringField("author_name", commit.getAuthorName(), Field.Store.YES));
-        document.add(new TextField("author_email", commit.getAuthorEmail(), Field.Store.YES));
-        document.add(new TextField("created_at", commit.getCreatedAt(), Field.Store.YES));
-        document.add(new TextField("message", commit.getMessage(), Field.Store.YES));
-
+        document.add(new StringField(CommitFields.ID.name(), commit.getId(), Field.Store.YES));
+        document.add(new StringField(CommitFields.SHORT_ID.name(), commit.getShortId(), Field.Store.YES));
+        document.add(new TextField(CommitFields.TITLE.name(), commit.getTitle(), Field.Store.YES));
+        document.add(new StringField(CommitFields.AUTHOR_NAME.name(), commit.getAuthorName(), Field.Store.YES));
+        document.add(new TextField(CommitFields.AUTHOR_EMAIL.name(), commit.getAuthorEmail(), Field.Store.YES));
+        document.add(new TextField(CommitFields.CREATED.name(), commit.getCreatedAt(), Field.Store.YES));
+        document.add(new TextField(CommitFields.COMMIT_MESSAGE.name(), commit.getMessage(), Field.Store.YES));
+        document.add(new TextField(CommitFields.JIRA_ISSUE_KEY.name(), commit.getIssueKey(), Field.Store.YES));
+        document.add(new TextField(CommitFields.GIT_PROJECT_ID.name(), commit.getMessage(), Field.Store.YES));
         return document;
     }
 

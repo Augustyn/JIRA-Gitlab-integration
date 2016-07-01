@@ -52,7 +52,7 @@ public class CommitRepository implements ICommitDao {
         HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
         ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
-                }, shaSum);
+                }, configEntity.getGitlabProjectId(), shaSum);
 
         return response.getBody();
     }

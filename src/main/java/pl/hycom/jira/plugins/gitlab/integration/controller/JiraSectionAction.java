@@ -46,7 +46,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private String clientId = "123";
     private String clientSecret = "client123";
     private String gitlabLink = "https://github.com/";
-    private String projectId = "123456";
+    private String gitProjectId = "123456";
     private String gitlabProjectName = "newname";
 
 
@@ -59,7 +59,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
         String sClientId = getClientId();
         String sClientSecret = getClientSecret();
         String sGitlabLink = getGitlabLink();
-        String sProjectId = getProjectId();
+        String sProjectId = getGitProjectId();
         String sGitlabProjectNamePattern = getGitlabProjectName();
 
         paramMap.put(FormField.CLIENTID, sClientId);
@@ -129,18 +129,17 @@ public class JiraSectionAction extends JiraWebActionSupport {
 
         }
 
-        int intProjectId = Integer.parseInt(projectId);
         final ErrorCollection errorCollection = doInternalValidate();
 
         //trying
-        myConfManager.updateProjectConfig(intProjectId, gitlabLink, clientSecret, clientId, gitlabProjectName);
+        myConfManager.updateProjectConfig(Long.valueOf(gitProjectId), gitlabLink, clientSecret, clientId, gitlabProjectName);
         String result = super.doDefault();
         log.debug("Exiting doDefault with a result of: " + result);
         return result;
         //
 
-        /*if (errorCollection.isEmpty() && gitlabCommunicationManagerDao.findGitlabProjectId(intProjectId)>0){
-            myConfManager.updateProjectConfig(intProjectId, gitlabLink, clientSecret, clientId, gitlabProjectName);
+        /*if (errorCollection.isEmpty() && gitlabCommunicationManagerDao.findGitlabProjectId(gitProjectId)>0){
+            myConfManager.updateProjectConfig(gitProjectID, gitlabLink, clientSecret, clientId, gitlabProjectName);
             String result = super.doDefault();
             log.debug("Exiting doDefault with a result of: " + result);
             return result;
@@ -178,9 +177,9 @@ public class JiraSectionAction extends JiraWebActionSupport {
     }
 
 
-    public void setProjectId(String value) {
-        log.debug("Setting projectId to: " + value);
-        this.projectId = value;
+    public void setGitProjectId(String value) {
+        log.debug("Setting gitProjectId to: " + value);
+        this.gitProjectId = value;
     }
 
     public String getClientId() {
@@ -199,9 +198,9 @@ public class JiraSectionAction extends JiraWebActionSupport {
     }
 
 
-    public String getProjectId() {
-        log.debug("Getting projectId");
-        return projectId;
+    public String getGitProjectId() {
+        log.debug("Getting gitProjectId");
+        return gitProjectId;
     }
 
     public String getGitlabProjectName() {

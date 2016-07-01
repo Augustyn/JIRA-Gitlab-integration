@@ -1,8 +1,8 @@
 
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
-/*
- * <p>Copyright (c) 2016, Damian Deska
+/**
+ * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +41,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Damian Deska on 5/17/16.
@@ -82,40 +83,32 @@ public class CommitSearcher {
     }
 
     public List<Commit> searchCommitsByIssue(String jiraIssueKey) throws IOException {
-        List<Commit> foundedCommitsList = new ArrayList<Commit>();
-        Path path = lucenePathSearcher.getIndexPath();
-        try(Directory indexDirectory = FSDirectory.open(path)) {
-
+        List<Commit> commitsFound;
+        try(Directory indexDirectory = FSDirectory.open(lucenePathSearcher.getIndexPath())) {
             WildcardQuery query = new WildcardQuery(new Term("message", jiraIssueKey));
             IndexReader reader = DirectoryReader.open(indexDirectory);
             IndexSearcher searcher = new IndexSearcher(reader);
-
             TopDocs docs = searcher.search(query, hitsPerPage);
-            List<ScoreDoc> hitsList = Arrays.asList(docs.scoreDocs);
-
-            hitsList.stream().forEach(hit -> {
+            commitsFound = Arrays.asList(docs.scoreDocs).stream().map(hit -> {
                 try {
-                    int docId = hit.doc;
-                    Document document = searcher.doc(docId);
-
-                    Commit tmpCommit = new Commit.CommitBuilder()
-                            .withId(document.get("id"))
-                            .withShortId(document.get("short_id"))
-                            .withTitle(document.get("title"))
-                            .withAuthorName(document.get("author_name"))
-                            .withAuthorEmail(document.get("author_email"))
-                            .withCreatedAt(document.get("created_at"))
-                            .withMessage(document.get("message"))
-                            .build();
-
-                    foundedCommitsList.add(tmpCommit);
+                    Document document = searcher.doc(hit.doc);
+                    return new Commit()
+                            .withId(document.get(CommitFields.ID.name()))
+                            .withShortId(document.get(CommitFields.SHORT_ID.name()))
+                            .withTitle(document.get(CommitFields.TITLE.name()))
+                            .withAuthorName(document.get(CommitFields.AUTHOR_NAME.name()))
+                            .withAuthorEmail(document.get(CommitFields.AUTHOR_EMAIL.name()))
+                            .withCreatedAt(document.get(CommitFields.CREATED.name()))
+                            .withMessage(document.get(CommitFields.COMMIT_MESSAGE.name()))
+                            .withIssueKey(document.get(CommitFields.JIRA_ISSUE_KEY.name()))
+                            .withGitProject(Long.valueOf(document.get(CommitFields.GIT_PROJECT_ID.name())));
                 } catch(IOException e) {
+                    log.warn("Failed to recreate Commit from lucene doc Id: " + hit.doc , e);
                     throw new UncheckedIOException(e);
                 }
-            });
-
+            }).collect(Collectors.toList());
         }
-        return foundedCommitsList;
+        return commitsFound;
     }
 
     public boolean checkIfCommitIsIndexed(String idValue) throws ParseException, IOException {

@@ -34,11 +34,14 @@
     <resource type="download" name="images/" location="/images"/>
     <context>gittab</context>
   </web-resource>
-  <issue-tabpanel key="git-tab" name="Git Tab" i18n-name-key="git-tab.name" class="pl.hycom.jira.plugins.gitlab.integration.gitpanel.GitTab">
+  <issue-tabpanel key="git-tab" name="Git Tab" i18n-name-key="git-tab.name" class="pl.hycom.jira.plugins.gitlab.integration.gitpanel.GitTabPanel">
     <description key="git-tab.description">The Git Tab Plugin</description>
+    <resource type="i18n" name="i18n" location="gittab"/>
     <label key="git-tab.label"/>
     <order>10</order>
     <resource type="velocity" name="view" location="templates/tabpanels/git-tab.vm"/>
+    <!-- enable fast tab switch -->
+    <supports-ajax-load>true</supports-ajax-load>
   </issue-tabpanel>
   <web-section name="JIRA Gitlab plugin" i18n-name-key="configuration-section-for-jira-plugin i18n" key="configuration-section-for-jira-plugin" location="atl.jira.proj.config" weight="110">
     <description key="i18n-web-section">JIRA Gitlab plugin 2016</description>

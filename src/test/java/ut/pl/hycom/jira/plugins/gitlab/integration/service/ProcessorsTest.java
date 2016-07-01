@@ -5,8 +5,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueWorklogChangeProcessor;
 
@@ -24,22 +27,29 @@ public class ProcessorsTest {
     private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
     @InjectMocks
     private IssueWorklogChangeProcessor worklogChangeProcessor;
+    @Mock private ConfigEntity config;
+
 
     @Test
-    public void testGetMessageWithEnum() throws Exception{
-        Commit commit = commitService.getOneCommit(urlMock, privateTokenMock, "master");
+    public void testGetMessageWithEnum() throws Exception {
+        Mockito.when(config.getLink()).thenReturn("https://gitlab.com/");
+        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
+        Mockito.when(config.getSecret()).thenReturn(privateTokenMock);
+        Commit commit = commitService.getOneCommit(config, "master");
         commit.setMessage("1y 10w 12d 1h 0m 32s");
         String expectedResult = "1y10w12d1h0m32s";
         String extractedResult = "";
-        List<IssueWorklogChangeProcessor.Time> timesList = worklogChangeProcessor.getExtractedMsg(commit);
-        for(int i =0;i < timesList.size();i++){
-            extractedResult+=timesList.get(i).getFieldValue() + timesList.get(i).getFieldName();
+        for (IssueWorklogChangeProcessor.Time aTimesList : worklogChangeProcessor.getExtractedMsg(commit)) {
+            extractedResult += aTimesList.getFieldValue() + aTimesList.getFieldName();
         }
         Assert.assertEquals(expectedResult ,extractedResult );
     }
     @Test
-    public void convertTimeToSecondsTest(){
-        Commit commit = commitService.getOneCommit(urlMock, privateTokenMock, "master");
+    public void convertTimeToSecondsTest() {
+        Mockito.when(config.getLink()).thenReturn("https://gitlab.com/");
+        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
+        Mockito.when(config.getSecret()).thenReturn(privateTokenMock);
+        Commit commit = commitService.getOneCommit(config, "master");
         commit.setMessage("1y 10w 12d 1h 0m 32s");
         int expectedValue = 38645358;
         Assert.assertEquals(expectedValue,

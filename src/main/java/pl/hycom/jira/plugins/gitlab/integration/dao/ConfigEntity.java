@@ -1,6 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
-/*
+/**
  * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
@@ -30,7 +30,7 @@ public interface ConfigEntity extends RawEntity<Integer>
     @NotNull
     @AutoIncrement
     @PrimaryKey("ProjectID")
-    public Integer getProjectID();
+    public Long getProjectID();
 
     public String getLink();
     public void setLink(String link);

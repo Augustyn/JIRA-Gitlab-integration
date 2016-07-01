@@ -7,5 +7,5 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
  */
 public interface CommitMessageParser
 {
-    public String findIssue(Commit commit, int projectID);
+    public String findIssue(Commit commit, Long projectID);
 }

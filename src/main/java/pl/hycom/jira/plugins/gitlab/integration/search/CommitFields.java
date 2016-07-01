@@ -1,5 +1,5 @@
-package pl.hycom.jira.plugins.gitlab.integration.dao;
-/*
+package pl.hycom.jira.plugins.gitlab.integration.search;
+/**
  * <p>Copyright (c) 2016, Authors
  * Project:  gitlab-integration.</p>
  *
@@ -15,14 +15,21 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
-
-
-@Service
-public interface IGitlabComManDao
-{
-    public int findGitlabProjectId(Long jiraProjectId) throws SQLException;
+/**
+ * <p>Copyright (c) 2016, Hycom S.A.
+ * Project:  gitlab-integration.</p>
+ * <p>All rights reserved.</p>
+ *
+ * @author Augustyn Kończak <mailto:augustyn.konczak@hycom.pl> on 01.07.16.
+ */
+public enum CommitFields {
+    ID,
+    SHORT_ID,
+    TITLE,
+    AUTHOR_NAME,
+    AUTHOR_EMAIL,
+    CREATED,
+    COMMIT_MESSAGE,
+    GIT_PROJECT_ID,
+    JIRA_ISSUE_KEY
 }
