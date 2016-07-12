@@ -1,3 +1,4 @@
 <div class="mod-header">
-    <h3>$i18n.getText('git-tab.label')</h3>
+    <h3>$i18n.getText('jira.git.integration.git-tab.label')</h3>
+    <p>content</p>
 </div>

@@ -16,25 +16,11 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel;
  * limitations under the License.</p>
  */
 
-import com.atlassian.jira.bc.issue.comment.property.CommentPropertyService;
-import com.atlassian.jira.datetime.DateTimeFormatter;
-import com.atlassian.jira.issue.IssueManager;
-import com.atlassian.jira.issue.RendererManager;
-import com.atlassian.jira.issue.comments.CommentManager;
-import com.atlassian.jira.issue.comments.CommentPermissionManager;
-import com.atlassian.jira.issue.fields.layout.field.FieldLayoutManager;
-import com.atlassian.jira.issue.fields.renderer.comment.CommentFieldRenderer;
-import com.atlassian.jira.issue.tabpanels.CommentTabPanel;
 import com.atlassian.jira.issue.tabpanels.GenericMessageAction;
 import com.atlassian.jira.permission.ProjectPermissions;
-import com.atlassian.jira.plugin.issuetabpanel.GetActionsRequest;
-import com.atlassian.jira.plugin.issuetabpanel.IssueAction;
-import com.atlassian.jira.plugin.issuetabpanel.IssueTabPanelModuleDescriptor;
-import com.atlassian.jira.plugin.issuetabpanel.ShowPanelRequest;
+import com.atlassian.jira.plugin.issuetabpanel.*;
 import com.atlassian.jira.project.Project;
-import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.security.PermissionManager;
-import com.atlassian.jira.template.soy.SoyTemplateRendererProvider;
 import com.atlassian.jira.user.ApplicationUser;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,42 +31,48 @@ import pl.hycom.jira.plugins.gitlab.integration.service.CommitService;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j
 @Controller
-public class GitTabPanel extends CommentTabPanel {
+public class GitTabPanel extends AbstractIssueTabPanel2 {
 
     private IssueTabPanelModuleDescriptor descriptor;
 
     @Autowired private CommitService commitService;
     @Autowired private PermissionManager permissionManager;
 
-    public GitTabPanel(CommentManager commentManager, CommentPermissionManager commentPermissionManager, IssueManager issueManager, FieldLayoutManager fieldLayoutManager, RendererManager rendererManager, DateTimeFormatter dateTimeFormatter, SoyTemplateRendererProvider soyTemplateRendererProvider, CommentFieldRenderer commentFieldRenderer, CommentPropertyService commentPropertyService, JiraAuthenticationContext jiraAuthenticationContext) {
-        super(commentManager, commentPermissionManager, issueManager, fieldLayoutManager, rendererManager, dateTimeFormatter, soyTemplateRendererProvider, commentFieldRenderer, commentPropertyService, jiraAuthenticationContext);
-    }
-
     @Override
-    public boolean showPanel(ShowPanelRequest showPanelRequest) {
+    public ShowPanelReply showPanel(ShowPanelRequest showPanelRequest) {
         final Project project = showPanelRequest.issue().getProjectObject();
         final ApplicationUser user = showPanelRequest.remoteUser();
-        final boolean hasPermission = permissionManager.hasPermission(ProjectPermissions.VIEW_DEV_TOOLS, project, user);
+        final boolean hasPermission = permissionManager.hasPermission(ProjectPermissions.WORK_ON_ISSUES, project, user);
         log.info("User: " + (user != null ? user.getUsername() : null) + " requested to see git panel for project: "
                 + (project != null ? project.getKey() : null) + ", issue: " + showPanelRequest.issue().getKey()
                 + ". Displaying panel? " + hasPermission);
-        return hasPermission;
+        return ShowPanelReply.create(hasPermission);
     }
 
 
     @Override
-    public List<IssueAction> getActions(GetActionsRequest getActionsRequest) {
-        List<Commit> commitsListForIssue = null;
+    public GetActionsReply getActions(GetActionsRequest getActionsRequest) {
         try {
-            commitsListForIssue = commitService.getAllIssueCommits(getActionsRequest.issue());
+            List<Commit> commitsListForIssue = commitService.getAllIssueCommits(getActionsRequest.issue());
+
+            Commit commit = commitsListForIssue != null && !commitsListForIssue.isEmpty() ? commitsListForIssue.get(0) : null;
+            log.warn("Commit: " + commit);
+            final List<IssueAction> actions = createActionList(commitsListForIssue);
+            if (actions.isEmpty()) {
+                actions.add(new GenericMessageAction("There are no commits for this issue, yet. Maybe you should add some?"));
+            }
+            return GetActionsReply.create(actions);
         } catch (IOException e) {
             log.info("There was an error while trying to get commits for issue: " + getActionsRequest.issue(), e);
         }
-        Commit commit = commitsListForIssue!= null && commitsListForIssue.isEmpty() ? commitsListForIssue.get(0) : null;
-        log.warn("Commit: " + commit);
-        return Collections.singletonList(new GenericMessageAction("Tu będzie znajdować się zawartość zakładki GitTabPanel"));
+        return GetActionsReply.create(Collections.singletonList(new GenericMessageAction("There was an error processing commits for this issue. Please consult your administrator")));
+    }
+
+    private List<IssueAction> createActionList(List<Commit> commitsListForIssue) {
+        return commitsListForIssue.stream().map(GitCommitAction::new).collect(Collectors.toList());
     }
 }

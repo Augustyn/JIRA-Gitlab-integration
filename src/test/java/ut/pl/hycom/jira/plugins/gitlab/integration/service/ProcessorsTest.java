@@ -2,6 +2,7 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.service;
 
 import lombok.extern.log4j.Log4j;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -29,14 +30,18 @@ public class ProcessorsTest {
     private IssueWorklogChangeProcessor worklogChangeProcessor;
     @Mock private ConfigEntity config;
 
+    private Commit commit;
+
+    @Before
+    public void setUp() {
+        commit = new Commit().withAuthorEmail("Test Author").withAuthorEmail("test@example.com").withId("8b65f529727152439980bf15df6018547c6006b6");
+    }
 
     @Test
     public void testGetMessageWithEnum() throws Exception {
-        Mockito.when(config.getLink()).thenReturn("https://gitlab.com/");
-        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
-        Mockito.when(config.getSecret()).thenReturn(privateTokenMock);
-        Commit commit = commitService.getOneCommit(config, "master");
+        //when
         commit.setMessage("1y 10w 12d 1h 0m 32s");
+        ///then
         String expectedResult = "1y10w12d1h0m32s";
         String extractedResult = "";
         for (IssueWorklogChangeProcessor.Time aTimesList : worklogChangeProcessor.getExtractedMsg(commit)) {
@@ -46,12 +51,10 @@ public class ProcessorsTest {
     }
     @Test
     public void convertTimeToSecondsTest() {
-        Mockito.when(config.getLink()).thenReturn("https://gitlab.com/");
-        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
-        Mockito.when(config.getSecret()).thenReturn(privateTokenMock);
-        Commit commit = commitService.getOneCommit(config, "master");
+        //when
         commit.setMessage("1y 10w 12d 1h 0m 32s");
         int expectedValue = 38645358;
+        //then
         Assert.assertEquals(expectedValue,
                 worklogChangeProcessor.getTimeConvertedToSeconds(worklogChangeProcessor.getExtractedMsg(commit)));
     }

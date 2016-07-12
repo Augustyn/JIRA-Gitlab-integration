@@ -48,11 +48,12 @@ public class CommitRepository implements ICommitDao {
     }
 
     @Override
-    public Commit getOneCommit(ConfigEntity configEntity, String shaSum) {
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
-        ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
+    public Commit getOneCommit(ConfigEntity config, String shaSum) {
+        log.info("Getting one commit from git repository: " + config.getLink() + " with secret: " + config.getSecret() + " and project Id: " + config.getGitlabProjectId());
+        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(config.getClientId()).build());
+        ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(config.getLink() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
-                }, configEntity.getGitlabProjectId(), shaSum);
+                }, config.getGitlabProjectId(), shaSum);
 
         return response.getBody();
     }

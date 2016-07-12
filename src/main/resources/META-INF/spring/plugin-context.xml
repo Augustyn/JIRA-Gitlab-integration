@@ -30,10 +30,7 @@
     <osgi:service id="awesomeLauncherDisposableBean" interface="org.springframework.beans.factory.DisposableBean" ref="awesomeLauncher" />
     <osgi:service id="awesomeLauncherInitializingBean" interface="org.springframework.beans.factory.InitializingBean" ref="awesomeLauncher" />
 
-    <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.ProcessorsConfigurer"
-                  interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="processorsConfigurer"/>
     <!--
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     -->
-    <osgi:reference id="indexPathManager" interface="com.atlassian.jira.config.util.IndexPathManager"  />
 </beans>

@@ -17,25 +17,64 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.search;
  * limitations under the License.</p>
  */
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndexer;
+import pl.hycom.jira.plugins.gitlab.integration.search.LucenePathSearcher;
+
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.List;
+
 /**
  * Created by Damian Deska on 5/17/16.
  */
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class CommitIndexerTest {
+    Logger log = LoggerFactory.getLogger(CommitIndexerTest.class);
 
-   /* @InjectMocks
+    @InjectMocks private CommitIndexer commitIndexer = new CommitIndexer();
+    @InjectMocks private CommitRepository commitRepository = new CommitRepository();
+
+    @Mock private LucenePathSearcher lucenePathSearcher;
+    @Mock private ConfigEntity config;
+
     private Commit commit = new Commit();
-    private CommitIndexer commitIndexer = new CommitIndexer();
-    private CommitRepository commitRepository = new CommitRepository();
     private String urlMock = "https://gitlab.com/api/v3/projects/1063546/repository/commits";
     private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
 
+    @Before
+    public void setUp() {
+
+    }
+
     @Test
     public void indexNewCommitTest() throws IOException {
-        List<Commit> commitList = commitRepository.getNewCommits(urlMock, privateTokenMock, 10, 1);
+        //before
+        Mockito.when(config.getLink()).thenReturn("https://gitlab.com/");
+        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
+        Mockito.when(config.getSecret()).thenReturn("KCi3MfkU7qNGJCe3pQUW");
+        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
+        Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(Paths.get("./target/lucenetest/"));
+        //when
+        List<Commit> commitList = commitRepository.getNewCommits(config, 10, 1);
+        int i = 1;
+        //then
         for(Commit newCommit : commitList) {
-            log.info(newCommit.getId() + ", " + newCommit.getAuthor_name());
+            log.info(newCommit.getId() + ", " + newCommit.getAuthorName());
+            newCommit.setMessage("PIP-" + i + ", " + newCommit.getMessage());
+            i++;
             commitIndexer.indexFile(newCommit);
         }
 
@@ -43,9 +82,13 @@ public class CommitIndexerTest {
 
     @Test
     public void indexOneCommitTest() throws IOException{
-        Commit oneCommit = commitRepository.getOneCommit(urlMock, privateTokenMock, "master");
+        Mockito.when(config.getLink()).thenReturn("https://gitlab.com/");
+        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
+        Mockito.when(config.getSecret()).thenReturn("KCi3MfkU7qNGJCe3pQUW");
+        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
+
+        Commit oneCommit = commitRepository.getOneCommit(config, "79be5e2c5e6742d7513d11e0956138f4bf02ab3b");
         log.info(oneCommit.getId());
         commitIndexer.indexFile(oneCommit);
     }
-*/
 }

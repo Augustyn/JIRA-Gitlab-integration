@@ -17,9 +17,12 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
  * limitations under the License.</p>
  */
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Transient;
+
+import java.util.Date;
 
 /**
  * Base model for commit message from any DVCS
@@ -34,8 +37,10 @@ public class Commit {
     private String authorName;
     @JsonProperty("author_email")
     private String authorEmail;
+    // example: 2015-05-21T20:57:28.000+02:00;
     @JsonProperty("created_at")
-    private String createdAt;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm.sssZ")
+    private Date createdAt;
     private String message;
     @Transient
     private String issueKey;
@@ -67,7 +72,7 @@ public class Commit {
         return this;
     }
 
-    public Commit withCreatedAt(String createdAt) {
+    public Commit withCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
         return this;
     }

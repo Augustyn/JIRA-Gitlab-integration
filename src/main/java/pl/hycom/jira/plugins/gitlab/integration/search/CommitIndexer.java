@@ -34,6 +34,7 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Damian Deska on 25.04.2016.
@@ -53,7 +54,7 @@ public class CommitIndexer {
         document.add(new TextField(CommitFields.TITLE.name(), commit.getTitle(), Field.Store.YES));
         document.add(new StringField(CommitFields.AUTHOR_NAME.name(), commit.getAuthorName(), Field.Store.YES));
         document.add(new TextField(CommitFields.AUTHOR_EMAIL.name(), commit.getAuthorEmail(), Field.Store.YES));
-        document.add(new TextField(CommitFields.CREATED.name(), commit.getCreatedAt(), Field.Store.YES));
+        document.add(new TextField(CommitFields.CREATED.name(), CommitFields.formatter.format(commit.getCreatedAt()), Field.Store.YES));
         document.add(new TextField(CommitFields.COMMIT_MESSAGE.name(), commit.getMessage(), Field.Store.YES));
         document.add(new TextField(CommitFields.JIRA_ISSUE_KEY.name(), commit.getIssueKey(), Field.Store.YES));
         document.add(new TextField(CommitFields.GIT_PROJECT_ID.name(), commit.getMessage(), Field.Store.YES));

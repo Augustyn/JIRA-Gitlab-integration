@@ -15,6 +15,10 @@ package pl.hycom.jira.plugins.gitlab.integration.search;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * <p>Copyright (c) 2016, Hycom S.A.
  * Project:  gitlab-integration.</p>
@@ -31,5 +35,6 @@ public enum CommitFields {
     CREATED,
     COMMIT_MESSAGE,
     GIT_PROJECT_ID,
-    JIRA_ISSUE_KEY
+    JIRA_ISSUE_KEY;
+    public static final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm.sssZ");
 }

@@ -36,10 +36,10 @@ import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,14 +82,13 @@ public class CommitSearcher {
         return foundedCommitsList;
     }
 
-    public List<Commit> searchCommitsByIssue(String jiraIssueKey) throws IOException {
-        List<Commit> commitsFound;
+    public List<Commit> searchCommitsByIssue(String jiraIssueKey) {
         try(Directory indexDirectory = FSDirectory.open(lucenePathSearcher.getIndexPath())) {
             WildcardQuery query = new WildcardQuery(new Term("message", jiraIssueKey));
             IndexReader reader = DirectoryReader.open(indexDirectory);
             IndexSearcher searcher = new IndexSearcher(reader);
             TopDocs docs = searcher.search(query, hitsPerPage);
-            commitsFound = Arrays.asList(docs.scoreDocs).stream().map(hit -> {
+            return Arrays.asList(docs.scoreDocs).stream().map(hit -> {
                 try {
                     Document document = searcher.doc(hit.doc);
                     return new Commit()
@@ -98,17 +97,20 @@ public class CommitSearcher {
                             .withTitle(document.get(CommitFields.TITLE.name()))
                             .withAuthorName(document.get(CommitFields.AUTHOR_NAME.name()))
                             .withAuthorEmail(document.get(CommitFields.AUTHOR_EMAIL.name()))
-                            .withCreatedAt(document.get(CommitFields.CREATED.name()))
+                            .withCreatedAt(CommitFields.formatter.parse(document.get(CommitFields.CREATED.name())))
                             .withMessage(document.get(CommitFields.COMMIT_MESSAGE.name()))
                             .withIssueKey(document.get(CommitFields.JIRA_ISSUE_KEY.name()))
                             .withGitProject(Long.valueOf(document.get(CommitFields.GIT_PROJECT_ID.name())));
-                } catch(IOException e) {
+                } catch(IOException | java.text.ParseException e) {
                     log.warn("Failed to recreate Commit from lucene doc Id: " + hit.doc , e);
-                    throw new UncheckedIOException(e);
+                    return null;
                 }
             }).collect(Collectors.toList());
+        } catch (IOException e) {
+            log.info("Failed to search commits by JIRA issue key: " + jiraIssueKey + " with message: " + e.getMessage());
+            log.debug("Stack: ", e);
         }
-        return commitsFound;
+        return Collections.emptyList();
     }
 
     public boolean checkIfCommitIsIndexed(String idValue) throws ParseException, IOException {
