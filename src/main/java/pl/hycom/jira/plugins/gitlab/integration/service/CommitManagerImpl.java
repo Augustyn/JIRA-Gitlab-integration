@@ -1,5 +1,15 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
 
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 /**
  * <p>Copyright (c) 2016, Authors</p>
  *
@@ -15,18 +25,6 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-
 @Component
 public class CommitManagerImpl implements CommitManager
 {

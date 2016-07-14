@@ -1,7 +1,18 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
-/*
- * <p>Copyright (c) 2016, Authors
- * Project:  gitlab-integration.</p>
+
+import lombok.extern.log4j.Log4j;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
+
+import java.util.List;
+
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +26,6 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import lombok.extern.log4j.Log4j;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
-
-import java.util.List;
-
-
 @Log4j
 @Repository
 public class CommitRepository implements ICommitDao {

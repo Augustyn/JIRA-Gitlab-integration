@@ -1,8 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
-
-/*
- * <p>Copyright (c) 2016, Authors
- * Project:  gitlab-integration.</p>
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +14,6 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -26,13 +23,9 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
 import javax.validation.constraints.NotNull;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Karol Joachimiak on 08.04.2016.
- */
 @Service
 @Log4j
 public class ProcessorManager {

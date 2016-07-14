@@ -1,4 +1,10 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
+
+import org.apache.lucene.queryparser.classic.ParseException;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
 /**
  * <p>Copyright (c) 2016, Authors</p>
  *
@@ -15,14 +21,7 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * limitations under the License.</p>
  */
 
-import org.apache.lucene.queryparser.classic.ParseException;
-
-import java.io.IOException;
-import java.sql.SQLException;
-
-
-public interface CommitManager
-{
+public interface CommitManager {
     void updateCommitsForProject(Long projectId) throws SQLException, ParseException, IOException;
     void updateCommitsForAll() throws SQLException, ParseException, IOException;
 }

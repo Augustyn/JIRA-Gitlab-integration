@@ -1,8 +1,16 @@
 package pl.hycom.jira.plugins.gitlab.integration.service.processors;
 
-/*
- * <p>Copyright (c) 2016, Authors
- * Project:  gitlab-integration.</p>
+import com.atlassian.event.api.EventPublisher;
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.user.ApplicationUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.util.HashMap;
+import java.util.Map;
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +24,6 @@ package pl.hycom.jira.plugins.gitlab.integration.service.processors;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import com.atlassian.event.api.EventPublisher;
-import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.user.ApplicationUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.util.HashMap;
-import java.util.Map;
-
 @Component
 public class IssueCommitChangeNotificationProcessor implements ProcessorInterface
 {

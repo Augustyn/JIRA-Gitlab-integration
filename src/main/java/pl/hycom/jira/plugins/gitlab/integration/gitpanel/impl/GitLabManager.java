@@ -1,8 +1,13 @@
 package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
 
-/*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
- * Project:  gitlab-integration.</p>
+import lombok.extern.log4j.Log4j;
+import org.springframework.stereotype.Service;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.util.List;
+
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +21,6 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import lombok.extern.log4j.Log4j;
-import org.springframework.stereotype.Service;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.util.List;
-
-
 @Service
 @Log4j
 public class GitLabManager {

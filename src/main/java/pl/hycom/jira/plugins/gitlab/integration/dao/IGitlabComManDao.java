@@ -1,7 +1,11 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
-/*
- * <p>Copyright (c) 2016, Authors
- * Project:  gitlab-integration.</p>
+
+import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
+
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +19,6 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
-
 
 @Service
 public interface IGitlabComManDao

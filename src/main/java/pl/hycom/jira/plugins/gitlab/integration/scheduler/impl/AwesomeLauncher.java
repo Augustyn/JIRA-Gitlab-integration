@@ -1,25 +1,22 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
-import java.lang.annotation.Annotation;
-import java.util.EnumSet;
-import java.util.Set;
-
-import javax.annotation.concurrent.GuardedBy;
-
 import com.atlassian.activeobjects.external.ActiveObjects;
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
-import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner;
-import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs;
 import com.atlassian.plugin.event.events.PluginEnabledEvent;
 import com.atlassian.sal.api.lifecycle.LifecycleAware;
 import com.atlassian.scheduler.SchedulerService;
-import org.springframework.stereotype.Component;
-
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner;
+import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffSalJobs;
+
+import javax.annotation.concurrent.GuardedBy;
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Coordinate all the startup information to decide when it is safe to do complicated work.
@@ -57,6 +54,7 @@ import org.springframework.beans.factory.InitializingBean;
  * <li>Finally, you must not leave scheduler objects or event listeners behind when the
  *      plugin is disabled, so these actions need to be cleaned back up afterwards.</li>
  * </ul>
+ *
  * <p>
  * This class copies the approach used by JIRA Agile to solve this problem.  In particular,
  * it watches as the various events occur.  The actual launching, creation of initial data,
@@ -65,10 +63,21 @@ import org.springframework.beans.factory.InitializingBean;
  * are other strategies (like using an event to decouple this interaction) that might be
  * better.
  * </p>
+ * <p>Copyright (c) 2016, Authors</p>
  *
+ * <p>Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at</p>
+ *
+ * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+ *
+ * <p>Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.</p>
  * @since v1.0
  */
-
 @Component
 @Log4j
 public class AwesomeLauncher implements LifecycleAware, InitializingBean, DisposableBean

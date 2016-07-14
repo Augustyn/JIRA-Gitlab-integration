@@ -1,7 +1,13 @@
 package pl.hycom.jira.plugins.gitlab.integration.model;
-/*
- * <p>Copyright (c) 2016, Authors
- * Project:  gitlab-integration.</p>
+
+import com.fasterxml.jackson.annotation.*;
+
+import javax.annotation.Generated;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +21,6 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import lombok.Data;
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({

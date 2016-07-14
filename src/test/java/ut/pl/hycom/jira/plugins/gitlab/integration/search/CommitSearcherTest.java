@@ -1,8 +1,25 @@
 package ut.pl.hycom.jira.plugins.gitlab.integration.search;
 
-/*
- * <p>Copyright (c) 2016, Damian Deska
- * Project:  gitlab-integration.</p>
+import lombok.extern.log4j.Log4j;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitSearcher;
+import pl.hycom.jira.plugins.gitlab.integration.search.LucenePathSearcher;
+
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,28 +32,25 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.search;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- */
-
-import lombok.extern.log4j.Log4j;
-
-/**
- * Created by Damian Deska on 5/17/16.
+ *
  */
 
 @Log4j
+@RunWith(MockitoJUnitRunner.class)
 public class CommitSearcherTest {
 
-    /*@InjectMocks
-    private CommitSearcher commitSearcher = new CommitSearcher();
+    @Mock private
+    LucenePathSearcher lucenePathSearcher;
+
+    @InjectMocks private CommitSearcher commitSearcher = new CommitSearcher();
 
     @Test
     public void searchCommitsTest() throws ParseException, IOException {
-
-        List<Document> foundedCommitsList = new ArrayList<Document>();
+        Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(Paths.get("./target/lucenetest/"));
 
         String fieldName = "author_name";
         String fieldValue = "kamilrogowski";
-        foundedCommitsList = commitSearcher.searchCommits(fieldName, fieldValue);
+        List<Document> foundedCommitsList =  commitSearcher.searchCommits(fieldName, fieldValue);
 
         for(Document document : foundedCommitsList) {
             Assert.assertTrue(document.get("author_name").equals("kamilrogowski"));
@@ -52,5 +66,4 @@ public class CommitSearcherTest {
         Assert.assertTrue(commitSearcher.checkIfCommitIsIndexed(validIdValue));
         Assert.assertFalse(commitSearcher.checkIfCommitIsIndexed(invalidIdValue));
     }
-*/
 }

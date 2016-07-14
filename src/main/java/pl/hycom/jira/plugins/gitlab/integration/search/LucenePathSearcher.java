@@ -1,8 +1,17 @@
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
-/*
- * <p>Copyright (c) 2016, Damian Deska & Kamil Rogowski
- * Project:  gitlab-integration.</p>
+import com.atlassian.jira.config.util.IndexPathManager;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +24,6 @@ package pl.hycom.jira.plugins.gitlab.integration.search;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- */
-
-import com.atlassian.jira.config.util.IndexPathManager;
-import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-
-/**
- * Created by Kamil Rogowski on 31.05.2016.
  */
 @Log4j
 @Service

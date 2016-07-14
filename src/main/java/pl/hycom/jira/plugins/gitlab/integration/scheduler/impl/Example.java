@@ -1,20 +1,16 @@
 package pl.hycom.jira.plugins.gitlab.integration.scheduler.impl;
 
-import java.util.TimeZone;
-
+import com.atlassian.scheduler.SchedulerService;
+import com.atlassian.scheduler.SchedulerServiceException;
+import com.atlassian.scheduler.config.*;
+import com.atlassian.scheduler.status.JobDetails;
 import lombok.extern.log4j.Log4j;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeException;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginScheduleManager;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff;
 import pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuffDao;
-import com.atlassian.scheduler.SchedulerService;
-import com.atlassian.scheduler.SchedulerServiceException;
-import com.atlassian.scheduler.config.JobConfig;
-import com.atlassian.scheduler.config.JobId;
-import com.atlassian.scheduler.config.JobRunnerKey;
-import com.atlassian.scheduler.config.RunMode;
-import com.atlassian.scheduler.config.Schedule;
-import com.atlassian.scheduler.status.JobDetails;
+
+import java.util.TimeZone;
 
 import static pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomePluginJobRunner.AWESOME_ID;
 import static pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomePluginScheduleManagerImpl.toJobId;
@@ -22,6 +18,19 @@ import static pl.hycom.jira.plugins.gitlab.integration.scheduler.impl.AwesomePlu
 /**
  * Encapsulates the logic of setting up the example data and schedules.
  *
+ * <p>Copyright (c) 2016, Authors</p>
+ *
+ * <p>Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at</p>
+ *
+ * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+ *
+ * <p>Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.</p>
  * @since v1.0
  */
 @Log4j

@@ -1,6 +1,10 @@
-/*
- * <p>Copyright (c) 2016, Authors
- * Project:  gitlab-integration.</p>
+package pl.hycom.jira.plugins.gitlab.integration.validation;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +18,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-package pl.hycom.jira.plugins.gitlab.integration.validation;
-
-
-
-
-import java.util.ArrayList;
-import java.util.Collection;
-
-
 public class ErrorCollection {
 
     /**

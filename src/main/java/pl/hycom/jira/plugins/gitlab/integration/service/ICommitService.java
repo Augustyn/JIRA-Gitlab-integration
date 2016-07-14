@@ -1,7 +1,15 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
-/*
- * <p>Copyright (c) 2016, Damian Deska, Kamil Rogowski
- * Project:  gitlab-integration.</p>
+
+import com.atlassian.jira.issue.Issue;
+import org.apache.lucene.queryparser.classic.ParseException;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +22,6 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- */
-
-import com.atlassian.jira.issue.Issue;
-import org.apache.lucene.queryparser.classic.ParseException;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-
-/**
- * Created by Kamil Rogowski on 22.04.2016.
  */
 public interface ICommitService {
 

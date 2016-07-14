@@ -1,5 +1,12 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
+
+import java.sql.SQLException;
+import java.util.List;
+
 /**
  * <p>Copyright (c) 2016, Authors</p>
  *
@@ -15,14 +22,6 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
-
-import java.sql.SQLException;
-import java.util.List;
-
 
 @Repository
 public class GitlabComManDaoImpl implements IGitlabComManDao {

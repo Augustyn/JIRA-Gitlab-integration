@@ -22,3 +22,6 @@ Does not require prerequisites, as Atlassian SDK bundles them. Build with:
 
 # Installing:
 As any other plugin, from JIRA Universal Plugin Manager.
+
+# License
+See file LICENSE

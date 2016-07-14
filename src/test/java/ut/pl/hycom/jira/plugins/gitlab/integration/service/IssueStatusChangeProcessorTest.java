@@ -1,8 +1,16 @@
 package ut.pl.hycom.jira.plugins.gitlab.integration.service;
 
-/*
- * <p>Copyright (c) 2016, Damian Deska
- * Project:  gitlab-integration.</p>
+import lombok.extern.log4j.Log4j;
+import org.junit.Ignore;
+import org.junit.Test;
+import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueStatusChangeProcessor;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.List;
+
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +23,7 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.service;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- */
-
-import lombok.extern.log4j.Log4j;
-import org.junit.Ignore;
-import org.junit.Test;
-import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueStatusChangeProcessor;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
-
-/**
- * Created by Damian Deska on 6/17/16.
+ *
  */
 @Log4j
 public class IssueStatusChangeProcessorTest {

@@ -1,8 +1,10 @@
 package pl.hycom.jira.plugins.gitlab.integration.util;
 
-/*
- * <p>Copyright (c) 2016, Damian Deska
- * Project:  gitlab-integration.</p>
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +17,6 @@ package pl.hycom.jira.plugins.gitlab.integration.util;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- */
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-/**
- * Created by Damian Deska on 5/10/16.
  */
 @Service
 public class TemplateFactory {

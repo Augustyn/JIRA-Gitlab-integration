@@ -1,8 +1,13 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
+
+import net.java.ao.RawEntity;
+import net.java.ao.schema.AutoIncrement;
+import net.java.ao.schema.NotNull;
+import net.java.ao.schema.PrimaryKey;
+
 /**
- * <p>Copyright (c) 2016, Authors
- * Project:  gitlab-integration.</p>
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +20,6 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- */
-
-import net.java.ao.RawEntity;
-import net.java.ao.schema.AutoIncrement;
-import net.java.ao.schema.NotNull;
-import net.java.ao.schema.PrimaryKey;
-
-/**
- * Created by vagrant on 5/10/16.
  */
 public interface ConfigEntity extends RawEntity<Integer>
 {

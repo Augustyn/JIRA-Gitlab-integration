@@ -1,7 +1,16 @@
 
 package pl.hycom.jira.plugins.gitlab.integration.model;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.Transient;
+
+import java.util.Date;
+
 /**
+ * Base model for commit message from any DVCS
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +24,6 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- */
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.data.annotation.Transient;
-
-import java.util.Date;
-
-/**
- * Base model for commit message from any DVCS
  */
 @Data
 public class Commit {

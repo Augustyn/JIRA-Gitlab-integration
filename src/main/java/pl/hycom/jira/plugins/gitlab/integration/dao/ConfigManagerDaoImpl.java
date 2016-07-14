@@ -1,8 +1,18 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
-/*
- * <p>Copyright (c) 2016, Authors
- * Project:  gitlab-integration.</p>
+import com.atlassian.activeobjects.external.ActiveObjects;
+import net.java.ao.DBParam;
+import net.java.ao.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +26,6 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-import com.atlassian.activeobjects.external.ActiveObjects;
-import net.java.ao.DBParam;
-import net.java.ao.Query;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 @Repository
 @Service
 public class ConfigManagerDaoImpl implements ConfigManagerDao

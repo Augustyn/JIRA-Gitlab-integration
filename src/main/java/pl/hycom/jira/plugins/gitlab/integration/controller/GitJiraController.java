@@ -17,9 +17,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.sql.SQLException;
-/*
- * <p>Copyright (c) 2016, Authors
- * Project:  gitlab-integration.</p>
+/**
+ * Controller used for refreshing project, based on notifications hooks from GitLab.
+ *
+ * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,11 +33,6 @@ import java.sql.SQLException;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- */
-
-/**
- * Controller used for refreshing project, based on notifications hooks from GitLab.
- *
  */
 @Path("gitlab")
 @Controller
