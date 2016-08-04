@@ -1,6 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.annotation.Generated;
@@ -24,11 +24,9 @@ import javax.annotation.Generated;
 @Data
 public class Author {
 
-    @SerializedName("name")
-    @Expose
+    @JsonProperty("name")
     public String name;
-    @SerializedName("email")
-    @Expose
+    @JsonProperty("email")
     public String email;
 
 }

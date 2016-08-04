@@ -1,7 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.annotation.Generated;
@@ -25,47 +24,33 @@ import javax.annotation.Generated;
 @Data
 public class Project {
 
-    @SerializedName("name")
-    @Expose
+    @JsonProperty("name")
     public String name;
-    @SerializedName("description")
-    @Expose
+    @JsonProperty("description")
     public String description;
-    @SerializedName("web_url")
-    @Expose
+    @JsonProperty("web_url")
     public String webUrl;
-    @SerializedName("avatar_url")
-    @Expose
+    @JsonProperty("avatar_url")
     public Object avatarUrl;
-    @SerializedName("git_ssh_url")
-    @Expose
+    @JsonProperty("git_ssh_url")
     public String gitSshUrl;
-    @SerializedName("git_http_url")
-    @Expose
+    @JsonProperty("git_http_url")
     public String gitHttpUrl;
-    @SerializedName("namespace")
-    @Expose
+    @JsonProperty("namespace")
     public String namespace;
-    @SerializedName("visibility_level")
-    @Expose
+    @JsonProperty("visibility_level")
     public Integer visibilityLevel;
-    @SerializedName("path_with_namespace")
-    @Expose
+    @JsonProperty("path_with_namespace")
     public String pathWithNamespace;
-    @SerializedName("default_branch")
-    @Expose
+    @JsonProperty("default_branch")
     public String defaultBranch;
-    @SerializedName("homepage")
-    @Expose
+    @JsonProperty("homepage")
     public String homepage;
-    @SerializedName("url")
-    @Expose
+    @JsonProperty("url")
     public String url;
-    @SerializedName("ssh_url")
-    @Expose
+    @JsonProperty("ssh_url")
     public String sshUrl;
-    @SerializedName("http_url")
-    @Expose
+    @JsonProperty("http_url")
     public String httpUrl;
 
 }

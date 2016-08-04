@@ -1,12 +1,14 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.util.HttpHeadersBuilder;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
 import java.util.List;
@@ -34,11 +36,13 @@ public class CommitRepository implements ICommitDao {
     private static final String COMMIT_URL =  COMMIT_BASE + "?per_page={perPage}&page={pageNumber}";
     private static final String COMMIT_SINGLE_URL = COMMIT_BASE + "/{sha1sum}";
 
+    @Autowired private TemplateFactory restTemplate;
+
     @Override
     public List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber) {
         log.info("Trying to reach url: {}, with projectId: {}");
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
-        ResponseEntity<List<Commit>> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + COMMIT_URL, HttpMethod.GET, requestEntity,
+        HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(configEntity.getSecret()).get());
+        ResponseEntity<List<Commit>> response = restTemplate.getRestTemplate().exchange(configEntity.getLink() + COMMIT_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<Commit>>() {
                 }, configEntity.getGitlabProjectId(), Integer.toString(perPage), Integer.toString(pageNumber));
 
@@ -48,11 +52,13 @@ public class CommitRepository implements ICommitDao {
     @Override
     public Commit getOneCommit(ConfigEntity config, String shaSum) {
         log.info("Getting one commit from git repository: " + config.getLink() + " with secret: " + config.getSecret() + " and project Id: " + config.getGitlabProjectId());
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(config.getClientId()).build());
-        ResponseEntity<Commit> response = new TemplateFactory().getRestTemplate().exchange(config.getLink() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
+        HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(config.getSecret()).get());
+        ResponseEntity<Commit> response = restTemplate.getRestTemplate().exchange(config.getLink() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
                 }, config.getGitlabProjectId(), shaSum);
-
-        return response.getBody();
+        if (response != null) {
+            return response.getBody();
+        }
+        return null;
     }
 }

@@ -1,14 +1,12 @@
 package pl.hycom.jira.plugins.gitlab.integration.gitlab.events;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Project;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Repository;
 
 import javax.annotation.Generated;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,50 +28,33 @@ import java.util.List;
 @Data
 public class Push {
 
-    @SerializedName("object_kind")
-    @Expose
+    @JsonProperty("object_kind")
     public String objectKind;
-    @SerializedName("before")
-    @Expose
+    @JsonProperty("before")
     public String before;
-    @SerializedName("after")
-    @Expose
+    @JsonProperty("after")
     public String after;
-    @SerializedName("ref")
-    @Expose
+    @JsonProperty("ref")
     public String ref;
-    @SerializedName("checkout_sha")
-    @Expose
+    @JsonProperty("checkout_sha")
     public String checkoutSha;
-    @SerializedName("user_id")
-    @Expose
+    @JsonProperty("user_id")
     public Integer userId;
-    @SerializedName("user_name")
-    @Expose
+    @JsonProperty("user_name")
     public String userName;
-    @SerializedName("user_email")
-    @Expose
+    @JsonProperty("user_email")
     public String userEmail;
-    @SerializedName("user_avatar")
-    @Expose
+    @JsonProperty("user_avatar")
     public String userAvatar;
-    @SerializedName("project_id")
-    @Expose
+    @JsonProperty("project_id")
     public Integer projectId;
-    @SerializedName("project")
-    @Expose
-    @Valid
+    @JsonProperty("project")
     public Project project;
-    @SerializedName("repository")
-    @Expose
-    @Valid
+    @JsonProperty("repository")
     public Repository repository;
-    @SerializedName("commits")
-    @Expose
-    @Valid
+    @JsonProperty("commits")
     public List<Commit> commits = new ArrayList<Commit>();
-    @SerializedName("total_commits_count")
-    @Expose
+    @JsonProperty("total_commits_count")
     public Integer totalCommitsCount;
 
 }

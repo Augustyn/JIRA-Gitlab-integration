@@ -1,12 +1,14 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
+import pl.hycom.jira.plugins.gitlab.integration.util.HttpHeadersBuilder;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
 import java.util.List;
@@ -33,10 +35,12 @@ public class GitlabComDao implements IGitlabComDao {
 
     private static final String PROJECT = "/api/v3/projects/owned";
 
+    @Autowired private TemplateFactory templateFactory;
+
     @Override
     public List<GitlabProject> getGitlabProjects(ConfigEntity configEntity){
-        HttpEntity<?> requestEntity = new HttpEntity<>(new TemplateFactory().getHttpHeaders().setAuth(configEntity.getClientId()).build());
-        ResponseEntity<List<GitlabProject>> response = new TemplateFactory().getRestTemplate().exchange(configEntity.getLink() + PROJECT, HttpMethod.GET, requestEntity,
+        HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(configEntity.getClientId()).get());
+        ResponseEntity<List<GitlabProject>> response = templateFactory.getRestTemplate().exchange(configEntity.getLink() + PROJECT, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<GitlabProject>>() {
                 });
         return response.getBody();

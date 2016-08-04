@@ -9,6 +9,7 @@ import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.flexible.core.util.StringUtils;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,9 @@ public class CommitIndexer {
         document.add(new TextField(CommitFields.AUTHOR_EMAIL.name(), commit.getAuthorEmail(), Field.Store.YES));
         document.add(new TextField(CommitFields.CREATED.name(), CommitFields.formatter.format(commit.getCreatedAt()), Field.Store.YES));
         document.add(new TextField(CommitFields.COMMIT_MESSAGE.name(), commit.getMessage(), Field.Store.YES));
-        document.add(new TextField(CommitFields.JIRA_ISSUE_KEY.name(), commit.getIssueKey(), Field.Store.YES));
+        if (org.apache.commons.lang3.StringUtils.isNotEmpty(commit.getIssueKey())) {
+            document.add(new TextField(CommitFields.JIRA_ISSUE_KEY.name(), commit.getIssueKey(), Field.Store.YES));
+        }
         document.add(new TextField(CommitFields.GIT_PROJECT_ID.name(), commit.getMessage(), Field.Store.YES));
         return document;
     }

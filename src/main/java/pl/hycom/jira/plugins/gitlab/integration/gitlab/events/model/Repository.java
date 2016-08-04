@@ -1,7 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.annotation.Generated;
@@ -24,25 +23,18 @@ import javax.annotation.Generated;
 @Generated("org.jsonschema2pojo")
 @Data
 public class Repository {
-    @SerializedName("name")
-    @Expose
+    @JsonProperty("name")
     public String name;
-    @SerializedName("url")
-    @Expose
+    @JsonProperty("url")
     public String url;
-    @SerializedName("description")
-    @Expose
+    @JsonProperty("description")
     public String description;
-    @SerializedName("homepage")
-    @Expose
+    @JsonProperty("homepage")
     public String homepage;
-    @SerializedName("git_http_url")
-    @Expose
+    @JsonProperty("git_http_url")
     public String gitHttpUrl;
-    @SerializedName("git_ssh_url")
-    @Expose
+    @JsonProperty("git_ssh_url")
     public String gitSshUrl;
-    @SerializedName("visibility_level")
-    @Expose
+    @JsonProperty("visibility_level")
     public Integer visibilityLevel;
 }

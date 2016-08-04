@@ -18,10 +18,7 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,10 +39,9 @@ import java.util.stream.Collectors;
 @Log4j
 @Service
 public class CommitSearcher {
-
     private Analyzer analyzer = new StandardAnalyzer();
-    public int hitsPerPage = 10;
 
+    public int hitsPerPage = 100;
 
     @Autowired
     private LucenePathSearcher lucenePathSearcher;
@@ -76,11 +72,11 @@ public class CommitSearcher {
 
     public List<Commit> searchCommitsByIssue(String jiraIssueKey) {
         try(Directory indexDirectory = FSDirectory.open(lucenePathSearcher.getIndexPath())) {
-            WildcardQuery query = new WildcardQuery(new Term("message", jiraIssueKey));
+            WildcardQuery query = new WildcardQuery(new Term(CommitFields.COMMIT_MESSAGE.name(), jiraIssueKey));
             IndexReader reader = DirectoryReader.open(indexDirectory);
             IndexSearcher searcher = new IndexSearcher(reader);
             TopDocs docs = searcher.search(query, hitsPerPage);
-            return Arrays.asList(docs.scoreDocs).stream().map(hit -> {
+            return Arrays.stream(docs.scoreDocs).map(hit -> {
                 try {
                     Document document = searcher.doc(hit.doc);
                     return new Commit()
@@ -99,7 +95,7 @@ public class CommitSearcher {
                 }
             }).collect(Collectors.toList());
         } catch (IOException e) {
-            log.info("Failed to search commits by JIRA issue key: " + jiraIssueKey + " with message: " + e.getMessage());
+            log.warn("Failed to search commits by JIRA issue key: " + jiraIssueKey + " with message: " + e.getMessage());
             log.debug("Stack: ", e);
         }
         return Collections.emptyList();
@@ -108,29 +104,26 @@ public class CommitSearcher {
     public boolean checkIfCommitIsIndexed(String idValue) throws ParseException, IOException {
         Path path = lucenePathSearcher.getIndexPath();
         Directory indexDirectory = FSDirectory.open(path);
-        Query query = new QueryParser("id", analyzer).parse(idValue);
+        Query query = new QueryParser(CommitFields.ID.name(), analyzer).parse(idValue);
 
         try (IndexReader reader = DirectoryReader.open(indexDirectory)) {
-
             IndexSearcher searcher = new IndexSearcher(reader);
-
             TopDocs docs = searcher.search(query, hitsPerPage);
-            ScoreDoc[] hits = docs.scoreDocs;
 
-            for (ScoreDoc hit : hits) {
-                int docId = hit.doc;
-                Document document = searcher.doc(docId);
-
-                if (idValue.equals(document.get("id"))) {
-                    reader.close();
-                    return true;
+            Optional<ScoreDoc> firstDoc = Arrays.stream(docs.scoreDocs).filter(hit -> {
+                try {
+                    Document document = searcher.doc(hit.doc);
+                    log.debug("Found: " + document);
+                    if (idValue.equals(document.get(CommitFields.ID.name()))) {
+                        return true;
+                    }
+                } catch (IOException e) {
+                    log.warn("Failed to search for hit: " + hit.doc + " with message: " + e.getMessage());
                 }
-            }
+                return false;
+            }).findFirst();
+            return firstDoc.isPresent();
         }
-
-        return false;
-
-
     }
 
 }

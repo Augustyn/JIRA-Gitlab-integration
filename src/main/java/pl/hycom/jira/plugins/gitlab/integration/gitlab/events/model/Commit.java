@@ -1,11 +1,9 @@
 package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.annotation.Generated;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,33 +26,21 @@ import java.util.List;
 @Data
 public class Commit {
 
-    @SerializedName("id")
-    @Expose
+    @JsonProperty("id")
     public String id;
-    @SerializedName("message")
-    @Expose
+    @JsonProperty("message")
     public String message;
-    @SerializedName("timestamp")
-    @Expose
+    @JsonProperty("timestamp")
     public String timestamp;
-    @SerializedName("url")
-    @Expose
+    @JsonProperty("url")
     public String url;
-    @SerializedName("author")
-    @Expose
-    @Valid
+    @JsonProperty("author")
     public Author author;
-    @SerializedName("added")
-    @Expose
-    @Valid
+    @JsonProperty("added")
     public List<String> added = new ArrayList<String>();
-    @SerializedName("modified")
-    @Expose
-    @Valid
+    @JsonProperty("modified")
     public List<String> modified = new ArrayList<String>();
-    @SerializedName("removed")
-    @Expose
-    @Valid
+    @JsonProperty("removed")
     public List<Object> removed = new ArrayList<Object>();
 
 }

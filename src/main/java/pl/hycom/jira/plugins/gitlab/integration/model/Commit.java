@@ -3,14 +3,18 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.data.annotation.Transient;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
- * Base model for commit message from any DVCS
+ * Base model for commit message from Gitlab
+ *
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,24 +31,68 @@ import java.util.Date;
  */
 @Data
 public class Commit {
+
+    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    /**
+     * commit Sha1sum
+     */
+    @JsonProperty("id")
     private String id;
+
+    /**
+     * First characters of property id
+     * @see Commit#id
+     */
     @JsonProperty("short_id")
     private String shortId;
     private String title;
+    /**
+     * Full committer name, set with git config --[global|system|local] user.name "<name/>"
+     */
     @JsonProperty("author_name")
     private String authorName;
+    /**
+     * Committer email, set with git config --[global|system|local] user.email "<email/>"
+     */
     @JsonProperty("author_email")
     private String authorEmail;
+
     // example: 2015-05-21T20:57:28.000+02:00;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
     @JsonProperty("created_at")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm.sssZ")
     private Date createdAt;
+    /**
+     * Git commit message.
+     */
     private String message;
-    @Transient
+    /**
+     * JIRA issue Key, if found. Issue key, is search in field `message`. May be null.
+     * @see Commit#message
+     */
+    @JsonProperty("parent_ids")
+    private List<String> parentIds = new ArrayList<String>();
+
+    @JsonProperty("committed_date")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
+    private Date committedDate;
+
+    @JsonProperty("authored_date")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
+    private Date authoredDate;
+
+    private Object status;
+    /**
+     * JIRA issue Key.
+     */
+    @Transient @Nullable
     private String issueKey;
-    @Transient
+    /**
+     * Git project ID, if found. May be null.
+     */
+    @Transient @Nullable
     private Long gitProjectID;
 
+    //Builder methods
     public Commit withId(String id) {
         this.id = id;
         return this;

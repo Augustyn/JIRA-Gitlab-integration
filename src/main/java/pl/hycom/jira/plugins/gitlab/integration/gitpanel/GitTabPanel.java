@@ -9,6 +9,7 @@ import com.atlassian.jira.user.ApplicationUser;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.comparator.BooleanComparator;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.CommitService;
 
@@ -43,13 +44,18 @@ public class GitTabPanel extends AbstractIssueTabPanel2 {
 
     @Override
     public ShowPanelReply showPanel(ShowPanelRequest showPanelRequest) {
-        final Project project = showPanelRequest.issue().getProjectObject();
-        final ApplicationUser user = showPanelRequest.remoteUser();
-        final boolean hasPermission = permissionManager.hasPermission(ProjectPermissions.WORK_ON_ISSUES, project, user);
-        log.info("User: " + (user != null ? user.getUsername() : null) + " requested to see git panel for project: "
-                + (project != null ? project.getKey() : null) + ", issue: " + showPanelRequest.issue().getKey()
-                + ". Displaying panel? " + hasPermission);
-        return ShowPanelReply.create(hasPermission);
+        try {
+            final Project project = showPanelRequest.issue().getProjectObject();
+            final ApplicationUser user = showPanelRequest.remoteUser();
+            final boolean hasPermission = permissionManager.hasPermission(ProjectPermissions.WORK_ON_ISSUES, project, user);
+            log.info("User: " + (user != null ? user.getUsername() : null) + " requested to see git panel for project: "
+                    + (project != null ? project.getKey() : null) + ", issue: " + showPanelRequest.issue().getKey()
+                    + ". Displaying panel? " + hasPermission);
+            return ShowPanelReply.create(hasPermission);
+        } catch (Exception e) {
+            log.error("Exception occurred while trying to determine if panel should be seen, with message: " + e.getMessage(), e);
+            return ShowPanelReply.create(Boolean.FALSE);
+        }
     }
 
 

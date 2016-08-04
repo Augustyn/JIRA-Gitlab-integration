@@ -15,6 +15,7 @@
     limitations under the License.</p>
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:atlassian-scanner="http://www.atlassian.com/schema/atlassian-scanner"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -31,4 +32,21 @@
     <osgi:reference id="configManagerDao" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" />
     -->
     <atlassian-scanner:scan-indexes/>
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
+          p:basename="i18n/messages"
+          p:useCodeAsDefaultMessage="true"
+    />
+
+    <bean class="org.springframework.mock.web.MockServletContext"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/pages/"
+          p:suffix=".jsp"
+    />
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"
+          p:order="1"
+          p:alwaysUseFullPath="true"
+    />
 </beans>
