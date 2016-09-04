@@ -38,7 +38,7 @@
     <osgi:reference id="i18nResolver" interface="com.atlassian.sal.api.message.I18nResolver" />
     <osgi:reference id="pluginScheduler" interface="com.atlassian.sal.api.scheduling.PluginScheduler" />
     <osgi:reference id="authenticationContext" interface="com.atlassian.jira.security.JiraAuthenticationContext" />
-    <osgi:reference id="issueManager" interface=" com.atlassian.jira.issue.IssueManager" />
+    <osgi:reference id="issueManager" interface="com.atlassian.jira.issue.IssueManager" />
 
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.ProcessorsConfigurer" interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="processorsConfigurer" />
     <osgi:service id="awesomeLauncherLifecycleAware" interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="awesomeLauncher" />

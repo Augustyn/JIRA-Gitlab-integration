@@ -1,15 +1,12 @@
 package ut.pl.hycom.jira.plugins.gitlab.integration.service;
 
 import lombok.extern.log4j.Log4j;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
@@ -17,11 +14,10 @@ import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndexer;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitSearcher;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
+import pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex;
 import pl.hycom.jira.plugins.gitlab.integration.search.LucenePathSearcher;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
-import ut.pl.hycom.jira.plugins.gitlab.integration.search.CommitIndexerTest;
 
 import java.util.List;
 
@@ -46,13 +42,10 @@ import static org.hamcrest.core.IsEqual.equalTo;
  *
  */
 @Log4j
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:tests-spring.xml")
 public class CommitServiceTest {
 
-    @InjectMocks private CommitIndexer commitIndexer = new CommitIndexer();
+    @InjectMocks private CommitIndex commitIndexer = new LuceneCommitIndex();
     @InjectMocks private CommitRepository commitService = new CommitRepository();
-    @InjectMocks private CommitSearcher commitSearcher = new CommitSearcher();
 
     @Mock private TemplateFactory restTemplateFactory;
     @Mock private LucenePathSearcher lucenePathSearcher;

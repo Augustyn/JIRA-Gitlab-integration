@@ -1,7 +1,6 @@
 package ut.pl.hycom.jira.plugins.gitlab.integration.search;
 
 import lombok.extern.log4j.Log4j;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.junit.Assert;
@@ -12,8 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
@@ -21,8 +18,8 @@ import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.interceptor.RestLoggingInterceptor;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndexer;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitSearcher;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
+import pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex;
 import pl.hycom.jira.plugins.gitlab.integration.search.LucenePathSearcher;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
@@ -54,9 +51,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @Log4j
 @RunWith(MockitoJUnitRunner.class)
 public class CommitIndexerTest {
-    @InjectMocks private CommitIndexer commitIndexer = new CommitIndexer();
+    @InjectMocks private CommitIndex index = new LuceneCommitIndex();
     @InjectMocks private CommitRepository commitRepository = new CommitRepository();
-    @InjectMocks private CommitSearcher commitSearcher = new CommitSearcher();
 
     @Mock private TemplateFactory restTemplateFactory;
     @Mock private LucenePathSearcher lucenePathSearcher;
@@ -103,7 +99,7 @@ public class CommitIndexerTest {
             log.info(newCommit.getId() + ", " + newCommit.getAuthorName());
             newCommit.setMessage("PIP-" + i + ", " + newCommit.getMessage());
             i++;
-            commitIndexer.indexFile(newCommit);
+            index.indexFile(newCommit);
         }
 
     }
@@ -112,7 +108,7 @@ public class CommitIndexerTest {
         Commit oneCommit = commitRepository.getOneCommit(config, "79be5e2c5e6742d7513d11e0956138f4bf02ab3b");
         assertThat("Commit cannot be null(!)", oneCommit, notNullValue());
         log.info("Will try to index commit: " + oneCommit);
-        commitIndexer.indexFile(oneCommit);
+        index.indexFile(oneCommit);
     }
 
     public void searchCommitsTest() throws ParseException, IOException {
@@ -120,7 +116,7 @@ public class CommitIndexerTest {
 
         String fieldName = "author_name";
         String fieldValue = "kamilrogowski";
-        List<Document> foundedCommitsList =  commitSearcher.searchCommits(fieldName, fieldValue);
+        List<Document> foundedCommitsList =  index.searchCommits(fieldName, fieldValue);
 
         for(Document document : foundedCommitsList) {
             Assert.assertTrue(document.get("author_name").equals("kamilrogowski"));
@@ -134,7 +130,7 @@ public class CommitIndexerTest {
         String validIdValue = "da3d482b7a675926502c20b0598b470f05ae8c57";
         String invalidIdValue = "xxx";
 
-        Assert.assertTrue(commitSearcher.checkIfCommitIsIndexed(validIdValue));
-        Assert.assertFalse(commitSearcher.checkIfCommitIsIndexed(invalidIdValue));
+        Assert.assertTrue(index.checkIfCommitIsIndexed(validIdValue));
+        Assert.assertFalse(index.checkIfCommitIsIndexed(invalidIdValue));
     }
 }

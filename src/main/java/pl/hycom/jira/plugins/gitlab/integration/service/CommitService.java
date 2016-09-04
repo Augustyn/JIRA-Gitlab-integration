@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitSearcher;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -36,7 +36,7 @@ public class CommitService implements ICommitService {
 
     @Autowired private ConfigManagerDao dao;
     @Autowired private ICommitDao commitRepository;
-    @Autowired private CommitSearcher commitSearcher;
+    @Autowired private CommitIndex commitSearcher;
 
     private int perPage = 20;
 

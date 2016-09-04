@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndexer;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.io.IOException;
 public class IssueCommitIndexerProcessor implements ProcessorInterface{
 
     @Autowired
-    CommitIndexer commitIndexer;
+    CommitIndex commitIndexer;
     @Override
     public void execute(@NotNull Commit commitInfo) throws ProcessException {
         try {

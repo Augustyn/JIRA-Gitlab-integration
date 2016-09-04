@@ -2,6 +2,7 @@ package pl.hycom.jira.plugins.gitlab.integration.util;
 
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.hycom.jira.plugins.gitlab.integration.interceptor.RestLoggingInterceptor;
 
@@ -23,6 +24,7 @@ import java.util.Collections;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+@Service
 public class TemplateFactory {
     private static final Charset UTF8 = Charset.forName("UTF-8");
     private RestLoggingInterceptor interceptor = new RestLoggingInterceptor();

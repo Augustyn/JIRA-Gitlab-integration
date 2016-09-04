@@ -4,9 +4,7 @@ import lombok.extern.log4j.Log4j;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
@@ -38,13 +36,26 @@ import java.util.stream.Collectors;
  */
 @Log4j
 @Service
-public class CommitSearcher {
-    private Analyzer analyzer = new StandardAnalyzer();
-
-    public int hitsPerPage = 100;
+public class LuceneCommitIndex implements CommitIndex {
 
     @Autowired
     private LucenePathSearcher lucenePathSearcher;
+
+    private Analyzer analyzer = new StandardAnalyzer();
+
+    @Override
+    public void indexFile(Commit commit) throws IOException {
+        Analyzer analyzer = new StandardAnalyzer();
+        IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
+        Path path = lucenePathSearcher.getIndexPath();
+
+        Directory indexDirectory = FSDirectory.open(path);
+        IndexWriter indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
+        Document document = CommitMapper.getDocument(commit);
+        indexWriter.addDocument(document);
+        indexWriter.close();
+    }
+
 
     public List<Document> searchCommits(String fieldName, String fieldValue) throws ParseException, IOException {
 
@@ -56,7 +67,7 @@ public class CommitSearcher {
             IndexReader reader = DirectoryReader.open(indexDirectory);
             IndexSearcher searcher = new IndexSearcher(reader);
 
-            TopDocs docs = searcher.search(query, hitsPerPage);
+            TopDocs docs = searcher.search(query, HITS_PER_PAGE);
             ScoreDoc[] hits = docs.scoreDocs;
 
             for (ScoreDoc hit : hits) {
@@ -75,7 +86,7 @@ public class CommitSearcher {
             WildcardQuery query = new WildcardQuery(new Term(CommitFields.COMMIT_MESSAGE.name(), jiraIssueKey));
             IndexReader reader = DirectoryReader.open(indexDirectory);
             IndexSearcher searcher = new IndexSearcher(reader);
-            TopDocs docs = searcher.search(query, hitsPerPage);
+            TopDocs docs = searcher.search(query, HITS_PER_PAGE);
             return Arrays.stream(docs.scoreDocs).map(hit -> {
                 try {
                     Document document = searcher.doc(hit.doc);
@@ -108,7 +119,7 @@ public class CommitSearcher {
 
         try (IndexReader reader = DirectoryReader.open(indexDirectory)) {
             IndexSearcher searcher = new IndexSearcher(reader);
-            TopDocs docs = searcher.search(query, hitsPerPage);
+            TopDocs docs = searcher.search(query, HITS_PER_PAGE);
 
             Optional<ScoreDoc> firstDoc = Arrays.stream(docs.scoreDocs).filter(hit -> {
                 try {

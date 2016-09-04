@@ -152,25 +152,25 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>6.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers-common</artifactId>
-            <version>6.0.0</version>
-            <scope>compile</scope>
+            <version>${lucene.version}</version>
+            <!--<scope>compile</scope>-->
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queries</artifactId>
-            <version>6.0.0</version>
-            <scope>compile</scope>
+            <version>${lucene.version}</version>
+            <!--<scope>compile</scope>-->
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
-            <version>6.0.0</version>
+            <version>${lucene.version}</version>
+            <!--<scope>compile</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>${lucene.version}</version>
             <!--<scope>compile</scope>-->
         </dependency>
         <!-- Uncomment to use TestKit in your project. Details at https://bitbucket.org/atlassian/jira-testkit -->
@@ -342,6 +342,7 @@
                 <version>${amps.version}</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <allowGoogleTracking>false</allowGoogleTracking>
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
                     <!-- Uncomment to install TestKit backdoor in JIRA. -->
@@ -362,24 +363,40 @@
                     <instructions>
                         <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
                         <!-- Add package to export here -->
-                        <Export-Package>
-                            pl.hycom.jira.plugins.gitlab.integration,
-                            org.apache.lucene.queryparser.classic,
-                        </Export-Package>
-
+                        <!--<Export-Package>
+                            pl.hycom.jira.plugins.gitlab.integration.*
+                        </Export-Package>-->
+                        <pluginDependencies>
+                            <pluginDependency>
+                                <groupId>org.apache.lucene</groupId>
+                                <artifactId>lucene-core</artifactId>
+                            </pluginDependency>
+                            <pluginDependency>
+                                <groupId>org.apache.lucene</groupId>
+                                <artifactId>lucene-queryparser</artifactId>
+                            </pluginDependency>
+                            <pluginDependency>
+                                <groupId>org.apache.lucene</groupId>
+                                <artifactId>lucene-queries</artifactId>
+                            </pluginDependency>
+                            <pluginDependency>
+                                <groupId>org.apache.lucene</groupId>
+                                <artifactId>lucene-analyzers-common</artifactId>
+                            </pluginDependency>
+                        </pluginDependencies>
                         <!-- Add package import here -->
                         <Import-Package>
-                            org.apache.lucene.queryparser.classic;version=6.0.0,
+                            org.apache.lucene.*;version="${lucene.version}",
                             org.springframework.osgi.*;resolution:="optional",
                             org.eclipse.gemini.blueprint.*;resolution:="optional",
                             *
                         </Import-Package>
                         <!-- Ensure plugin is spring powered -->
-                        <Spring-Context>*</Spring-Context>
+                        <!--<Spring-Context>*</Spring-Context>-->
                     </instructions>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.6</version>
@@ -387,7 +404,7 @@
                     <archive>
                         <index>false</index>
                         <manifest>
-                            <addClasspath>true</addClasspath>
+                            <addClasspath>false</addClasspath>
                         </manifest>
                         <manifestEntries>
                             <git-build-user-email>${git.build.user.email}</git-build-user-email>
@@ -410,7 +427,7 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>com.atlassian.plugin</groupId>
                 <artifactId>atlassian-spring-scanner-maven-plugin</artifactId>
@@ -454,6 +471,7 @@
         <version.jackson>[2.8,)</version.jackson>
         <ao.version>1.1.5</ao.version>
         <rest.version>2.7.1</rest.version>
+        <lucene.version>6.0.0</lucene.version>
     </properties>
     <repositories>
         <repository>

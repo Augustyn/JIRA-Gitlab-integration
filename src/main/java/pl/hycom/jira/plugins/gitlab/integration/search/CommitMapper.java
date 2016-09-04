@@ -1,23 +1,15 @@
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
 import lombok.extern.log4j.Log4j;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.queryparser.flexible.core.util.StringUtils;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 /**
  * <p>Copyright (c) 2016, Authors</p>
@@ -35,13 +27,8 @@ import java.nio.file.Path;
  * limitations under the License.</p>
  */
 @Log4j
-@Service
-public class CommitIndexer {
-
-    @Autowired
-    private LucenePathSearcher lucenePathSearcher;
-
-    private Document getDocument(IndexWriter indexWriter, Commit commit) throws IOException {
+public class CommitMapper {
+    public static Document getDocument(Commit commit) throws IOException {
         Document document = new Document();
         document.add(new StringField(CommitFields.ID.name(), commit.getId(), Field.Store.YES));
         document.add(new StringField(CommitFields.SHORT_ID.name(), commit.getShortId(), Field.Store.YES));
@@ -56,20 +43,4 @@ public class CommitIndexer {
         document.add(new TextField(CommitFields.GIT_PROJECT_ID.name(), commit.getMessage(), Field.Store.YES));
         return document;
     }
-
-
-    public void indexFile(Commit commit) throws IOException {
-        Analyzer analyzer = new StandardAnalyzer();
-        IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
-        Path path = lucenePathSearcher.getIndexPath();
-
-        Directory indexDirectory = FSDirectory.open(path);
-        IndexWriter indexWriter = new IndexWriter(indexDirectory, indexWriterConfig);
-        Document document = getDocument(indexWriter, commit);
-        indexWriter.addDocument(document);
-        indexWriter.close();
-
-    }
-
-
 }
