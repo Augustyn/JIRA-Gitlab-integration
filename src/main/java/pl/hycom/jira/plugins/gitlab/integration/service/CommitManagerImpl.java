@@ -1,6 +1,5 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
 
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
@@ -39,8 +38,7 @@ public class CommitManagerImpl implements CommitManager
 
 
     @Override
-    public void updateCommitsForProject(Long projectId) throws SQLException, ParseException, IOException
-    {
+    public void updateCommitsForProject(Long projectId) throws SQLException, IOException {
         ConfigEntity config = configManager.getProjectConfig(projectId);
         List<Commit> commitList = commitService.getNewCommits( (long) projectId);
 
@@ -53,12 +51,10 @@ public class CommitManagerImpl implements CommitManager
     }
 
     @Override
-    public void updateCommitsForAll() throws SQLException, ParseException, IOException
-    {
+    public void updateCommitsForAll() throws SQLException, IOException {
         List<ConfigEntity> configList = configManager.getAllProjectConfigs();
         for (ConfigEntity config : configList){
             updateCommitsForProject(config.getProjectID());
         }
-
     }
 }

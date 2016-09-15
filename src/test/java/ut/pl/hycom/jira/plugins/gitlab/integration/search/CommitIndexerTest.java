@@ -2,7 +2,6 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.search;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,7 +70,7 @@ public class CommitIndexerTest {
      * "test suite", because one cannot set order of tests in JUnit.
      */
     @Test
-    public void indexingTestSuite() throws IOException, ParseException {
+    public void indexingTestSuite() throws IOException {
         //before
         Mockito.when(config.getLink()).thenReturn("https://gitlab.com/");
         Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
@@ -111,7 +110,7 @@ public class CommitIndexerTest {
         index.indexFile(oneCommit);
     }
 
-    public void searchCommitsTest() throws ParseException, IOException {
+    public void searchCommitsTest() throws IOException {
         Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(Paths.get("./target/lucenetest/"));
 
         String fieldName = "author_name";
@@ -125,7 +124,7 @@ public class CommitIndexerTest {
     }
 
 
-    public void checkIfCommitIsIndexedTest() throws ParseException, IOException {
+    public void checkIfCommitIsIndexedTest() throws IOException {
         Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(Paths.get("./target/lucenetest/"));
         String validIdValue = "da3d482b7a675926502c20b0598b470f05ae8c57";
         String invalidIdValue = "xxx";

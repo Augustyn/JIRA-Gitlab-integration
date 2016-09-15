@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,7 +37,7 @@ public class LucenePathSearcher {
     private static final String COMMIT_INDEXER_DIRECTORY = "gitlab-integration";
 
     @PostConstruct
-    public void init() {
+    public void init() throws IOException {
         if(indexPathManager.getIndexRootPath() == null){
             throw new NullPointerException("Cannot start plugin, index root path is NULL");
         }
@@ -46,7 +47,12 @@ public class LucenePathSearcher {
         }
         luceneIndexPath = path;
         if (!luceneIndexPath.toFile().exists()) {
-            luceneIndexPath.toFile().mkdir();
+            final boolean created = luceneIndexPath.toFile().mkdirs();
+            if (!created && !path.toFile().exists() && !path.toFile().canWrite() && !path.toFile().isDirectory()) {
+                throw new IOException(String.format("Index Path: '%s' does not exist: '%b', cannot be created: '%b', " +
+                                "or is not writable: '%b', is directory? '%b'. Cannot index.", path,
+                        path.toFile().exists(), created, path.toFile().canWrite(), path.toFile().isDirectory()));
+            }
         }
     }
 

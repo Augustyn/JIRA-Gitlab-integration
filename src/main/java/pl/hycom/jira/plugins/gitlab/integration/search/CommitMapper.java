@@ -3,15 +3,14 @@ package pl.hycom.jira.plugins.gitlab.integration.search;
 import lombok.extern.log4j.Log4j;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.IndexWriter;
-import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
 
 /**
+ * Mapper. Converts {@link Commit} to Lucene {@link Document}
+ * or, Lucene {@link Document} to {@link Commit}
+ *
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,17 +29,35 @@ import java.io.IOException;
 public class CommitMapper {
     public static Document getDocument(Commit commit) throws IOException {
         Document document = new Document();
-        document.add(new StringField(CommitFields.ID.name(), commit.getId(), Field.Store.YES));
-        document.add(new StringField(CommitFields.SHORT_ID.name(), commit.getShortId(), Field.Store.YES));
-        document.add(new TextField(CommitFields.TITLE.name(), commit.getTitle(), Field.Store.YES));
-        document.add(new StringField(CommitFields.AUTHOR_NAME.name(), commit.getAuthorName(), Field.Store.YES));
-        document.add(new TextField(CommitFields.AUTHOR_EMAIL.name(), commit.getAuthorEmail(), Field.Store.YES));
-        document.add(new TextField(CommitFields.CREATED.name(), CommitFields.formatter.format(commit.getCreatedAt()), Field.Store.YES));
-        document.add(new TextField(CommitFields.COMMIT_MESSAGE.name(), commit.getMessage(), Field.Store.YES));
+        document.add(new Field(CommitFields.ID.name(), commit.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field(CommitFields.SHORT_ID.name(), commit.getShortId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field(CommitFields.TITLE.name(), commit.getTitle(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field(CommitFields.AUTHOR_NAME.name(), commit.getAuthorName(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field(CommitFields.AUTHOR_EMAIL.name(), commit.getAuthorEmail(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field(CommitFields.CREATED.name(), CommitFields.formatter.format(commit.getCreatedAt()), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field(CommitFields.COMMIT_MESSAGE.name(), commit.getMessage(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         if (org.apache.commons.lang3.StringUtils.isNotEmpty(commit.getIssueKey())) {
-            document.add(new TextField(CommitFields.JIRA_ISSUE_KEY.name(), commit.getIssueKey(), Field.Store.YES));
+            document.add(new Field(CommitFields.JIRA_ISSUE_KEY.name(), commit.getIssueKey(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         }
-        document.add(new TextField(CommitFields.GIT_PROJECT_ID.name(), commit.getMessage(), Field.Store.YES));
+        document.add(new Field(CommitFields.GIT_PROJECT_ID.name(), String.valueOf(commit.getGitProjectID()), Field.Store.YES, Field.Index.NOT_ANALYZED));
         return document;
+    }
+
+    public static Commit getCommit(Document document) {
+        try {
+            return new Commit()
+                    .withId(document.get(CommitFields.ID.name()))
+                    .withShortId(document.get(CommitFields.SHORT_ID.name()))
+                    .withTitle(document.get(CommitFields.TITLE.name()))
+                    .withAuthorName(document.get(CommitFields.AUTHOR_NAME.name()))
+                    .withAuthorEmail(document.get(CommitFields.AUTHOR_EMAIL.name()))
+                    .withCreatedAt(CommitFields.formatter.parse(document.get(CommitFields.CREATED.name())))
+                    .withMessage(document.get(CommitFields.COMMIT_MESSAGE.name()))
+                    .withIssueKey(document.get(CommitFields.JIRA_ISSUE_KEY.name()))
+                    .withGitProject(Long.valueOf(document.get(CommitFields.GIT_PROJECT_ID.name())));
+        } catch(java.text.ParseException e) {
+        log.warn("Failed to recreate Commit from lucene document: " + document , e);
+        return null;
+        }
     }
 }

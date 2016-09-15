@@ -153,25 +153,19 @@
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
             <version>${lucene.version}</version>
-            <!--<scope>compile</scope>-->
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queries</artifactId>
             <version>${lucene.version}</version>
-            <!--<scope>compile</scope>-->
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
             <version>${lucene.version}</version>
-            <!--<scope>compile</scope>-->
-        </dependency>
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers-common</artifactId>
-            <version>${lucene.version}</version>
-            <!--<scope>compile</scope>-->
+            <scope>provided</scope>
         </dependency>
         <!-- Uncomment to use TestKit in your project. Details at https://bitbucket.org/atlassian/jira-testkit -->
         <!-- You can read more about TestKit at https://developer.atlassian.com/display/JIRADEV/Plugin+Tutorial+-+Smarter+integration+testing+with+TestKit -->
@@ -363,33 +357,34 @@
                     <instructions>
                         <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
                         <!-- Add package to export here -->
-                        <!--<Export-Package>
-                            pl.hycom.jira.plugins.gitlab.integration.*
-                        </Export-Package>-->
-                        <pluginDependencies>
-                            <pluginDependency>
-                                <groupId>org.apache.lucene</groupId>
-                                <artifactId>lucene-core</artifactId>
-                            </pluginDependency>
-                            <pluginDependency>
-                                <groupId>org.apache.lucene</groupId>
-                                <artifactId>lucene-queryparser</artifactId>
-                            </pluginDependency>
-                            <pluginDependency>
-                                <groupId>org.apache.lucene</groupId>
-                                <artifactId>lucene-queries</artifactId>
-                            </pluginDependency>
-                            <pluginDependency>
-                                <groupId>org.apache.lucene</groupId>
-                                <artifactId>lucene-analyzers-common</artifactId>
-                            </pluginDependency>
-                        </pluginDependencies>
+                        <Export-Package>
+                            pl.hycom.jira.plugins.gitlab.integration
+                        </Export-Package>
                         <!-- Add package import here -->
-                        <Import-Package>
-                            org.apache.lucene.*;version="${lucene.version}",
+                        `<Import-Package>
+                            org.apache.lucene*;version="[${lucene.version},4.0.0)",
+                            org.apache.lucene.search*;version="[${lucene.version},4.0.0)",
+                            org.apache.lucene.document*;version="[${lucene.version},4.0.0)",
+                            org.apache.lucene.index*;version="[${lucene.version},4.0.0)",
+                            org.apache.lucene.analysis*;version="[${lucene.version},4.0.0)",
+                            org.slf4j*;version="[1.6.4,2.0.0)",
+                            com.atlassian.jira*;version="${jira.compat.version}",
+                            com.atlassian.jira.extension*;version="${jira.compat.version}",
+                            com.atlassian.jira.service*;version="${jira.compat.version}",
+                            com.atlassian.configurable*;version="${jira.compat.version}",
+                            com.atlassian.jira.issue.tabpanels*;version="${jira.compat.version}",
+                            com.atlassian.jira.plugin.issuetabpanel*;version="${jira.compat.version}",
+                            com.atlassian.jira.plugin.projectpanel*;version="${jira.compat.version}",
+                            com.atlassian.jira.plugin.projectpanel.impl*;version="${jira.compat.version}",
+                            com.atlassian.jira.web.action*;version="${jira.compat.version}",
+                            com.atlassian.jira.web.action.issue*;version="${jira.compat.version}",
+                            com.atlassian.jira.web.bean*;version="${jira.compat.version}",
+                            com.atlassian.jira.project*;version="${jira.compat.version}",
+                            com.atlassian.jira.project.browse*;version="${jira.compat.version}",
+                            com.atlassian.jira.component*;version="${jira.compat.version}",
                             org.springframework.osgi.*;resolution:="optional",
-                            org.eclipse.gemini.blueprint.*;resolution:="optional",
-                            *
+                            org.eclipse.gemini.blueprint.*;resolution:="optional"<!--,
+                            *-->
                         </Import-Package>
                         <!-- Ensure plugin is spring powered -->
                         <!--<Spring-Context>*</Spring-Context>-->
@@ -455,6 +450,7 @@
     <properties>
         <jdkLevel>1.8</jdkLevel>
         <jira.version>7.1.4</jira.version>
+        <jira.compat.version>[7.0.0,8.0.0)</jira.compat.version>
         <amps.version>6.2.4</amps.version>
         <spring.version>4.2.5.RELEASE</spring.version>
         <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
@@ -471,7 +467,7 @@
         <version.jackson>[2.8,)</version.jackson>
         <ao.version>1.1.5</ao.version>
         <rest.version>2.7.1</rest.version>
-        <lucene.version>6.0.0</lucene.version>
+        <lucene.version>3.3.0</lucene.version>
     </properties>
     <repositories>
         <repository>

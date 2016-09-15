@@ -1,7 +1,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.queryparser.classic.ParseException;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
@@ -27,9 +26,9 @@ public interface CommitIndex {
 
     public void indexFile(Commit commit) throws IOException;
 
-    public List<Document> searchCommits(String fieldName, String fieldValue) throws ParseException, IOException;
+    public List<Document> searchCommits(String fieldName, String fieldValue) throws IOException;
 
     public List<Commit> searchCommitsByIssue(String jiraIssueKey);
 
-    public boolean checkIfCommitIsIndexed(String idValue) throws ParseException, IOException;
+    public boolean checkIfCommitIsIndexed(String idValue) throws IOException;
 }

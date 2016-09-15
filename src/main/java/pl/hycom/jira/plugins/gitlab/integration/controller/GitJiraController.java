@@ -3,7 +3,6 @@ package pl.hycom.jira.plugins.gitlab.integration.controller;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.sal.api.message.I18nResolver;
 import lombok.extern.log4j.Log4j;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.Push;
@@ -62,7 +61,7 @@ public class GitJiraController {
         try {
             event.getProject().getName(); //FIXME: get JIRA project Id and call: updateCommitsForProject(id);
             manager.updateCommitsForAll();
-        } catch (SQLException | ParseException | IOException e) {
+        } catch (SQLException | IOException e) {
             log.error("Error refreshing commits from Gitlab, with exception: ", e);
         }
     }

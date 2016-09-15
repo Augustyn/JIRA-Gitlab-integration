@@ -2,7 +2,6 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
 
 import com.atlassian.jira.issue.Issue;
 import lombok.extern.log4j.Log4j;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
@@ -41,7 +40,7 @@ public class CommitService implements ICommitService {
     private int perPage = 20;
 
     @Override
-    public List<Commit> getNewCommits(Long projectId) throws SQLException, ParseException, IOException {
+    public List<Commit> getNewCommits(Long projectId) throws SQLException, IOException {
         int pageNumber = 1;
         boolean indexedCommitEncountered = false;
         List<Commit> commitsList;
