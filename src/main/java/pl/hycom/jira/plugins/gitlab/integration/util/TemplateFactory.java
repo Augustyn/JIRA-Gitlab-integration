@@ -2,12 +2,15 @@ package pl.hycom.jira.plugins.gitlab.integration.util;
 
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.hycom.jira.plugins.gitlab.integration.interceptor.RestLoggingInterceptor;
 
 import java.nio.charset.Charset;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * <p>Copyright (c) 2016, Authors</p>
@@ -28,22 +31,23 @@ import java.util.Collections;
 public class TemplateFactory {
     private static final Charset UTF8 = Charset.forName("UTF-8");
     private RestLoggingInterceptor interceptor = new RestLoggingInterceptor();
-/*    private static final List<HttpMessageConverter<?>> formConverters = new LinkedList<>();
-    static {
+    //private static final List<HttpMessageConverter<?>> formConverters = new LinkedList<>();
+    /*static {
         formConverters.add(new org.springframework.http.converter.ByteArrayHttpMessageConverter());
         formConverters.add(new org.springframework.http.converter.StringHttpMessageConverter(UTF8));
         formConverters.add(new org.springframework.http.converter.ResourceHttpMessageConverter());
         formConverters.add(new org.springframework.http.converter.xml.SourceHttpMessageConverter());
         formConverters.add(new org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter());
         formConverters.add(new org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter());
+        formConverters.add(new org.springframework.http.converter.json.MappingJackson2HttpMessageConverter());
     }*/
     public RestTemplate getRestTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
+        final RestTemplate restTemplate = new RestTemplate();
         restTemplate.setInterceptors(Collections.singletonList(interceptor));
         //Needed by interceptor, to be able to read response body at lease twice. Once to log it, second - to get response object:
         restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
-//        restTemplate.setMessageConverters(formConverters);
-        assert(restTemplate.getMessageConverters().contains(new org.springframework.http.converter.json.MappingJackson2HttpMessageConverter()));
+        //restTemplate.setMessageConverters(formConverters);
+        //assert(restTemplate.getMessageConverters().contains(new org.springframework.http.converter.json.MappingJackson2HttpMessageConverter()));
         return restTemplate;
     }
 }

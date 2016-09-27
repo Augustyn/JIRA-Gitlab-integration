@@ -32,8 +32,7 @@ import static org.junit.Assert.assertNotNull;
  * limitations under the License.</p>
  *
  */
-@Component
-@RunWith(AtlassianPluginsTestRunner.class)
+@RunWith(com.atlassian.plugins.osgi.test.AtlassianPluginsTestRunner.class)
 public class ConfigManagerDaoTest {
     @Autowired
     private ConfigManagerDao configManager;
@@ -44,7 +43,7 @@ public class ConfigManagerDaoTest {
 
     @Before
     public void setup() {
-
+        System.setProperty("baseurl","http://localhost:2990/jira");
     }
 
 

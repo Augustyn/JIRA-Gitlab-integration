@@ -84,7 +84,7 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
 {
     private static String PLUGIN_KEY = "pl.hycom.jira.plugins.jira-gitlab-plugin";
     @Autowired private AwesomePluginJobRunner jobRunner;
-    @Autowired private EventPublisher eventPublisher;
+    @Autowired(required = false) private EventPublisher eventPublisher; //FIXME: nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [com.atlassian.event.api.EventPublisher]
     @Autowired  private SchedulerService schedulerService;
     @Autowired private ActiveObjects ao;
     @Autowired private AwesomeStuffSalJobs awesomeStuffSalJobs;
@@ -230,13 +230,13 @@ public class AwesomeLauncher implements LifecycleAware, InitializingBean, Dispos
     private void registerListener()
     {
         log.info("registerListeners");
-        eventPublisher.register(this);
+        //eventPublisher.register(this); //FIXME: event publisher is null;
     }
 
     private void unregisterListener()
     {
         log.info("unregisterListeners");
-        eventPublisher.unregister(this);
+        //eventPublisher.unregister(this);//FIXME: event publisher is null;
     }
 
     private void registerJobRunner()

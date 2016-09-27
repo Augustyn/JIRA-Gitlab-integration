@@ -3,9 +3,11 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.service;
 import lombok.extern.log4j.Log4j;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.client.RestTemplate;
 import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
@@ -39,6 +41,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
  *
  */
 @Log4j
+@RunWith(MockitoJUnitRunner.class)
 public class CommitServiceTest {
 
     @InjectMocks private CommitIndex commitIndexer = new LuceneCommitIndex();

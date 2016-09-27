@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,37 +29,28 @@ import java.util.List;
  */
 @Repository
 @Service
-public class ConfigManagerDaoImpl implements ConfigManagerDao
-{
+public class ConfigManagerDaoImpl implements ConfigManagerDao {
     @Autowired
     private ActiveObjects entityManager;
 
-    public ConfigEntity getProjectConfig(Long projectID) throws SQLException
-    {
+    public ConfigEntity getProjectConfig(Long projectID) throws SQLException {
         return entityManager.get(ConfigEntity.class, projectID.intValue());    //returns null if no entities exist
     }
 
-    public List<ConfigEntity> getAllProjectConfigs() throws SQLException
-    {
-        ArrayList<ConfigEntity> result = new ArrayList<ConfigEntity>();
-        ConfigEntity configs[] = entityManager.find(ConfigEntity.class);
-        for(ConfigEntity conf : configs){
-            result.add(conf);
-        }
+    public List<ConfigEntity> getAllProjectConfigs() throws SQLException {
+        List<ConfigEntity> result = new ArrayList<>();
+        ConfigEntity[] configs = entityManager.find(ConfigEntity.class);
+        Collections.addAll(result, configs);
         return result;
     }
 
 
     public ConfigEntity updateProjectConfig(Long projectID,String gitlabLink,String gitlabSecret,String gitlabClientId,
-                                            String gitlabProjectName) throws SQLException
-    {
+                                            String gitlabProjectName) throws SQLException {
         ConfigEntity projectConfig;
-        if( entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?", projectID)) > 0 )
-        {
-            projectConfig = entityManager.get(ConfigEntity.class,projectID.intValue());
-        }
-        else
-        {
+        if(entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?", projectID)) > 0 ) {
+            projectConfig = entityManager.get(ConfigEntity.class, projectID.intValue());
+        } else {
             projectConfig = entityManager.create(ConfigEntity.class,new DBParam("PROJECT_ID", projectID));
         }
 
@@ -71,8 +63,7 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao
         return  projectConfig;
     }
 
-    public void updateGitlabProjectId(Long projectID, int gitlabProjectID)
-    {
+    public void updateGitlabProjectId(Long projectID, int gitlabProjectID) {
         ConfigEntity projectConfig;
         projectConfig = entityManager.get(ConfigEntity.class, projectID.intValue());
         projectConfig.setGitlabProjectId(gitlabProjectID);

@@ -2,6 +2,9 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.search;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.SimpleFSLockFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -17,12 +21,11 @@ import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.interceptor.RestLoggingInterceptor;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
-import pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex;
-import pl.hycom.jira.plugins.gitlab.integration.search.LucenePathSearcher;
+import pl.hycom.jira.plugins.gitlab.integration.search.*;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Date;
@@ -51,12 +54,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class CommitIndexerTest {
     @InjectMocks private CommitIndex index = new LuceneCommitIndex();
-    @InjectMocks private CommitRepository commitRepository = new CommitRepository();
 
-    @Mock private TemplateFactory restTemplateFactory;
+    @Spy private CommitRepository commitRepository = new CommitRepository();
+    @Spy private LuceneIndexAccessor accessor = new DefaultLuceneIndexAccessor();
+    @Spy private TemplateFactory restTemplateFactory = new TemplateFactory();
+
     @Mock private LucenePathSearcher lucenePathSearcher;
     @Mock private ConfigEntity config;
-    @Mock private RestTemplate template;
 
     private Commit commit = new Commit();
     @Before
@@ -64,6 +68,7 @@ public class CommitIndexerTest {
         commit = new Commit().withAuthorEmail("test@example.com").withAuthorName("Test John").withTitle("title")
                 .withGitProject(6667L).withId("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15").withIssueKey("TP-1")
                 .withMessage("[TP-1] test issue 1. Test commit").withCreatedAt(new Date()).withShortId("f1d2d2");
+        commitRepository.setRestTemplate(restTemplateFactory);
     }
 
     /**
@@ -72,15 +77,19 @@ public class CommitIndexerTest {
     @Test
     public void indexingTestSuite() throws IOException {
         //before
+        Path path = Paths.get("./target/lucenetest/");
+        if (!path.toFile().exists()) {
+            path.toFile().mkdirs();
+        }
         Mockito.when(config.getLink()).thenReturn("https://gitlab.com/");
         Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
         Mockito.when(config.getSecret()).thenReturn("KCi3MfkU7qNGJCe3pQUW");
         Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
-        Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(Paths.get("./target/lucenetest/"));
+        Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(path);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setInterceptors(Collections.singletonList(new RestLoggingInterceptor()));
         restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
-        Mockito.when(restTemplateFactory.getRestTemplate()).thenReturn(restTemplate);
+
         //when // TODO: this test 'suite' has too much responsibility: getting new commits, indexing them, reading index. Break to smaller unit tests
         this.indexOneCommitTest();
         this.indexNewCommitTest();

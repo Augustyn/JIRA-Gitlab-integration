@@ -23,9 +23,6 @@
 
     <!-- from our base plugin -->
 
-    <component-import key="ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao"/>
-
-
     <component-import key="pluginScheduler">
         <description>SAL Scheduler</description>
         <interface>com.atlassian.sal.api.scheduling.PluginScheduler</interface>

@@ -61,4 +61,8 @@ public class CommitRepository implements ICommitDao {
         }
         return null;
     }
+
+    public void setRestTemplate(TemplateFactory restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 }

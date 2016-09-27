@@ -19,7 +19,7 @@ import static pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex.
  */
 @Service
 @Slf4j
-class DefaultLuceneIndexAccessor implements LuceneIndexAccessor {
+public class DefaultLuceneIndexAccessor implements LuceneIndexAccessor {
 
     public IndexReader getIndexReader(Path path) throws IOException {
         return IndexReader.open(getDirectory(path));

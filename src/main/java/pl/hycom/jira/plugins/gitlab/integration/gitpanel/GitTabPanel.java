@@ -38,7 +38,7 @@ public class GitTabPanel extends AbstractIssueTabPanel2 {
 
     private IssueTabPanelModuleDescriptor descriptor;
 
-    @Autowired private CommitService commitService;
+    @Autowired(required = false) private CommitService commitService;
     @Autowired private PermissionManager permissionManager;
 
     @Override
@@ -64,7 +64,7 @@ public class GitTabPanel extends AbstractIssueTabPanel2 {
             List<Commit> commitsListForIssue = commitService.getAllIssueCommits(getActionsRequest.issue());
 
             Commit commit = commitsListForIssue != null && !commitsListForIssue.isEmpty() ? commitsListForIssue.get(0) : null;
-            log.warn("Commit: " + commit);
+            log.info("Returning actions for commit: " + commit);
             final List<IssueAction> actions = createActionList(commitsListForIssue);
             if (actions.isEmpty()) {
                 actions.add(new GenericMessageAction("There are no commits for this issue, yet. Maybe you should add some?"));

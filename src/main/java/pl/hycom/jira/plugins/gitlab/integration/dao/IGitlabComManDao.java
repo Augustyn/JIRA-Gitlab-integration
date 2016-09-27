@@ -19,8 +19,6 @@ import java.sql.SQLException;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-
-@Service
 public interface IGitlabComManDao
 {
     public int findGitlabProjectId(Long jiraProjectId) throws SQLException;

@@ -16,20 +16,16 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:atlassian-scanner="http://www.atlassian.com/schema/atlassian-scanner"
        xmlns:osgi="http://www.springframework.org/schema/osgi"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.atlassian.com/schema/atlassian-scanner http://www.atlassian.com/schema/atlassian-scanner/atlassian-scanner.xsd
         http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
        default-autowire="autodetect">
 
     <context:annotation-config/>
     <context:component-scan base-package="pl.hycom.jira.plugins.gitlab.integration"/>
-
-    <atlassian-scanner:scan-indexes/>
 
     <osgi:reference id="indexPathManager" interface="com.atlassian.jira.config.util.IndexPathManager"  />
     <osgi:reference id="schedulerService" interface="com.atlassian.scheduler.SchedulerService" />
@@ -39,7 +35,9 @@
     <osgi:reference id="pluginScheduler" interface="com.atlassian.sal.api.scheduling.PluginScheduler" />
     <osgi:reference id="authenticationContext" interface="com.atlassian.jira.security.JiraAuthenticationContext" />
     <osgi:reference id="issueManager" interface="com.atlassian.jira.issue.IssueManager" />
+    <osgi:reference id="permissionManager" interface="com.atlassian.jira.security.PermissionManager" />
 
+    <osgi:service id="configManagerDao" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.ProcessorsConfigurer" interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="processorsConfigurer" />
     <osgi:service id="awesomeLauncherLifecycleAware" interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="awesomeLauncher" />
     <osgi:service id="awesomeLauncherDisposableBean" interface="org.springframework.beans.factory.DisposableBean" ref="awesomeLauncher" />

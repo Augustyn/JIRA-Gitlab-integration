@@ -27,7 +27,7 @@ import java.util.Map;
 @Component
 public class IssueCommitChangeNotificationProcessor implements ProcessorInterface
 {
-    @Autowired
+    @Autowired(required = false) //FIXME: No qualifying bean of type [com.atlassian.event.api.EventPublisher] found for dependency
     private EventPublisher eventPublisherAccess;
 
     ApplicationUser publishingUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
