@@ -71,7 +71,7 @@ public class LuceneCommitIndex implements CommitIndex {
 
     public List<Commit> searchCommitsByIssue(String jiraIssueKey) {
         try {
-            WildcardQuery query = new WildcardQuery(new Term(CommitFields.COMMIT_MESSAGE.name(), jiraIssueKey));
+            Query query = new WildcardQuery(new Term(CommitFields.COMMIT_MESSAGE.name(), jiraIssueKey));
             IndexReader reader = indexAccessor.getIndexReader(lucenePathSearcher.getIndexPath());
             IndexSearcher searcher = new IndexSearcher(reader);
             TopDocs docs = searcher.search(query, HITS_PER_PAGE);

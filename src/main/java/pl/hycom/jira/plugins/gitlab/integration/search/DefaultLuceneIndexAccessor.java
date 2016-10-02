@@ -5,6 +5,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NativeFSLockFactory;
 import org.apache.lucene.store.SimpleFSLockFactory;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +21,23 @@ import static pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex.
 @Service
 @Slf4j
 public class DefaultLuceneIndexAccessor implements LuceneIndexAccessor {
+    private Directory directory;
 
     public IndexReader getIndexReader(Path path) throws IOException {
         return IndexReader.open(getDirectory(path));
     }
 
     private Directory getDirectory(Path path) throws IOException {
-        return FSDirectory.open(path.toFile(), new SimpleFSLockFactory());
+        if (directory == null) {
+            directory = FSDirectory.open(path.toFile(), new NativeFSLockFactory()/*, new SimpleFSLockFactory()*/);
+        }
+        return directory;
     }
 
     public IndexWriter getIndexWriter(Path path, Analyzer analyzer) throws IOException {
         // Everything in this method copied from LuceneUtils
         final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(VERSION_LUCENE, analyzer);
-        final IndexWriter indexWriter = new IndexWriter(FSDirectory.open(path.toFile()), indexWriterConfig);
+        final IndexWriter indexWriter = new IndexWriter(getDirectory(path), indexWriterConfig);
         final MergePolicy mergePolicy = indexWriterConfig.getMergePolicy();
         if (mergePolicy instanceof LogMergePolicy) {
             ((LogMergePolicy)mergePolicy).setUseCompoundFile(Boolean.TRUE);

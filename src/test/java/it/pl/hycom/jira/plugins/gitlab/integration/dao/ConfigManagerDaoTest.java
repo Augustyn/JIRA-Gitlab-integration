@@ -1,14 +1,12 @@
 package it.pl.hycom.jira.plugins.gitlab.integration.dao;
 
 import com.atlassian.activeobjects.external.ActiveObjects;
-import com.atlassian.plugins.osgi.test.AtlassianPluginsTestRunner;
 import net.java.ao.EntityManager;
 import net.java.ao.test.jdbc.DatabaseUpdater;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 
@@ -68,16 +66,6 @@ public class ConfigManagerDaoTest {
         assertEquals( saved.getSecret(),retrieved.getSecret());
         assertEquals( saved.getClientId(),retrieved.getClientId());
 
-    }
-
-
-    public static class ConfigManagerDaoTestDatabaseUpdater implements DatabaseUpdater
-    {
-
-        @Override
-        public void update(EntityManager em) throws Exception {
-            em.migrate(ConfigEntity.class);
-        }
     }
 
 }
