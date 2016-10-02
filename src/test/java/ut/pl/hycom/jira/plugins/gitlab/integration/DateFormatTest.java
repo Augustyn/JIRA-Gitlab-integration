@@ -23,12 +23,12 @@ public class DateFormatTest {
     private static final Logger log = LoggerFactory.getLogger(CommitIndexerTest.class);
     @Test
     public void simpleDateFormatTest() throws ParseException {
-        String date = "2016-04-11T22:29:30.000+02:00";
-        DateFormat sdf = new SimpleDateFormat(Commit.DATE_FORMAT, Locale.forLanguageTag("pl"));
+        String expected = "2016-04-11T22:29:30.000+02:00";
+        DateFormat sdf = new SimpleDateFormat(Commit.DATE_FORMAT, Locale.ENGLISH);
 
-        Date datum = sdf.parse(date);
+        Date tested = sdf.parse(expected);
 
         log.info("Date is: " + sdf.format(new Date()));
-        assertThat("Dates must me the same. ", date, is(equalTo(sdf.format(datum))));
+        assertThat("Dates must me the same. ", sdf.format(tested), is(equalTo(expected)));
     }
 }
