@@ -37,6 +37,8 @@ public class DefaultLuceneIndexAccessor implements LuceneIndexAccessor {
     public IndexWriter getIndexWriter(Path path, Analyzer analyzer) throws IOException {
         // Everything in this method copied from LuceneUtils
         final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(VERSION_LUCENE, analyzer);
+        indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND); //Default
+        //indexWriterConfig.setRAMBufferSizeMB(128.0); //Default 16.0
         final IndexWriter indexWriter = new IndexWriter(getDirectory(path), indexWriterConfig);
         final MergePolicy mergePolicy = indexWriterConfig.getMergePolicy();
         if (mergePolicy instanceof LogMergePolicy) {

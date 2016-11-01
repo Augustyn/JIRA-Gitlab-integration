@@ -33,6 +33,7 @@
     <resource type="download" name="images/" location="/images"/>
     <context>gittab</context>
   </web-resource>
+
   <issue-tabpanel key="git-tab" name="Git Tab" i18n-name-key="jira.git.integration.git-tab.name" class="pl.hycom.jira.plugins.gitlab.integration.gitpanel.GitTabPanel">
     <description key="jira.git.integration.git-tab.description">The Git Tab Plugin</description>
     <resource type="i18n" name="i18n" location="gittab"/>
@@ -42,23 +43,93 @@
     <!-- enable fast tab switch -->
     <supports-ajax-load>true</supports-ajax-load>
   </issue-tabpanel>
-  <web-section name="JIRA Gitlab plugin" i18n-name-key="jira.git.integration.configuration-section-for-jira-plugin-i18n" key="jira.git.integration.configuration-section-for-jira-plugin.name" location="atl.jira.proj.config" weight="110">
-    <description key="jira.git.integration.i18n-web-section">JIRA Gitlab plugin 2016</description>
-    <label key="jira.git.integration.configuration-section-for-jira-plugin.name">
-      <param name="param0" value="value"/>
-      <param name="param1" value="key"/>
-    </label>
-    <!--<resource name="development.zip" type="Download" location="https://github.com/Augustyn/JIRA-Gitlab-integration/archive/development.zip"/>-->
-    <tooltip key="key">
-      <param name="param0" value="Key"/>
-      <param name="param1" value="Name"/>
-    </tooltip>
+<!--
+    known 7.1.6 sections:
+        admin_applications_section/admin_applications_general_section
+        admin_issues_menu/issue_attributes
+        admin_issues_menu/misc_schemes_section
+        admin_plugins_menu/legacy_plugins -> global administration -> Addons. global addons administration section.
+        admin_project_menu/project_section -> global administration -> Project administration. global projects administration section.
+        admin_system_menu/shared_section
+        admin_system_menu/top_system_section
+        admin_users_menu/users_groups_configuration
+        admin_users_menu/users_groups_section
+        advanced_menu_section/advanced_section
+        browse_link/project_current
+        browse_link/project_history_main
+        browse_link/project_new
+        browse_link/project_types_main
+        browse_link/project_view_all
+        element_options_section/fields_section
+        element_options_section/issue_features
+        element_options_section/issue_types_section
+        element_options_section/screens_section
+        element_options_section/workflows_section
+        find_link/issues_filter_main
+        find_link/issues_history_main
+        find_link/issues_manage_filters
+        find_link/issues_new
+        gadgets.dashboard.tools.menu
+        home_link/dashboard_link_main
+        home_link/dashboard_link_manage
+        jira.hints/ASSIGN
+        jira.hints/COMMENT
+        jira.hints/LABELS
+        operations-delete
+        operations-operations
+        operations-subtasks
+        operations-top-level
+        operations-voteswatchers
+        operations-work
+        system.admin.userbrowser.opsbar
+        system.browse.projects.operations
+        system.preset.filters
+        system.preset.filters.column.four
+        system.preset.filters.column.one
+        system.preset.filters.column.three
+        system.preset.filters.column.two
+        system.top.navigation.admin.link
+        system.top.navigation.bar
+        system.user.hover.links
+        system.user.options/jira-help
+        system.user.options/personal
+        system.user.options/system
+        system.user.profile.links/operations
+        system.view.project.operations
+        top_system_section/import_export_section
+        top_system_section/mail_section
+        top_system_section/security_section
+        top_system_section/troubleshooting_and_support
+        top_system_section/user_interface -> global administration -> System administration. section user interface.
+        transitions-all
+
+-->
+  <web-section key="git-configuration-section" location="atl.jira.proj.config" name="Git configuration" i18n-name-key="jira.git.integration.i18n-web-section">
+
   </web-section>
-  <web-item name="Gitlab configuration" i18n-name-key="jira.git.integration.gitlab-configuration-module.name" key="gitlab-url" section="atl.jira.proj.config/configuration-section-for-jira-plugin" weight="55">
-    <description key="jira.git.integration.gitlab-configuration.description">Configuration module for JIRA plugin - Gitlab configuration</description>
-    <label key="jira.git.integration.gitlab-configuration-module.label"/>
+  <web-item key="git-configuration-url-in-own-section" name="Gitlab configuration" section="atl.jira.proj.config/git-configuration-section"
+            i18n-name-key="jira.git.integration.configuration.admin.web.item.module.name" weight="10">
+    <description key="jira.git.integration.configuration.admin.web.item.module.link.description">Configuration module for JIRA plugin - Gitlab configuration</description>
+    <label key="jira.git.integration.configuration.admin.web.item.module.link.label"/>
     <link linkId="gitlab-configuration-module-link">/secure/JiraSectionAction!default.jspa</link>
+    <param name="webfragments.keywords">webfragments.keywords.admin.project.view_projects</param>
+    <conditions type="OR">
+      <condition class="pl.hycom.jira.plugins.gitlab.integration.webfragment.condition.UserIsProjectAdminCondition"/>
+      <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserIsAdminCondition"/>
+    </conditions>
   </web-item>
+<!--  <web-item key="git-configuration-url" name="Gitlab configuration" section="atl.jira.proj.config/projectgroup4"
+            i18n-name-key="jira.git.integration.configuration.admin.web.item.module.name" weight="90">
+    <description key="jira.git.integration.configuration.admin.web.item.module.link.description">Configuration module for JIRA plugin - Gitlab configuration</description>
+    <label key="jira.git.integration.configuration.admin.web.item.module.link.label"/>
+    <link linkId="gitlab-configuration-module-link">/secure/JiraSectionAction!default.jspa</link>
+    <param name="webfragments.keywords">webfragments.keywords.admin.project.view_projects</param>
+    <conditions type="OR">
+      <condition class="pl.hycom.jira.plugins.gitlab.integration.webfragment.condition.UserIsProjectAdminCondition"/>
+      <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserIsAdminCondition"/>
+    </conditions>
+  </web-item>-->
+
   <webwork1 key="webworkkey" name="Edition and preview of JIRA-Gitlab configuration" class="java.lang.Object">
     <actions>
       <action name="pl.hycom.jira.plugins.gitlab.integration.controller.JiraSectionAction" alias="JiraSectionAction" roles-required="admin">
@@ -69,23 +140,9 @@
     </actions>
   </webwork1>
 
-  <ao key="ao-module">
-    <description>Awesome active objects entity</description>
-    <entity>pl.hycom.jira.plugins.gitlab.integration.scheduler.AwesomeStuff</entity>
-  </ao>
-
   <ao key="ao-module2">
     <description>The module configuring the Active Objects service used by this plugin</description>
     <entity>pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity</entity>
   </ao>
 
-  <!-- Creates the webwork action for debugging atlassian-scheduler status -->
-  <webwork1 key="scheduler-example.actions" name="Scheduler Example Actions">
-    <description>Scheduler Example Actions</description>
-    <actions>
-      <action name="pl.hycom.jira.plugins.gitlab.integration.scheduler.action.ShowSchedulerInfo" alias="ShowSchedulerInfo" roles-required="admin">
-        <view name="success">/templates/actions/showsched.vm</view>
-      </action>
-    </actions>
-  </webwork1>
 </atlassian-plugin>

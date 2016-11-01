@@ -23,11 +23,6 @@
 
     <!-- from our base plugin -->
 
-    <component-import key="pluginScheduler">
-        <description>SAL Scheduler</description>
-        <interface>com.atlassian.sal.api.scheduling.PluginScheduler</interface>
-    </component-import>
-
 <!--    <component key="schedulerComponent" class="pl.hycom.jira.plugins.gitlab.integration.listeners.Scheduler"
                system="true" public="true">
         <description>The task scheduler</description>

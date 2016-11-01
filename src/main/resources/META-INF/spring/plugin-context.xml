@@ -32,16 +32,12 @@
     <osgi:reference id="activeObjects" interface="com.atlassian.activeobjects.external.ActiveObjects" />
     <osgi:reference id="userManager" interface="com.atlassian.jira.user.util.UserManager" />
     <osgi:reference id="i18nResolver" interface="com.atlassian.sal.api.message.I18nResolver" />
-    <osgi:reference id="pluginScheduler" interface="com.atlassian.sal.api.scheduling.PluginScheduler" />
     <osgi:reference id="authenticationContext" interface="com.atlassian.jira.security.JiraAuthenticationContext" />
     <osgi:reference id="issueManager" interface="com.atlassian.jira.issue.IssueManager" />
     <osgi:reference id="permissionManager" interface="com.atlassian.jira.security.PermissionManager" />
 
     <osgi:service id="configManagerDao" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.ProcessorsConfigurer" interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="processorsConfigurer" />
-    <osgi:service id="awesomeLauncherLifecycleAware" interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="awesomeLauncher" />
-    <osgi:service id="awesomeLauncherDisposableBean" interface="org.springframework.beans.factory.DisposableBean" ref="awesomeLauncher" />
-    <osgi:service id="awesomeLauncherInitializingBean" interface="org.springframework.beans.factory.InitializingBean" ref="awesomeLauncher" />
 
     <!--
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDaoImpl" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />

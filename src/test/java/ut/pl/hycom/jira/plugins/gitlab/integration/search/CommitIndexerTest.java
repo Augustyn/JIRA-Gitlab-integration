@@ -82,7 +82,6 @@ public class CommitIndexerTest {
             path.toFile().mkdirs();
         }
         Mockito.when(config.getLink()).thenReturn("https://gitlab.com/");
-        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
         Mockito.when(config.getSecret()).thenReturn("KCi3MfkU7qNGJCe3pQUW");
         Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
         Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(path);
