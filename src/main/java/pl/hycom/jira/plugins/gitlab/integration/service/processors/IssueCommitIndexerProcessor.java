@@ -1,15 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service.processors;
-
-import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
-
-import javax.validation.constraints.NotNull;
-import java.io.IOException;
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,12 +13,25 @@ import java.io.IOException;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.service.processors;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
+
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
+
+@RequiredArgsConstructor
 @Component
 @Log4j
-public class IssueCommitIndexerProcessor implements ProcessorInterface{
+public class IssueCommitIndexerProcessor implements ProcessorInterface {
 
-    @Autowired
-    CommitIndex commitIndexer;
+    @Autowired private final CommitIndex commitIndexer;
     @Override
     public void execute(@NotNull Commit commitInfo) throws ProcessException {
         try {

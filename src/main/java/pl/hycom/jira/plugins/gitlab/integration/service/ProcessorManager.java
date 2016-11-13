@@ -1,5 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service;
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +13,8 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.service;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;

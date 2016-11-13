@@ -1,22 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.controller;
-
-import com.atlassian.jira.security.JiraAuthenticationContext;
-import com.atlassian.sal.api.message.I18nResolver;
-import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.Push;
-import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import java.io.IOException;
-import java.sql.SQLException;
-/**
+/*
  * Controller used for refreshing project, based on notifications hooks from GitLab.
  *
  * <p>Copyright (c) 2016, Authors</p>
@@ -33,20 +15,35 @@ import java.sql.SQLException;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.controller;
+
+import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.sal.api.message.I18nResolver;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.Push;
+import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.sql.SQLException;
+
 @Path("gitlab")
 @Controller
 @Log4j
+@RequiredArgsConstructor
 public class GitJiraController {
 
-    @Autowired
-    private I18nResolver i18nResolver;
-    @Autowired
-    private JiraAuthenticationContext authenticationContext;
-    @Autowired private CommitManager manager;
-    //4spring dep.injection
-    public GitJiraController() {
-    }
-
+    @Autowired private final I18nResolver i18nResolver;
+    @Autowired private final JiraAuthenticationContext authenticationContext;
+    @Autowired private final CommitManager manager;
 
     @Path("/listener")//zloz to z poprzednim pathem
     @POST

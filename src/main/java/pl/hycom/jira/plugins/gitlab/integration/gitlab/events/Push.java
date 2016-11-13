@@ -1,16 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitlab.events;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Project;
-import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Repository;
-
-import javax.annotation.Generated;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +12,20 @@ import java.util.List;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- */@Generated("org.jsonschema2pojo")
+ */
+package pl.hycom.jira.plugins.gitlab.integration.gitlab.events;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Project;
+import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Repository;
+
+import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.List;
+
+@Generated("org.jsonschema2pojo")
 @Data
 public class Push {
 

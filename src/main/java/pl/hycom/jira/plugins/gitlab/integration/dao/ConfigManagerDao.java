@@ -1,9 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.dao;
-
-import java.sql.SQLException;
-import java.util.List;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +13,12 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-public interface ConfigManagerDao {
+package pl.hycom.jira.plugins.gitlab.integration.dao;
 
+import java.sql.SQLException;
+import java.util.List;
+
+public interface ConfigManagerDao {
     ConfigEntity getProjectConfig(Long projectID) throws SQLException;
     public List<ConfigEntity> getAllProjectConfigs() throws SQLException;
     ConfigEntity updateProjectConfig(Long projectID,String gitlabLink,String gitlabSecret,String gitlabClientId,String gitlabProjectName) throws SQLException;

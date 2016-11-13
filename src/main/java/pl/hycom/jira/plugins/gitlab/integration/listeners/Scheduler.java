@@ -1,16 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.listeners;
-
-import com.atlassian.sal.api.lifecycle.LifecycleAware;
-import com.atlassian.scheduler.SchedulerService;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Date;
-import java.util.HashMap;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +13,19 @@ import java.util.HashMap;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.listeners;
+
+import com.atlassian.sal.api.lifecycle.LifecycleAware;
+import com.atlassian.scheduler.SchedulerService;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
+import java.util.HashMap;
+
+
 @Log4j
 public class Scheduler implements IScheduler, LifecycleAware {
     @Getter

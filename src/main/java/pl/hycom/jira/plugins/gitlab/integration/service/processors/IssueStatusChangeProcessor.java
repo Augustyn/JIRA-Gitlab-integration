@@ -1,9 +1,25 @@
+/*
+ * <p>Copyright (c) 2016, Authors</p>
+ *
+ * <p>Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at</p>
+ *
+ * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+ *
+ * <p>Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.</p>
+ */
 package pl.hycom.jira.plugins.gitlab.integration.service.processors;
 
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.util.UserManager;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -21,33 +37,19 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <p>Copyright (c) 2016, Authors</p>
- *
- * <p>Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at</p>
- *
- * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
- *
- * <p>Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.</p>
- */
+@RequiredArgsConstructor
 @Log4j
 @Component
 public class IssueStatusChangeProcessor {
-    //TODO zamiana parametrow z wpisanych na sztywno na pobrane z konfiguracji pluginu
+    //FIXME: refactor it. Programmatically change status.
     HttpClient client = HttpClientBuilder.create().build();
-    @Autowired UserManager userManager;
-    @Autowired JiraAuthenticationContext authenticationContext;
-    @Autowired IssueService issueService;
+    @Autowired private final UserManager userManager;
+    @Autowired private final JiraAuthenticationContext authenticationContext;
+    @Autowired private final IssueService issueService;
 
     public void changeIssueStatus() {
         ApplicationUser user = userManager.getUserByKey("admin");
-        Long issueId = new Long(10000L);
+        Long issueId = 10000L;
         int status = 31;
         authenticationContext.setLoggedInUser(user);
         issueService.validateTransition(user, issueId, status, issueService.newIssueInputParameters());

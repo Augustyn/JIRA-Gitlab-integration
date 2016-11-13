@@ -1,16 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.search;
-
-import lombok.extern.log4j.Log4j;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.io.IOException;
-
-/**
- * Mapper. Converts {@link Commit} to Lucene {@link Document}
- * or, Lucene {@link Document} to {@link Commit}
- *
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +12,19 @@ import java.io.IOException;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
+ */
+package pl.hycom.jira.plugins.gitlab.integration.search;
+
+import lombok.extern.log4j.Log4j;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.io.IOException;
+
+/**
+ * Mapper. Converts {@link Commit} to Lucene {@link Document}
+ * or, Lucene {@link Document} to {@link Commit}
  */
 @Log4j
 public class CommitMapper {

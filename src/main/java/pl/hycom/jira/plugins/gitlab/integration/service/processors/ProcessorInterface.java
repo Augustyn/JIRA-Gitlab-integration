@@ -1,10 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service.processors;
-
-import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import javax.validation.constraints.NotNull;
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +13,13 @@ import javax.validation.constraints.NotNull;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.service.processors;
+
+import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import javax.validation.constraints.NotNull;
+
 public interface ProcessorInterface {
     void execute(@NotNull Commit commitInfo) throws ProcessException;
 }

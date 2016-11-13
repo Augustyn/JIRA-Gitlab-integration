@@ -1,11 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service;
-
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.io.IOException;
-import java.sql.SQLException;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +13,12 @@ import java.sql.SQLException;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.service;
+
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public interface CommitManager {
     void updateCommitsForProject(Long projectId) throws SQLException, IOException;

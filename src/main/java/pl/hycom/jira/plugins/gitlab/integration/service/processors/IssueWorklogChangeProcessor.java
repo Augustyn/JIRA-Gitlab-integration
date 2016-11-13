@@ -1,18 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service.processors;
-
-import com.atlassian.jira.user.ApplicationUser;
-import com.atlassian.jira.user.UserUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +13,21 @@ import java.util.regex.Pattern;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.service.processors;
+
+import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.user.UserUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Component
 @Slf4j
 public class IssueWorklogChangeProcessor implements ProcessorInterface {

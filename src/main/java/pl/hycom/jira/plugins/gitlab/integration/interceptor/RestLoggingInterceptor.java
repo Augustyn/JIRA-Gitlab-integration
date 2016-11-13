@@ -1,3 +1,19 @@
+/*
+ * <p>Copyright (c) 2016, Authors</p>
+ *
+ * <p>Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at</p>
+ *
+ * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+ *
+ * <p>Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.</p>
+ *
+ */
 package pl.hycom.jira.plugins.gitlab.integration.interceptor;
 
 import lombok.extern.log4j.Log4j;
@@ -17,21 +33,6 @@ import java.util.regex.Pattern;
 
 /**
  * Class responsible for logging REST messages. It is used by Spring Rest Template.
- *
- * <p>Copyright (c) 2016, Authors</p>
- *
- * <p>Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at</p>
- *
- * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
- *
- * <p>Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.</p>
- *
  */
 @Component
 @Log4j
@@ -47,13 +48,13 @@ public class RestLoggingInterceptor implements ClientHttpRequestInterceptor {
         return response;
     }
     private void logRequest(HttpRequest request, byte[] body) throws IOException {
-        /*if (!log.isDebugEnabled()) {
+        if (!log.isDebugEnabled()) {
             return;
-        }*/
+        }
         HttpHeaders headers = request.getHeaders();
         StringBuilder sb = new StringBuilder();
         sb.append("Thread: ").append(Thread.currentThread().getName()).append("\n")
-                .append("===/home/higashi/howtos/git/git.fixing.repo:git==================== request begin ========================================").append("\n")
+                .append("======================= request begin ========================================").append("\n")
                 .append("URI : ").append(request.getURI()).append("\n").append("Method : ").append(request.getMethod()).append("\n")
                 .append("Headers:").append("\n");
         for (Map.Entry<String, List<String>> header : headers.entrySet()) {
@@ -72,9 +73,9 @@ public class RestLoggingInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void logResponse(ClientHttpResponse response) throws IOException {
-        /*if (!log.isDebugEnabled()) {
+        if (!log.isDebugEnabled()) {
             return;
-        }*/
+        }
         StringBuilder sb = new StringBuilder();
         sb.append("Thread: ").append(Thread.currentThread().getName()).append("\n")
                 .append("======================= response begin =======================================")

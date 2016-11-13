@@ -1,15 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service;
-
-import lombok.extern.log4j.Log4j;
-import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
-import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
-
-import java.util.Map;
-
-/**
- * Simple implementation of Validator.
- *
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +12,18 @@ import java.util.Map;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- *
+ */
+package pl.hycom.jira.plugins.gitlab.integration.service;
+
+import lombok.extern.log4j.Log4j;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
+import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
+
+import java.util.Map;
+
+/**
+ * Simple implementation of Validator.
  */
 @Component
 @Log4j

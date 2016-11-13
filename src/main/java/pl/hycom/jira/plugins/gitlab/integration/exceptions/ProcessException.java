@@ -1,8 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.exceptions;
-/**
- * This exception is meant to inform that a problem occurred during execution of processor.
- * But it won't break execution of other processors.
- *
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +12,11 @@ package pl.hycom.jira.plugins.gitlab.integration.exceptions;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
+ */
+package pl.hycom.jira.plugins.gitlab.integration.exceptions;
+/**
+ * This exception is meant to inform that a problem occurred during execution of processor.
+ * But it won't break execution of other processors.
  */
 public class ProcessException extends Exception {
 

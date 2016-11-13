@@ -1,25 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitpanel;
-
-import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.plugin.issuetabpanel.IssueAction;
-import com.atlassian.jira.plugin.profile.UserFormatManager;
-import com.atlassian.jira.template.VelocityTemplatingEngine;
-import com.atlassian.jira.util.JiraVelocityHelper;
-import com.atlassian.jira.util.velocity.DefaultVelocityRequestContextFactory;
-import com.google.common.collect.Maps;
-import com.opensymphony.util.TextUtils;
-import lombok.extern.log4j.Log4j;
-import org.apache.velocity.exception.VelocityException;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.util.Date;
-import java.util.Map;
-
-import static com.atlassian.jira.template.TemplateSources.file;
-
-/**
- * Basic "action" that is displayed in gitTabPanel for given commit.
- *
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,16 +13,34 @@ import static com.atlassian.jira.template.TemplateSources.file;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-@Log4j
-public class GitCommitAction implements IssueAction {
-    //TODO: implement me
+package pl.hycom.jira.plugins.gitlab.integration.gitpanel;
 
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.plugin.issuetabpanel.IssueAction;
+import com.atlassian.jira.plugin.profile.UserFormatManager;
+import com.atlassian.jira.template.VelocityTemplatingEngine;
+import com.atlassian.jira.util.JiraVelocityHelper;
+import com.atlassian.jira.util.velocity.DefaultVelocityRequestContextFactory;
+import com.google.common.collect.Maps;
+import com.opensymphony.util.TextUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import org.apache.velocity.exception.VelocityException;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.util.Date;
+import java.util.Map;
+
+import static com.atlassian.jira.template.TemplateSources.file;
+
+/**
+ * Basic "action" that is displayed in gitTabPanel for given commit.
+ */
+@Log4j
+@RequiredArgsConstructor
+public class GitCommitAction implements IssueAction {
     private final Commit commit;
     private static final String PLUGIN_TEMPLATE = "templates/tabpanels/git-tab.vm";
-
-    public GitCommitAction(Commit commit) {
-        this.commit = commit;
-    }
 
     @Override
     public Date getTimePerformed() {

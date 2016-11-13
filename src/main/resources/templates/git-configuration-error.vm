@@ -15,6 +15,8 @@
 ## limitations under the License.</p>
 ##
 
+#requireResource("pl.hycom.jira.plugins.jira-gitlab-plugin:gittab-resources")
+
 
 <p>This is an error page for webwork section Jira-Gitlab.</p>
 

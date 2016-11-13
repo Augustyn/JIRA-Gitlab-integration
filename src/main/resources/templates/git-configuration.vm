@@ -14,7 +14,9 @@
 ## limitations under the License.</p>
 ##
 ## Gitlab configuration file. Uses $project got from doDefault, or/and project id provided as a URI parameter.
+
 #requireResource("pl.hycom.jira.plugins.jira-gitlab-plugin:gittab-resources")
+
 <div class="aui-page-panel gitintegration">
     <div class="aui-page-panel-inner">
         <section class="aui-page-panel-content">

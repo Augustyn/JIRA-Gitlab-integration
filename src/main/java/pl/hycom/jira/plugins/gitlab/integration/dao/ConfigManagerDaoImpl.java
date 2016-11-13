@@ -1,18 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.dao;
-
-import com.atlassian.activeobjects.external.ActiveObjects;
-import lombok.RequiredArgsConstructor;
-import net.java.ao.DBParam;
-import net.java.ao.Query;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Nullable;
-import java.sql.SQLException;
-import java.util.*;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +13,20 @@ import java.util.*;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.dao;
+
+import com.atlassian.activeobjects.external.ActiveObjects;
+import lombok.RequiredArgsConstructor;
+import net.java.ao.DBParam;
+import net.java.ao.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Nullable;
+import java.sql.SQLException;
+import java.util.*;
+
 @Repository
 @Service
 @RequiredArgsConstructor

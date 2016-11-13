@@ -1,18 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.listeners;
-
-import com.atlassian.sal.api.lifecycle.LifecycleAware;
-import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.service.ProcessorManager;
-import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,14 +12,29 @@ import java.util.List;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- */@Component
+ */
+package pl.hycom.jira.plugins.gitlab.integration.listeners;
+
+import com.atlassian.sal.api.lifecycle.LifecycleAware;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.service.ProcessorManager;
+import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+@RequiredArgsConstructor
+@Component
 @Log4j
 public class ProcessorsConfigurer implements LifecycleAware {
-    @Autowired
-    ProcessorManager processorManager;
 
-    @Autowired
-    private ApplicationContext context;
+    @Autowired private final ProcessorManager processorManager;
+    @Autowired private final ApplicationContext context;
 
     @Override
     public void onStart() {

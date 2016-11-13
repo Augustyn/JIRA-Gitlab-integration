@@ -1,17 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.search;
-
-import com.atlassian.jira.config.util.IndexPathManager;
-import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,15 +13,30 @@ import java.nio.file.Paths;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.search;
+
+import com.atlassian.jira.config.util.IndexPathManager;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Log4j
 @Service
+@RequiredArgsConstructor
 public class LucenePathSearcher {
 
-    @Autowired
-    private IndexPathManager indexPathManager;
-    private Path luceneIndexPath;
-
     private static final String COMMIT_INDEXER_DIRECTORY = "gitlab-integration";
+
+    @Autowired private final IndexPathManager indexPathManager;
+
+    private Path luceneIndexPath;
 
     @PostConstruct
     public void init() throws IOException {

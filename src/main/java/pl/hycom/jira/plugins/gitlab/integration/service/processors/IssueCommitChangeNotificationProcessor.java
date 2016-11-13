@@ -1,15 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service.processors;
-
-import com.atlassian.event.api.EventPublisher;
-import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.user.ApplicationUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.util.HashMap;
-import java.util.Map;
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,9 +13,20 @@ import java.util.Map;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.service.processors;
+
+import com.atlassian.event.api.EventPublisher;
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.user.ApplicationUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
-public class IssueCommitChangeNotificationProcessor implements ProcessorInterface
-{
+public class IssueCommitChangeNotificationProcessor implements ProcessorInterface {
     @Autowired(required = false) //FIXME: No qualifying bean of type [com.atlassian.event.api.EventPublisher] found for dependency
     private EventPublisher eventPublisherAccess;
 

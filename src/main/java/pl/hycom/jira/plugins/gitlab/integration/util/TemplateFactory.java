@@ -1,18 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.util;
-
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import pl.hycom.jira.plugins.gitlab.integration.interceptor.RestLoggingInterceptor;
-
-import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +13,20 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.util;
+
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import pl.hycom.jira.plugins.gitlab.integration.interceptor.RestLoggingInterceptor;
+
+import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 @Service
 public class TemplateFactory {
     private static final Charset UTF8 = Charset.forName("UTF-8");

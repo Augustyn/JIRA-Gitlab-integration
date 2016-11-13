@@ -1,9 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.search;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +13,11 @@ import java.text.SimpleDateFormat;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.search;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 public enum CommitFields {
     ID,
     SHORT_ID,

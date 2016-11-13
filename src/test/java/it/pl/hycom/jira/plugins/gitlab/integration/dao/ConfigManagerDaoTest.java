@@ -1,20 +1,4 @@
-package it.pl.hycom.jira.plugins.gitlab.integration.dao;
-
-import com.atlassian.activeobjects.external.ActiveObjects;
-import net.java.ao.EntityManager;
-import net.java.ao.test.jdbc.DatabaseUpdater;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
-
-import java.sql.SQLException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,8 +12,22 @@ import static org.junit.Assert.assertNotNull;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
- *
  */
+package it.pl.hycom.jira.plugins.gitlab.integration.dao;
+
+import com.atlassian.activeobjects.external.ActiveObjects;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
+
+import java.sql.SQLException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 @RunWith(com.atlassian.plugins.osgi.test.AtlassianPluginsTestRunner.class)
 public class ConfigManagerDaoTest {
     @Autowired
@@ -58,12 +56,12 @@ public class ConfigManagerDaoTest {
 
 
         assertEquals( testProjectId,retrieved.getProjectID());
-        assertEquals( "testlink", retrieved.getLink());
-        assertEquals( "testsecret",retrieved.getSecret());
+        assertEquals( "testlink", retrieved.getGitlabURL());
+        assertEquals( "testsecret",retrieved.getGitlabSecretToken());
         assertEquals( "testid",retrieved.getClientId());
 
-        assertEquals( saved.getLink(), retrieved.getLink());
-        assertEquals( saved.getSecret(),retrieved.getSecret());
+        assertEquals( saved.getGitlabURL(), retrieved.getGitlabURL());
+        assertEquals( saved.getGitlabSecretToken(),retrieved.getGitlabSecretToken());
         assertEquals( saved.getClientId(),retrieved.getClientId());
 
     }

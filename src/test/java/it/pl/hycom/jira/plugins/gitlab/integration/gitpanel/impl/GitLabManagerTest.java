@@ -1,14 +1,4 @@
-package it.pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
-
-import lombok.extern.log4j.Log4j;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
-//TODO: end tests
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +14,16 @@ import org.mockito.runners.MockitoJUnitRunner;
  * limitations under the License.</p>
  *
  */
+package it.pl.hycom.jira.plugins.gitlab.integration.gitpanel.impl;
+
+import lombok.extern.log4j.Log4j;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+
+//TODO: end tests
+
 @Log4j
 @RunWith(MockitoJUnitRunner.class)
 public class GitLabManagerTest {

@@ -1,10 +1,22 @@
+/*
+ * <p>Copyright (c) 2016, Authors</p>
+ *
+ * <p>Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at</p>
+ *
+ * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+ *
+ * <p>Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.</p>
+ */
 package ut.pl.hycom.jira.plugins.gitlab.integration.search;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.SimpleFSLockFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,22 +46,6 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-/**
- * <p>Copyright (c) 2016, Authors</p>
- *
- * <p>Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at</p>
- *
- * <p>http://www.apache.org/licenses/LICENSE-2.0</p>
- *
- * <p>Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.</p>
- *
- */
 @Log4j
 @RunWith(MockitoJUnitRunner.class)
 public class CommitIndexerTest {
@@ -81,9 +77,9 @@ public class CommitIndexerTest {
         if (!path.toFile().exists()) {
             path.toFile().mkdirs();
         }
-        Mockito.when(config.getLink()).thenReturn("https://gitlab.com/");
-        Mockito.when(config.getSecret()).thenReturn("KCi3MfkU7qNGJCe3pQUW");
-        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546);
+        Mockito.when(config.getGitlabURL()).thenReturn("https://gitlab.com/");
+        Mockito.when(config.getGitlabSecretToken()).thenReturn("KCi3MfkU7qNGJCe3pQUW");
+        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546L);
         Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(path);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setInterceptors(Collections.singletonList(new RestLoggingInterceptor()));

@@ -1,11 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
-import javax.annotation.Generated;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +13,13 @@ import javax.annotation.Generated;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
+import javax.annotation.Generated;
+
 @Generated("org.jsonschema2pojo")
 @Data
 public class Project {

@@ -1,32 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service.processors;
-
-import com.atlassian.jira.issue.IssueManager;
-import com.atlassian.jira.issue.MutableIssue;
-import com.atlassian.jira.issue.UpdateIssueRequest;
-import com.atlassian.jira.security.JiraAuthenticationContext;
-import com.atlassian.jira.user.ApplicationUser;
-import com.atlassian.jira.user.UserUtils;
-import com.atlassian.jira.user.util.UserManager;
-import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
-
-import java.sql.SQLException;
-
-/**
- *  Class is responsible for changing issue assignee. Assignee is changed when there's one of an patterns: <pre>
- *      <ul><li>assign=>login</li>
- *          <li>asign=>login</li>
- *          <li>a=>login</li>
- *          <li>ass=>login</li>
- *      </ul>
- *  </pre>
- *
- *
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,19 +14,49 @@ import java.sql.SQLException;
  * limitations under the License.</p>
  *
  */
+package pl.hycom.jira.plugins.gitlab.integration.service.processors;
+
+import com.atlassian.jira.issue.IssueManager;
+import com.atlassian.jira.issue.MutableIssue;
+import com.atlassian.jira.issue.UpdateIssueRequest;
+import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.user.UserUtils;
+import com.atlassian.jira.user.util.UserManager;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
+
+import java.sql.SQLException;
+
+/**
+ *  Class is responsible for changing issue assignee. Assignee is changed when there's one of an patterns:
+ *  <pre>
+ *      <ul><li>assign=>login</li>
+ *          <li>asign=>login</li>
+ *          <li>a=>login</li>
+ *          <li>ass=>login</li>
+ *      </ul>
+ *  </pre>
+ */
 @Log4j
 @Component
+@RequiredArgsConstructor
 public class IssueAssigneeChangeProcessor implements ProcessorInterface {
 
-    @Autowired private IssueManager issueManager;
-    @Autowired private UserManager userManager;
-    @Autowired private JiraAuthenticationContext authenticationContext;
-    @Autowired private ConfigManagerDao configManager;
-    @Autowired private CommitManager commitManager;
+    @Autowired private final IssueManager issueManager;
+    @Autowired private final UserManager userManager;
+    @Autowired private final JiraAuthenticationContext authenticationContext;
+    @Autowired private final ConfigManagerDao configManager;
+    @Autowired private final CommitManager commitManager;
 
     public void execute(Commit commit) {
         try {
-
             final ConfigEntity projectConfig = configManager.getProjectConfig(commit.getGitProjectID());
             //TODO: save 'git' user in configuration. Use this user if there's user.
             ApplicationUser executor = UserUtils.getUserByEmail(commit.getAuthorEmail());

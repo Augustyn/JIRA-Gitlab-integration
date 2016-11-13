@@ -1,13 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service;
-
-import com.atlassian.jira.issue.Issue;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,6 +13,15 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.service;
+
+import com.atlassian.jira.issue.Issue;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
 public interface ICommitService {
 
     List<Commit> getNewCommits(Long projectId) throws SQLException, IOException;
