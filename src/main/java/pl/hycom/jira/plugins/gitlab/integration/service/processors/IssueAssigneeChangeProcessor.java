@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.service.CommitMessageParser;
+import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
 
 import java.sql.SQLException;
 
@@ -50,7 +50,7 @@ public class IssueAssigneeChangeProcessor implements ProcessorInterface {
     @Autowired private UserManager userManager;
     @Autowired private JiraAuthenticationContext authenticationContext;
     @Autowired private ConfigManagerDao configManager;
-    @Autowired private CommitMessageParser commitMessageParser;
+    @Autowired private CommitManager commitManager;
 
     public void execute(Commit commit) {
         try {
@@ -66,7 +66,7 @@ public class IssueAssigneeChangeProcessor implements ProcessorInterface {
                 return;
             }
 
-            String issueKey = commit.getIssueKey() != null ? commit.getIssueKey() : commitMessageParser.findIssue(commit, projectConfig.getProjectID());
+            String issueKey = commit.getIssueKey() != null ? commit.getIssueKey() : commitManager.findIssue(commit, projectConfig.getProjectID());
             MutableIssue issue = issueManager.getIssueObject(issueKey);
             issue.setAssignee(newAssignee);
             issueManager.updateIssue(executor, issue, UpdateIssueRequest.builder().build());

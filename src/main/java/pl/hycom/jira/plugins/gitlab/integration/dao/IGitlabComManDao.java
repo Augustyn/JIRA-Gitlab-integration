@@ -21,5 +21,5 @@ import java.sql.SQLException;
  */
 public interface IGitlabComManDao
 {
-    public int findGitlabProjectId(Long jiraProjectId) throws SQLException;
+    public long findGitlabProjectId(Long jiraProjectId) throws SQLException;
 }

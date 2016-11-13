@@ -1,20 +1,4 @@
-package pl.hycom.jira.plugins.gitlab.integration.service;
-
-import com.atlassian.jira.issue.Issue;
-import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
-import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
+/*
  * <p>Copyright (c) 2016, Authors</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +13,23 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
+package pl.hycom.jira.plugins.gitlab.integration.service.impl;
+
+import com.atlassian.jira.issue.Issue;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
+import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
+import pl.hycom.jira.plugins.gitlab.integration.service.ICommitService;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Log4j
 public class CommitService implements ICommitService {

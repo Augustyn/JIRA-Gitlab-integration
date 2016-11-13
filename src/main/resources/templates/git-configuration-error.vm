@@ -22,10 +22,10 @@
 The value from the action-client_id: ${clientId}
 </p>
 <p>
-The value from the action-client_secret: ${clientSecret}
+The value from the action-client_secret: ${clientSecretToken}
 </p>
 <p>
-The value from the action-gitlablink: ${gitlabLink}
+The value from the action-gitlablink: ${gitlabHost}
 </p>
 <p>
 The value from the action-gitlabProjectName: ${gitlabProjectName}

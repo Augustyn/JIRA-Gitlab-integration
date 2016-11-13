@@ -20,6 +20,6 @@ import java.util.List;
  * limitations under the License.</p>
  */
 
-public interface IGitlabComDao {
+public interface IGitlabCommunicationDao {
     List<GitlabProject> getGitlabProjects(ConfigEntity configEntity);
 }

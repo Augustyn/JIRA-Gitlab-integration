@@ -1,0 +1,139 @@
+##
+## <p>Copyright (c) 2016, Authors</p>
+##
+## <p>Licensed under the Apache License, Version 2.0 (the "License");
+## you may not use this file except in compliance with the License.
+## You may obtain a copy of the License at</p>
+##
+## <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+##
+## <p>Unless required by applicable law or agreed to in writing, software
+## distributed under the License is distributed on an "AS IS" BASIS,
+## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+## See the License for the specific language governing permissions and
+## limitations under the License.</p>
+##
+## Gitlab configuration file. Uses $project got from doDefault, or/and project id provided as a URI parameter.
+#requireResource("pl.hycom.jira.plugins.jira-gitlab-plugin:gittab-resources")
+<div class="aui-page-panel gitintegration">
+    <div class="aui-page-panel-inner">
+        <section class="aui-page-panel-content">
+            #if ($project)
+                <header>
+                    <h1>
+                        Project $project.key Gitlab configuration.
+                    </h1>
+                </header>
+            #end
+            Please provide data required for authentication to Gitlab.
+            <div class="description">Authentication data can be obtain after logging in to gitlab. See <a href="https://docs.gitlab.com/ce/integration/gitlab.html" target="_blank" alt="Authentication to Gitlab">documentation for more info</a></div>
+            Fields marked with asterisk are required.
+
+            <div class="gitintegration errors">
+                ## If an input view exists for an action, then the input view
+                ## rather than an error view is used
+                #if (${hasErrorMessages})
+                    #foreach ($error in $action.getErrorMessages())
+                        <div class="aui-message aui-message-error">
+                            <p class="title">
+                                <strong>Error!</strong>
+                            </p>
+                            <p>${error}</p>
+                        </div>
+                    #end
+                #end
+            </div>
+            ## The ActionAlpha doValidation method and then doExecute
+            ## method will be called :
+            <form class="aui" id="uniqueid1" method="post" action="${req.contextPath}/secure/JiraSectionAction!save.jspa">
+                <div class="field-group">
+                    <label for="gitlab-url">Gitlab host<span class="aui-icon icon-required">(required)</span>:</label>
+                    <input type="text"
+                        class="text"
+                        id="gitlab-url"
+                        name="gitlabHost"
+                        placeholder="https://gitlab.com/"
+                        value="$textutils.htmlEncode(${gitlabHost})"
+                        size="60"
+                    />
+                    <div class="description">Gitlab instance host, with protocol</div>
+                </div>
+                <div class="field-group">
+                    <label for="gitlab-project-name">Gitlab Project Name<span class="aui-icon icon-required">(required)</span>:</label>
+                    <input type="text"
+                        class="text"
+                        id="gitlab-project-name"
+                        name="gitlabProjectName"
+                        placeholder="jira-gitlab-integration"
+                        value="$textutils.htmlEncode(${gitlabProjectName})"
+                        size="60"
+                    />
+                    <div class="description">Gitlab project name, copied from project page or project url.</div>
+                </div>
+                ## TODO: verify authentication method: token vs oauth2: https://docs.gitlab.com/ce/api/oauth2.html. tab can be added if we support both: https://docs.atlassian.com/aui/latest/docs/tabs.html
+                <div class="field-group">
+                    <label for="clientId">Gitlab Client ID<span class="aui-icon icon-required">(required)</span>:</label>
+                    <input type="text"
+                        class="text"
+                        id="clientId"
+                        name="clientId"
+                        placeholder="123456"
+                        value="$textutils.htmlEncode(${clientId})"
+                        size="60"
+                        />
+                    <div class="description">Gitlab client id, that will be used for authentication</div>
+                </div>
+                <div class="field-group">
+                    ## Note: ${client_id} is the same as $action.getClient_id()
+                    ## It's important to encode the inputs to avoid XSS hacks
+                    ## JSP does this for you but Velocity templates don't.
+                    <label for="clientSecretToken">Gitlab Secret<span class="aui-icon icon-required">(required)</span>:</label>
+                    <input type="text"
+                        class="text"
+                        id="client-secret-token"
+                        name="clientSecretToken"
+                        placeholder="KCi3MfkU7qNGJCe3pQUW"
+                        value="$textutils.htmlEncode(${clientSecretToken})"
+                        size="60"
+                        />
+                    <div class="description"></div>
+                </div>
+
+                <div class="buttons-container gitintegration">
+                    <div class="buttons">
+                    ##    <input type="hidden" name="cancelUrl" value="${req.contextPath}/secure/Dashboard.jspa"/>
+                        <a class="aui-button" href="${req.contextPath}/jira/plugins/servlet/project-config/$!{project}">
+                            <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Cancel</span>
+                            Cancel
+                        </a>
+                        <button id="gitlab-config-submit"
+                            type="submit"
+                            name="Submit"
+                            class="aui-button aui-button-primary button submit"
+                            accesskey="S"
+                            title="Press shift+S to submit form">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="button-spinner"></div>
+        </section>
+    </div>
+<script>
+AJS.$(function() {
+    var spinning = false;
+    AJS.$('#gitlab-config-submit').on('click', function() {
+        if (!spinning) {
+//            AJS.$(this).text('Stop Spinning!');
+            AJS.$('.button-spinner').spin();
+            spinning = true;
+        } else {
+//            AJS.$(this).text('Do Something');
+            AJS.$('.button-spinner').spinStop();
+            spinning = false;
+        }
+    });
+});
+</script>
+</div>

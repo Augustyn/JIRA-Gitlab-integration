@@ -31,7 +31,7 @@ import java.util.List;
  */
 @Log4j
 @Repository
-public class GitlabComDao implements IGitlabComDao {
+public class GitlabCommunicationDao implements IGitlabCommunicationDao {
 
     private static final String PROJECT = "/api/v3/projects/owned";
 
@@ -39,8 +39,8 @@ public class GitlabComDao implements IGitlabComDao {
 
     @Override
     public List<GitlabProject> getGitlabProjects(ConfigEntity configEntity){
-        HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(configEntity.getClientId()).get());
-        ResponseEntity<List<GitlabProject>> response = templateFactory.getRestTemplate().exchange(configEntity.getLink() + PROJECT, HttpMethod.GET, requestEntity,
+        HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(configEntity.getGitlabSecretToken()).get());
+        ResponseEntity<List<GitlabProject>> response = templateFactory.getRestTemplate().exchange(configEntity.getGitlabURL() + PROJECT, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<GitlabProject>>() {
                 });
         return response.getBody();

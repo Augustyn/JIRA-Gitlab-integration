@@ -1,6 +1,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.model;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
 import javax.annotation.Generated;
 import java.util.HashMap;
@@ -27,54 +28,15 @@ import java.util.Map;
         "gitlabProjectName",
         "gitlabProjectId"
 })
+@Data
 public class GitlabProject {
 
     @JsonProperty("gitlabProjectName")
     private String gitlabProjectName;
     @JsonProperty("gitlabProjectId")
-    private Integer gitlabProjectId;
+    private Long gitlabProjectId;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    /**
-     *
-     * @return
-     * The gitlabProjectName
-     */
-    @JsonProperty("gitlabProjectName")
-    public String getGitlabProjectName() {
-        return gitlabProjectName;
-    }
-
-    /**
-     *
-     * @param gitlabProjectName
-     * The gitlabProjectName
-     */
-    @JsonProperty("gitlabProjectName")
-    public void setGitlabProjectName(String gitlabProjectName) {
-        this.gitlabProjectName = gitlabProjectName;
-    }
-
-    /**
-     *
-     * @return
-     * The gitlabProjectId
-     */
-    @JsonProperty("gitlabProjectId")
-    public Integer getGitlabProjectId() {
-        return gitlabProjectId;
-    }
-
-    /**
-     *
-     * @param gitlabProjectId
-     * The gitlabProjectId
-     */
-    @JsonProperty("gitlabProjectId")
-    public void setGitlabProjectId(Integer gitlabProjectId) {
-        this.gitlabProjectId = gitlabProjectId;
-    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

@@ -41,8 +41,8 @@ public class CommitRepository implements ICommitDao {
     @Override
     public List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber) {
         log.info("Trying to reach url: {}, with projectId: {}");
-        HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(configEntity.getSecret()).get());
-        ResponseEntity<List<Commit>> response = restTemplate.getRestTemplate().exchange(configEntity.getLink() + COMMIT_URL, HttpMethod.GET, requestEntity,
+        HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(configEntity.getGitlabSecretToken()).get());
+        ResponseEntity<List<Commit>> response = restTemplate.getRestTemplate().exchange(configEntity.getGitlabURL() + COMMIT_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<Commit>>() {
                 }, configEntity.getGitlabProjectId(), Integer.toString(perPage), Integer.toString(pageNumber));
 
@@ -51,9 +51,9 @@ public class CommitRepository implements ICommitDao {
 
     @Override
     public Commit getOneCommit(ConfigEntity config, String shaSum) {
-        log.info("Getting one commit from git repository: " + config.getLink() + " with secret: " + config.getSecret() + " and project Id: " + config.getGitlabProjectId());
-        HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(config.getSecret()).get());
-        ResponseEntity<Commit> response = restTemplate.getRestTemplate().exchange(config.getLink() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
+        log.info("Getting one commit from git repository: " + config.getGitlabURL() + " with secret: " + config.getGitlabSecretToken() + " and project Id: " + config.getGitlabProjectId());
+        HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(config.getGitlabSecretToken()).get());
+        ResponseEntity<Commit> response = restTemplate.getRestTemplate().exchange(config.getGitlabURL() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<Commit>() {
                 }, config.getGitlabProjectId(), shaSum);
         if (response != null) {

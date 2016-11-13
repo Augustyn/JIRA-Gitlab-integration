@@ -21,28 +21,25 @@ import net.java.ao.schema.PrimaryKey;
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-public interface ConfigEntity extends RawEntity<Integer>
-{
+public interface ConfigEntity extends RawEntity<Long> {
     @NotNull
     @AutoIncrement
     @PrimaryKey("ProjectID")
     public Long getProjectID();
 
-    public String getLink();
-    public void setLink(String link);
+    public String getGitlabURL();
+    public void setGitlabURL(String gitlabUrl);
 
-    public String getSecret();
-    public void setSecret(String secret);
+    public String getGitlabSecretToken();
+    public void setGitlabSecretToken(String secret);
 
     public String getClientId();
     public void setClientId(String clientId);
 
-
-
     public String getGitlabProjectName();
     public void setGitlabProjectName(String gitlabProjectName);
 
-    public Integer getGitlabProjectId();
-    public void setGitlabProjectId(int gitlabProjectId);
+    public Long getGitlabProjectId();
+    public void setGitlabProjectId(Long gitlabProjectId);
 
 }

@@ -44,7 +44,7 @@
     <supports-ajax-load>true</supports-ajax-load>
   </issue-tabpanel>
 <!--
-    known 7.1.6 sections:
+    known 7.1.6 global admin sections:
         admin_applications_section/admin_applications_general_section
         admin_issues_menu/issue_attributes
         admin_issues_menu/misc_schemes_section
@@ -111,31 +111,20 @@
             i18n-name-key="jira.git.integration.configuration.admin.web.item.module.name" weight="10">
     <description key="jira.git.integration.configuration.admin.web.item.module.link.description">Configuration module for JIRA plugin - Gitlab configuration</description>
     <label key="jira.git.integration.configuration.admin.web.item.module.link.label"/>
-    <link linkId="gitlab-configuration-module-link">/secure/JiraSectionAction!default.jspa</link>
+    <link linkId="gitlab-configuration-module-link">/secure/JiraSectionAction!default.jspa?projectId=${project.getId()}</link>
     <param name="webfragments.keywords">webfragments.keywords.admin.project.view_projects</param>
     <conditions type="OR">
       <condition class="pl.hycom.jira.plugins.gitlab.integration.webfragment.condition.UserIsProjectAdminCondition"/>
       <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserIsAdminCondition"/>
     </conditions>
   </web-item>
-<!--  <web-item key="git-configuration-url" name="Gitlab configuration" section="atl.jira.proj.config/projectgroup4"
-            i18n-name-key="jira.git.integration.configuration.admin.web.item.module.name" weight="90">
-    <description key="jira.git.integration.configuration.admin.web.item.module.link.description">Configuration module for JIRA plugin - Gitlab configuration</description>
-    <label key="jira.git.integration.configuration.admin.web.item.module.link.label"/>
-    <link linkId="gitlab-configuration-module-link">/secure/JiraSectionAction!default.jspa</link>
-    <param name="webfragments.keywords">webfragments.keywords.admin.project.view_projects</param>
-    <conditions type="OR">
-      <condition class="pl.hycom.jira.plugins.gitlab.integration.webfragment.condition.UserIsProjectAdminCondition"/>
-      <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserIsAdminCondition"/>
-    </conditions>
-  </web-item>-->
 
   <webwork1 key="webworkkey" name="Edition and preview of JIRA-Gitlab configuration" class="java.lang.Object">
     <actions>
       <action name="pl.hycom.jira.plugins.gitlab.integration.controller.JiraSectionAction" alias="JiraSectionAction" roles-required="admin">
-        <view name="input">/templates/input.vm</view>
-        <view name="success">/templates/success.vm</view>
-        <view name="error">/templates/error.vm</view>
+        <view name="input">/templates/git-configuration.vm</view>
+        <view name="success">/templates/git-configuration-saved.vm</view>
+        <view name="error">/templates/git-configuration-error.vm</view>
       </action>
     </actions>
   </webwork1>

@@ -1,14 +1,21 @@
-package pl.hycom.jira.plugins.gitlab.integration.service;
+package pl.hycom.jira.plugins.gitlab.integration.service.impl;
 
+import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.project.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
+import pl.hycom.jira.plugins.gitlab.integration.service.ProcessorManager;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * <p>Copyright (c) 2016, Authors</p>
  *
@@ -25,17 +32,13 @@ import java.util.List;
  * limitations under the License.</p>
  */
 @Component
-public class CommitManagerImpl implements CommitManager
-{
+public class CommitManagerImpl implements CommitManager {
     @Autowired
     private ConfigManagerDao configManager;
     @Autowired
     private CommitService commitService;
     @Autowired
     private ProcessorManager processorManager;
-    @Autowired
-    private CommitMessageParser commitMessageParser;
-
 
     @Override
     public void updateCommitsForProject(Long projectId) throws SQLException, IOException {
@@ -43,7 +46,7 @@ public class CommitManagerImpl implements CommitManager
         List<Commit> commitList = commitService.getNewCommits( (long) projectId);
 
         for (Commit c : commitList){
-            String issue = commitMessageParser.findIssue(c,projectId);
+            String issue = this.findIssue(c,projectId);
             c.setIssueKey(issue);
         }
 
@@ -56,5 +59,20 @@ public class CommitManagerImpl implements CommitManager
         for (ConfigEntity config : configList){
             updateCommitsForProject(config.getProjectID());
         }
+    }
+
+    @Override
+    public String findIssue(Commit commit, Long projectID)
+    {
+        Project currentProject = ComponentAccessor.getProjectManager().getProjectObj(projectID);
+        String currentProjectKey = currentProject.getKey();
+        String commitMessage = commit.getMessage();
+
+        Pattern pattern = Pattern.compile("\\[" + currentProjectKey + "-(\\d+)");
+        Matcher matcher = pattern.matcher(commitMessage);
+
+        String issueIdString = matcher.group(1);
+
+        return issueIdString;
     }
 }

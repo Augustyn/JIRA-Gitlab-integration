@@ -6,6 +6,7 @@ import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>Copyright (c) 2016, Authors</p>
@@ -26,23 +27,22 @@ import java.util.List;
 @Repository
 public class GitlabComManDaoImpl implements IGitlabComManDao {
     @Autowired
-    private GitlabComDao gitlabComDao;
+    private GitlabCommunicationDao gitlabComDao;
     @Autowired
     private ConfigManagerDao configManagerDao;
 
     @Override
-    public int findGitlabProjectId(Long jiraProjectId) throws SQLException {
-        int gitlabProjectId=-1;
+    public long findGitlabProjectId(Long jiraProjectId) throws SQLException {
+
         ConfigEntity configEntity = configManagerDao.getProjectConfig(jiraProjectId);
 
         List<GitlabProject> gitlabProjectList = gitlabComDao.getGitlabProjects(configEntity);
-
-        for(GitlabProject project : gitlabProjectList){
-            if(project.getGitlabProjectName().equalsIgnoreCase(configEntity.getGitlabProjectName())){
-                gitlabProjectId = project.getGitlabProjectId();
-            }
+        final Optional<Long> gitlabProjectId = gitlabProjectList.stream().filter(p -> p.getGitlabProjectName().equalsIgnoreCase(configEntity.getGitlabProjectName())).map(GitlabProject::getGitlabProjectId).findAny();
+        if (gitlabProjectId.isPresent()) {
+            configManagerDao.updateGitlabProjectId(jiraProjectId, gitlabProjectId.get());
+            return gitlabProjectId.get();
+        } else {
+            return -1L;
         }
-        configManagerDao.updateGitlabProjectId(jiraProjectId,gitlabProjectId);
-        return gitlabProjectId;
     }
 }

@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.service.CommitService;
+import pl.hycom.jira.plugins.gitlab.integration.service.impl.CommitService;
 
 import java.io.IOException;
 import java.util.Collections;

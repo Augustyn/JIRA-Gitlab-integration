@@ -1,17 +1,20 @@
 package pl.hycom.jira.plugins.gitlab.integration.controller;
 
+import com.atlassian.jira.project.Project;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
-import pl.hycom.jira.plugins.gitlab.integration.dao.IGitlabComManDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
+import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
+import pl.hycom.jira.plugins.gitlab.integration.service.GitlabService;
 import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>Copyright (c) 2016, Authors</p>
@@ -29,6 +32,7 @@ import java.util.Map;
  * limitations under the License.</p>
  */
 @Log4j
+@RequiredArgsConstructor
 public class JiraSectionAction extends JiraWebActionSupport {
 
 
@@ -37,38 +41,31 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private static final String ERROR_INVALID_PROJECTID = "jirasection.action.error.invalid.projectid";
     private static final String ERROR_INVALID_GITLABLINK = "jirasection.action.error.invalid.gitlablink";
     private static final String ERROR_INVALID_GITLABPROJECTNAME = "jirasection.action.error.invalid.gitlabprojectname";
+    /* injected through constructor: */
+    @Autowired private final Validator validator;
+    @Autowired private final ConfigManagerDao confManager;
+    @Autowired private final GitlabService gitlabService;
 
-    @Autowired private Validator validator;
-    @Autowired private ConfigManagerDao myConfManager;
-    @Autowired private IGitlabComManDao gitlabCommunicationManagerDao;
-
-    private String clientId = "123";
-    private String clientSecret = "client123";
-    private String gitlabLink = "https://github.com/";
-    private String gitProjectId = "123456";
-    private String gitlabProjectName = "newname";
-
-
-    public JiraSectionAction() {
-    }
+    private String clientId;
+    private String clientSecretToken;
+    private String gitlabHost;
+    private String gitlabProjectName;
+    private String gitProjectId;
+    private Project project;
+    private Long projectId;
+    private ConfigEntity projectConfig;
 
     private ErrorCollection doInternalValidate() {
         Map<FormField, String> paramMap = new HashMap<>();
 
-        String sClientId = getClientId();
-        String sClientSecret = getClientSecret();
-        String sGitlabLink = getGitlabLink();
-        String sProjectId = getGitProjectId();
-        String sGitlabProjectNamePattern = getGitlabProjectName();
-
-        paramMap.put(FormField.CLIENTID, sClientId);
-        paramMap.put(FormField.CLIENTSECRET, sClientSecret);
-        paramMap.put(FormField.GITLABLINK, sGitlabLink);
-        paramMap.put(FormField.PROJECTID, sProjectId);
-        paramMap.put(FormField.GITLABPROJECTNAME, sGitlabProjectNamePattern);
+        paramMap.put(FormField.CLIENTID, clientId);
+        paramMap.put(FormField.CLIENTSECRET, clientSecretToken);
+        paramMap.put(FormField.GITLABLINK, gitlabHost);
+        paramMap.put(FormField.PROJECTID, gitProjectId);
+        paramMap.put(FormField.GITLABPROJECTNAME, gitlabProjectName);
 
         final ErrorCollection validate = validator.validate(paramMap);
-        validate.getErrorMessages().stream().forEach(e->this.getErrorMessages().add(this.getI18nHelper().getText(e)));
+        validate.getErrorMessages().forEach(e->this.getErrorMessages().add(this.getI18nHelper().getText(e)));
         return validate;
     }
 
@@ -81,14 +78,10 @@ public class JiraSectionAction extends JiraWebActionSupport {
             log.debug("name " + n + ": " + vals[0]);
         }
 
-        String sClientId = getClientId();
-        String sClientSecret = getClientSecret();
-        String sGitlabLink = getGitlabLink();
-        String sGitlabProjectName = getGitlabProjectName();
-        log.debug("The local variable client_id  is currently set to: " + sClientId);
-        log.debug("The local variable client_secret is currently set to: " + sClientSecret);
-        log.debug("The local variable gitlablink is currently set to: " + sGitlabLink);
-        log.debug("The local variable gitlabProjectName is currently set to: " + sGitlabProjectName);
+        log.debug("The local variable client_id  is currently set to: " + clientId);
+        log.debug("The local variable client_secret is currently set to: " + clientSecretToken);
+        log.debug("The local variable gitlablink is currently set to: " + gitlabHost);
+        log.debug("The local variable gitlabProjectName is currently set to: " + gitlabProjectName);
 
 
         if (invalidInput()) {
@@ -104,41 +97,81 @@ public class JiraSectionAction extends JiraWebActionSupport {
     }
 
     protected String doExecute() throws Exception {
-        log.fatal("DEBUG: Entering doExecute");
-        for (Enumeration e =   getHttpRequest().getParameterNames(); e.hasMoreElements() ;) {
-            String n = (String)e.nextElement();
-            String[] vals =  getHttpRequest().getParameterValues(n);
-            log.warn("name " + n + ": " + vals[0]);
+        log.info("Saving project: '" + this.projectId + "' configuration.");
+        String result = validateProject();
+        if (ERROR.equals(result)) {
+            return result; //No project id in context, no use to continue.
         }
-        if (false) {
-            throw new Exception("doExecute raised this exception for some reason");
+        final ConfigEntity configEntity = confManager.updateProjectConfig(this.projectId, gitlabHost, clientSecretToken, clientId, gitlabProjectName);
+        return (configEntity != null ? SUCCESS : ERROR);
+    }
+
+    public String doSave() throws Exception {
+        String result = validateProject();
+        if (ERROR.equals(result) || projectId == null) {
+            addError("gitlab-project", "Couldn't find Gitlab project id based on provided data. Please verify Gitlab project name and credentials", Reason.VALIDATION_FAILED);
+            return INPUT; //No project id in context, no use to continue.
         }
+        ConfigEntity config = null;
+        try {
+            config = confManager.updateProjectConfig(projectId, gitlabHost, clientSecretToken, clientId, gitlabProjectName);
+        } catch (Exception e) {
+            log.error("Couldn't save project configuration, with message: '" + e.getMessage() + "'. Enable debug for more info.");
+            log.debug("Stack:", e);
+        }
+        if (config == null) {
+            addError("config", "Couldn't save project configuration. Please contact administrator.", Reason.SERVER_ERROR);
+            return ERROR;
+        }
+        final Optional<GitlabProject> gitlabProject = gitlabService.getGitlabProject(config);
+        if (!gitlabProject.isPresent()) {
+            addError("gitlab-project", "Couldn't find Gitlab project id based on provided data. Please verify Gitlab project name and credentials", Reason.VALIDATION_FAILED);
+            return ERROR;
+        }
+        final ErrorCollection errorCollection = doInternalValidate();
         return SUCCESS;
     }
 
+    public String validateProject() throws Exception {
+        this.project = getSelectedProject();
+        final String rawProjectId = getHttpRequest().getParameter("projectId");
+        Long paramProjectId = project != null ? project.getId() : null;
+        if (StringUtils.isNotBlank(rawProjectId)) {
+            try {
+                paramProjectId = Long.valueOf(rawProjectId);
+            } catch (NumberFormatException e) {
+                addError("project", "No project or project id in context. Cannot continue", Reason.VALIDATION_FAILED);
+                return ERROR;
+            }
+            if (!paramProjectId.equals(project != null ? project.getId() : paramProjectId)) {
+                addError("project", "Provided parameter project ID differs from project context. Cannot continue", Reason.VALIDATION_FAILED);
+            }
+        }
+        this.projectId = paramProjectId;
+        return INPUT;
+    }
 
     public String doDefault() throws Exception {
         log.debug("Entering doDefault");
-
-
-        for (Enumeration e =   getHttpRequest().getParameterNames(); e.hasMoreElements() ;) {
-            String n = (String)e.nextElement();
-            String[] vals =  getHttpRequest().getParameterValues(n);
-            log.debug("Parameter " + n + "=" + vals[0]);
-
+        String result = validateProject();
+        if (ERROR.equals(result) || this.projectId == null) {
+            return result; //No project in context. it has no sense to continue.
         }
-
-        final ErrorCollection errorCollection = doInternalValidate();
-
-        //trying
-        myConfManager.updateProjectConfig(Long.valueOf(gitProjectId), gitlabLink, clientSecret, clientId, gitlabProjectName);
-        String result = super.doDefault();
-        log.debug("Exiting doDefault with a result of: " + result);
+        //FIXME: Get saved project configuration and set variables.
+        final ConfigEntity projectConfig = confManager.getProjectConfig(this.projectId);
+        if (projectConfig != null) {
+            this.clientId = projectConfig.getClientId();
+            this.gitlabProjectName = projectConfig.getGitlabProjectName();
+            this.gitlabHost = projectConfig.getGitlabURL();
+            this.clientSecretToken = projectConfig.getGitlabSecretToken();
+            this.projectConfig = projectConfig;
+        }
+        log.debug("Exiting doDefault with a result of: " + result + " with project: " + project);
         return result;
         //
 
         /*if (errorCollection.isEmpty() && gitlabCommunicationManagerDao.findGitlabProjectId(gitProjectId)>0){
-            myConfManager.updateProjectConfig(gitProjectID, gitlabLink, clientSecret, clientId, gitlabProjectName);
+            confManager.updateProjectConfig(gitProjectID, gitlabHost, clientSecretToken, clientId, gitlabProjectName);
             String result = super.doDefault();
             log.debug("Exiting doDefault with a result of: " + result);
             return result;
@@ -153,58 +186,41 @@ public class JiraSectionAction extends JiraWebActionSupport {
         }*/
     }
 
-
-
-    public void setClientId(String value) {
-        log.debug("Setting clientId to: " + value);
-        this.clientId = value;
-    }
-
-    public void setClientSecret(String value) {
-        log.debug("Setting clientSecret to: " + value);
-        this.clientSecret = value;
-    }
-
-    public void setGitlabProjectName(String value){
-        log.debug("Setting gitlabProjectName to: " + value);
-        this.gitlabProjectName = value;
-    }
-
-    public void setGitlabLink(String value) {
-        log.debug("Setting gitlabLink to: " + value);
-        this.gitlabLink = value;
-    }
-
-
-    public void setGitProjectId(String value) {
-        log.debug("Setting gitProjectId to: " + value);
-        this.gitProjectId = value;
-    }
-
     public String getClientId() {
-        log.debug("Getting clientId");
         return clientId;
     }
-
-    public String getClientSecret() {
-        log.debug("Getting clientSecret");
-        return clientSecret;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
-
-    public String getGitlabLink() {
-        log.debug("Getting gitlabLink");
-        return gitlabLink;
+    public String getClientSecretToken() {
+        return clientSecretToken;
     }
-
-
+    public void setClientSecretToken(String clientSecretToken) {
+        this.clientSecretToken = clientSecretToken;
+    }
+    public String getGitlabHost() {
+        return gitlabHost;
+    }
+    public void setGitlabHost(String gitlabHost) {
+        this.gitlabHost = gitlabHost;
+    }
     public String getGitProjectId() {
-        log.debug("Getting gitProjectId");
         return gitProjectId;
     }
-
+    public void setGitProjectId(String gitProjectId) {
+        this.gitProjectId = gitProjectId;
+    }
     public String getGitlabProjectName() {
-        log.debug("Getting GitlabProjectName");
         return gitlabProjectName;
+    }
+    public void setGitlabProjectName(String gitlabProjectName) {
+        this.gitlabProjectName = gitlabProjectName;
+    }
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
 

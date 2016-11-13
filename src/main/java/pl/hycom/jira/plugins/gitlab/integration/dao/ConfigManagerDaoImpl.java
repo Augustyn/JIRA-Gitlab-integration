@@ -1,16 +1,16 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 import com.atlassian.activeobjects.external.ActiveObjects;
+import lombok.RequiredArgsConstructor;
 import net.java.ao.DBParam;
 import net.java.ao.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>Copyright (c) 2016, Authors</p>
@@ -29,45 +29,44 @@ import java.util.List;
  */
 @Repository
 @Service
+@RequiredArgsConstructor
 public class ConfigManagerDaoImpl implements ConfigManagerDao {
     @Autowired
-    private ActiveObjects entityManager;
+    private final ActiveObjects entityManager;
 
+    @Nullable
     public ConfigEntity getProjectConfig(Long projectID) throws SQLException {
-        return entityManager.get(ConfigEntity.class, projectID.intValue());    //returns null if no entities exist
+        return entityManager.get(ConfigEntity.class, projectID);    //returns null if no entities exist
     }
 
     public List<ConfigEntity> getAllProjectConfigs() throws SQLException {
-        List<ConfigEntity> result = new ArrayList<>();
         ConfigEntity[] configs = entityManager.find(ConfigEntity.class);
-        Collections.addAll(result, configs);
-        return result;
+        return Arrays.asList(configs);
     }
-
-
+    @Nullable
     public ConfigEntity updateProjectConfig(Long projectID,String gitlabLink,String gitlabSecret,String gitlabClientId,
                                             String gitlabProjectName) throws SQLException {
         ConfigEntity projectConfig;
         if(entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?", projectID)) > 0 ) {
-            projectConfig = entityManager.get(ConfigEntity.class, projectID.intValue());
+            projectConfig = entityManager.get(ConfigEntity.class, projectID);
         } else {
             projectConfig = entityManager.create(ConfigEntity.class,new DBParam("PROJECT_ID", projectID));
         }
-
-        projectConfig.setLink(gitlabLink);
-        projectConfig.setSecret(gitlabSecret);
+        if (projectConfig == null) {
+            return null;
+        }
+        projectConfig.setGitlabURL(gitlabLink);
+        projectConfig.setGitlabSecretToken(gitlabSecret);
         projectConfig.setClientId(gitlabClientId);
         projectConfig.setGitlabProjectName(gitlabProjectName);
 
         projectConfig.save();
-        return  projectConfig;
+        return projectConfig;
     }
 
-    public void updateGitlabProjectId(Long projectID, int gitlabProjectID) {
-        ConfigEntity projectConfig;
-        projectConfig = entityManager.get(ConfigEntity.class, projectID.intValue());
+    public void updateGitlabProjectId(Long projectID, Long gitlabProjectID) {
+        ConfigEntity projectConfig = entityManager.get(ConfigEntity.class, projectID);
         projectConfig.setGitlabProjectId(gitlabProjectID);
         projectConfig.save();
     }
-
 }
