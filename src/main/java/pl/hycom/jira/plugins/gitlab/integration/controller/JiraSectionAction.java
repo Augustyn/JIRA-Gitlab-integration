@@ -123,10 +123,16 @@ public class JiraSectionAction extends JiraWebActionSupport {
             addError("config", "Couldn't save project configuration. Please contact administrator.", Reason.SERVER_ERROR);
             return ERROR;
         }
-        final Optional<GitlabProject> gitlabProject = gitlabService.getGitlabProject(config);
-        if (!gitlabProject.isPresent()) {
-            addError("gitlab-project", "Couldn't find Gitlab project id based on provided data. Please verify Gitlab project name and credentials", Reason.VALIDATION_FAILED);
-            return ERROR;
+        try {
+            final Optional<GitlabProject> gitlabProject = gitlabService.getGitlabProject(config);
+            if (!gitlabProject.isPresent()) {
+                addError("gitlab-project", "Couldn't find Gitlab project id based on provided data. Please verify Gitlab project name and credentials", Reason.VALIDATION_FAILED);
+                return ERROR;
+            }
+        } catch (Exception e) {
+            addError("gitlab-project", "Couldn't contact Gitlab. Please verify host name and credentials.");
+            log.error("Exception occurred while contacting: " + gitlabHost +" with message: " + e.getMessage() +". Enable debug for more info");
+            log.debug("Gitlab host: " + gitlabHost +", stack:", e);
         }
         final ErrorCollection errorCollection = doInternalValidate();
         return SUCCESS;
