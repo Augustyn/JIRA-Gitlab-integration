@@ -15,7 +15,7 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -33,13 +33,13 @@ import java.util.Optional;
 
 @Log4j
 @Repository
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class GitlabCommunicationDao implements IGitlabCommunicationDao {
 
     private static final String PROJECT = "/api/v3/projects/owned";
 
-    @Autowired private final ConfigManagerDao configManagerDao;
-    @Autowired private final TemplateFactory templateFactory;
+    @Autowired private ConfigManagerDao configManagerDao;
+    @Autowired private TemplateFactory templateFactory;
 
     @Override
     public List<GitlabProject> getGitlabProjects(ConfigEntity configEntity){

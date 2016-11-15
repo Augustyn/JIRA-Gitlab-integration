@@ -19,7 +19,8 @@ import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.util.UserManager;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -37,15 +38,15 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Log4j
 @Component
 public class IssueStatusChangeProcessor {
     //FIXME: refactor it. Programmatically change status.
     HttpClient client = HttpClientBuilder.create().build();
-    @Autowired private final UserManager userManager;
-    @Autowired private final JiraAuthenticationContext authenticationContext;
-    @Autowired private final IssueService issueService;
+    @Autowired private UserManager userManager;
+    @Autowired private JiraAuthenticationContext authenticationContext;
+    @Autowired private IssueService issueService;
 
     public void changeIssueStatus() {
         ApplicationUser user = userManager.getUserByKey("admin");

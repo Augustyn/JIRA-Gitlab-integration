@@ -15,9 +15,8 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.model;
 
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+/*import org.codehaus.jackson.annotate.JsonProperty;*/
 import lombok.Data;
 import org.springframework.data.annotation.Transient;
 
@@ -58,7 +57,7 @@ public class Commit {
     private String authorEmail;
 
     // example: 2015-05-21T20:57:28.000+02:00;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
+    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
     @JsonProperty("created_at")
     private Date createdAt;
     /**
@@ -73,11 +72,11 @@ public class Commit {
     private List<String> parentIds = new ArrayList<String>();
 
     @JsonProperty("committed_date")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
+    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
     private Date committedDate;
 
     @JsonProperty("authored_date")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
+    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
     private Date authoredDate;
 
     private Object status;
@@ -92,7 +91,10 @@ public class Commit {
     @Transient @Nullable
     private Long gitProjectID;
 
-    //Builder methods
+    //
+    // Builder methods
+    //
+
     public Commit withId(String id) {
         this.id = id;
         return this;

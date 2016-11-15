@@ -17,7 +17,7 @@ package pl.hycom.jira.plugins.gitlab.integration.controller;
 
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +32,8 @@ import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 import java.util.*;
 
 @Log4j
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class JiraSectionAction extends JiraWebActionSupport {
-
 
     private static final String ERROR_INVALID_CLIENTID = "jirasection.action.error.invalid.cliendid";
     private static final String ERROR_INVALID_CLIENTSECRET = "jirasection.action.error.invalid.cliendsecret";
@@ -42,9 +41,9 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private static final String ERROR_INVALID_GITLABLINK = "jirasection.action.error.invalid.gitlablink";
     private static final String ERROR_INVALID_GITLABPROJECTNAME = "jirasection.action.error.invalid.gitlabprojectname";
     /* injected through constructor: */
-    @Autowired private final Validator validator;
-    @Autowired private final ConfigManagerDao confManager;
-    @Autowired private final GitlabService gitlabService;
+    @Autowired private Validator validator;
+    @Autowired private ConfigManagerDao confManager;
+    @Autowired private GitlabService gitlabService;
 
     private String clientId;
     private String clientSecretToken;
@@ -123,10 +122,16 @@ public class JiraSectionAction extends JiraWebActionSupport {
             addError("config", "Couldn't save project configuration. Please contact administrator.", Reason.SERVER_ERROR);
             return ERROR;
         }
-        final Optional<GitlabProject> gitlabProject = gitlabService.getGitlabProject(config);
-        if (!gitlabProject.isPresent()) {
-            addError("gitlab-project", "Couldn't find Gitlab project id based on provided data. Please verify Gitlab project name and credentials", Reason.VALIDATION_FAILED);
-            return ERROR;
+        try {
+            final Optional<GitlabProject> gitlabProject = gitlabService.getGitlabProject(config);
+            if (!gitlabProject.isPresent()) {
+                addError("gitlab-project", "Couldn't find Gitlab project id based on provided data. Please verify Gitlab project name and credentials", Reason.VALIDATION_FAILED);
+                return ERROR;
+            }
+        } catch (Exception e) {
+            addError("gitlab-project", "Couldn't contact Gitlab. Please verify host name and credentials.");
+            log.error("Exception occurred while contacting: " + gitlabHost +" with message: " + e.getMessage() +". Enable debug for more info");
+            log.debug("Gitlab host: " + gitlabHost +", stack:", e);
         }
         final ErrorCollection errorCollection = doInternalValidate();
         return SUCCESS;

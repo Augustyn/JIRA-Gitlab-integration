@@ -18,7 +18,7 @@
 
 package pl.hycom.jira.plugins.gitlab.integration.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
@@ -34,10 +34,10 @@ import java.util.Optional;
  * @author higashi on 2016-11-13, HYCOM S.A.
  */
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class GitlabServiceImpl implements GitlabService {
-    @Autowired private final ConfigManagerDao configManager;
-    @Autowired private final IGitlabCommunicationDao gitlabCommunicationManagerDao;
+    @Autowired private ConfigManagerDao configManager;
+    @Autowired private IGitlabCommunicationDao gitlabCommunicationManagerDao;
 
     @Override
     public Optional<GitlabProject> getGitlabProject(ConfigEntity config) {

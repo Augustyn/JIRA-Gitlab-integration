@@ -16,7 +16,8 @@
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
 import com.atlassian.jira.config.util.IndexPathManager;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,12 +30,12 @@ import java.nio.file.Paths;
 
 @Log4j
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class LucenePathSearcher {
 
     private static final String COMMIT_INDEXER_DIRECTORY = "gitlab-integration";
 
-    @Autowired private final IndexPathManager indexPathManager;
+    @Autowired private IndexPathManager indexPathManager;
 
     private Path luceneIndexPath;
 

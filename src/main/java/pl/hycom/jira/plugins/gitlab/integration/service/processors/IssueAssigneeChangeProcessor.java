@@ -23,7 +23,7 @@ import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.UserUtils;
 import com.atlassian.jira.user.util.UserManager;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,14 +46,14 @@ import java.sql.SQLException;
  */
 @Log4j
 @Component
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class IssueAssigneeChangeProcessor implements ProcessorInterface {
 
-    @Autowired private final IssueManager issueManager;
-    @Autowired private final UserManager userManager;
-    @Autowired private final JiraAuthenticationContext authenticationContext;
-    @Autowired private final ConfigManagerDao configManager;
-    @Autowired private final CommitManager commitManager;
+    @Autowired private IssueManager issueManager;
+    @Autowired private UserManager userManager;
+    @Autowired private JiraAuthenticationContext authenticationContext;
+    @Autowired private ConfigManagerDao configManager;
+    @Autowired private CommitManager commitManager;
 
     public void execute(Commit commit) {
         try {

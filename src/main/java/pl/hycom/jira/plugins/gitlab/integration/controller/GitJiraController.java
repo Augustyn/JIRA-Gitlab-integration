@@ -19,7 +19,7 @@ package pl.hycom.jira.plugins.gitlab.integration.controller;
 
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.sal.api.message.I18nResolver;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,12 +38,12 @@ import java.sql.SQLException;
 @Path("gitlab")
 @Controller
 @Log4j
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class GitJiraController {
 
-    @Autowired private final I18nResolver i18nResolver;
-    @Autowired private final JiraAuthenticationContext authenticationContext;
-    @Autowired private final CommitManager manager;
+    @Autowired private I18nResolver i18nResolver;
+    @Autowired private JiraAuthenticationContext authenticationContext;
+    @Autowired private CommitManager manager;
 
     @Path("/listener")//zloz to z poprzednim pathem
     @POST

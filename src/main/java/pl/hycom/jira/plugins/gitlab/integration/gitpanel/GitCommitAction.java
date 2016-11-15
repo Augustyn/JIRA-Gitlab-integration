@@ -23,6 +23,7 @@ import com.atlassian.jira.util.JiraVelocityHelper;
 import com.atlassian.jira.util.velocity.DefaultVelocityRequestContextFactory;
 import com.google.common.collect.Maps;
 import com.opensymphony.util.TextUtils;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.apache.velocity.exception.VelocityException;
