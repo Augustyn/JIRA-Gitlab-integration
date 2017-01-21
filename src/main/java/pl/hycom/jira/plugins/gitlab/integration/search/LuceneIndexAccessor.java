@@ -29,20 +29,17 @@ public interface LuceneIndexAccessor {
     /**
      * Gets a Lucene {@link org.apache.lucene.index.IndexReader} at the given path.
      *
-     * @param path the path.
      * @return the IndexReader.
      * @throws IOException if there's some problem getting the reader.
      */
-    IndexReader getIndexReader(Path path) throws IOException;
+    IndexReader getIndexReader() throws IOException;
 
     /**
      * Gets a Lucene {@link org.apache.lucene.index.IndexWriter} at the given path.
      *
-     * @param path     the path.
-     * @param analyzer the {@link org.apache.lucene.analysis.Analyzer} to use.
      * @return the IndexWriter.
      * @throws IOException if there's some problem getting the writer.
      */
-    IndexWriter getIndexWriter(Path path, Analyzer analyzer) throws IOException;
+    IndexWriter getIndexWriter() throws IOException;
 
 }

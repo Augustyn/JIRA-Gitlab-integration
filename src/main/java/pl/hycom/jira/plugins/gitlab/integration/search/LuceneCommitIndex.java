@@ -37,15 +37,13 @@ import java.util.stream.Collectors;
 @Service
 public class LuceneCommitIndex implements CommitIndex {
     static final Version VERSION_LUCENE = Version.LUCENE_33;
-    @Autowired private LucenePathSearcher lucenePathSearcher;
-    @Autowired private LuceneIndexAccessor indexAccessor;
 
-    private static final Analyzer analyzer = new StandardAnalyzer(VERSION_LUCENE);
+    @Autowired private LuceneIndexAccessor indexAccessor;
 
     @Override
     public void indexFile(Commit commit) throws IOException {
-        Path path = lucenePathSearcher.getIndexPath();
-        IndexWriter indexWriter = indexAccessor.getIndexWriter(path, analyzer);
+
+        IndexWriter indexWriter = indexAccessor.getIndexWriter();
         Document document = CommitMapper.getDocument(commit);
         indexWriter.addDocument(document);
         indexWriter.close();
@@ -56,7 +54,7 @@ public class LuceneCommitIndex implements CommitIndex {
         List<Document> foundedCommitsList = new ArrayList<>();
         BooleanQuery query = new BooleanQuery();
         query.add(new TermQuery(new Term(fieldName, fieldValue)), BooleanClause.Occur.MUST);
-        try(IndexReader reader = indexAccessor.getIndexReader(lucenePathSearcher.getIndexPath())) {
+        try(IndexReader reader = indexAccessor.getIndexReader()) {
             IndexSearcher searcher = new IndexSearcher(reader);
             TopDocs docs = searcher.search(query, HITS_PER_PAGE);
             ScoreDoc[] hits = docs.scoreDocs;
@@ -72,7 +70,7 @@ public class LuceneCommitIndex implements CommitIndex {
     public List<Commit> searchCommitsByIssue(String jiraIssueKey) {
         try {
             Query query = new WildcardQuery(new Term(CommitFields.COMMIT_MESSAGE.name(), jiraIssueKey));
-            IndexReader reader = indexAccessor.getIndexReader(lucenePathSearcher.getIndexPath());
+            IndexReader reader = indexAccessor.getIndexReader();
             IndexSearcher searcher = new IndexSearcher(reader);
             TopDocs docs = searcher.search(query, HITS_PER_PAGE);
             return Arrays.stream(docs.scoreDocs).map(hit -> convertToCommit(searcher, hit)).collect(Collectors.toList());
@@ -97,7 +95,7 @@ public class LuceneCommitIndex implements CommitIndex {
         BooleanQuery query = new BooleanQuery();
         /*Query query = new QueryParser(CommitFields.ID.name(), analyzer).parse(idValue);*/
         query.add(new TermQuery(new Term(CommitFields.ID.name(), idValue)), BooleanClause.Occur.SHOULD);
-        try (IndexReader reader = indexAccessor.getIndexReader(lucenePathSearcher.getIndexPath())) {
+        try (IndexReader reader = indexAccessor.getIndexReader()) {
             IndexSearcher searcher = new IndexSearcher(reader);
             TopDocs docs = searcher.search(query, HITS_PER_PAGE);
 
