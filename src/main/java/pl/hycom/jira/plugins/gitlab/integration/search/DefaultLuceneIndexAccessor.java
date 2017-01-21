@@ -15,6 +15,7 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -36,6 +37,7 @@ import static pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex.
  */
 @Service
 @Slf4j
+@NoArgsConstructor
 public class DefaultLuceneIndexAccessor implements LuceneIndexAccessor, InitializingBean {
     private static final Analyzer analyzer = new StandardAnalyzer(VERSION_LUCENE);
     private Directory directory;
@@ -76,6 +78,8 @@ public class DefaultLuceneIndexAccessor implements LuceneIndexAccessor, Initiali
         if (mergePolicy instanceof LogMergePolicy) {
             ((LogMergePolicy)mergePolicy).setUseCompoundFile(Boolean.TRUE);
         }
+        //TODO verify if it really does create lucene files.
+        indexWriter.commit();
     }
 
     @Override

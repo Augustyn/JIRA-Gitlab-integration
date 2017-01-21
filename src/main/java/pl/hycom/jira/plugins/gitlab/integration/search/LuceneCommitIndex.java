@@ -16,8 +16,6 @@
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
 import lombok.extern.log4j.Log4j;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
@@ -28,8 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,7 +40,6 @@ public class LuceneCommitIndex implements CommitIndex {
 
     @Override
     public void indexFile(Commit commit) throws IOException {
-
         IndexWriter indexWriter = indexAccessor.getIndexWriter();
         Document document = CommitMapper.getDocument(commit);
         indexWriter.addDocument(document);
@@ -67,7 +64,8 @@ public class LuceneCommitIndex implements CommitIndex {
         return foundedCommitsList;
     }
 
-    public List<Commit> searchCommitsByIssue(String jiraIssueKey) {
+    @NotNull
+    public List<Commit> searchCommitsByIssue(@NotNull String jiraIssueKey) {
         try {
             Query query = new WildcardQuery(new Term(CommitFields.COMMIT_MESSAGE.name(), jiraIssueKey));
             IndexReader reader = indexAccessor.getIndexReader();
