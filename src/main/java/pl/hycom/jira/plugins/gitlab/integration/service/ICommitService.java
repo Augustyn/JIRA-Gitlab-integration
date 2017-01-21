@@ -25,6 +25,6 @@ import java.util.List;
 public interface ICommitService {
 
     List<Commit> getNewCommits(Long projectId) throws SQLException, IOException;
-    Commit getOneCommit(Long projectId, String shaSum) throws SQLException;
+    Commit getOneCommit(Long projectId, String shaSum) throws SQLException, IOException;
     List<Commit> getAllIssueCommits(Issue jiraIssue) throws IOException;
 }

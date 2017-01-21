@@ -17,7 +17,9 @@ package pl.hycom.jira.plugins.gitlab.integration.controller;
 
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,17 +47,17 @@ public class JiraSectionAction extends JiraWebActionSupport {
     @Autowired private ConfigManagerDao confManager;
     @Autowired private GitlabService gitlabService;
 
-    private String clientId;
-    private String clientSecretToken;
-    private String gitlabHost;
-    private String gitlabProjectName;
-    private String gitProjectId;
-    private Project project;
+    @Getter @Setter private String clientId;
+    @Getter @Setter private String clientSecretToken;
+    @Getter @Setter private String gitlabHost;
+    @Getter @Setter private String gitlabProjectName;
+    @Getter @Setter private String gitProjectId;
+    @Getter @Setter private Project project;
     private Long projectId;
     private ConfigEntity projectConfig;
 
     private ErrorCollection doInternalValidate() {
-        Map<FormField, String> paramMap = new HashMap<>();
+        Map<FormField, String> paramMap = new EnumMap<>(FormField.class);
 
         paramMap.put(FormField.CLIENTID, clientId);
         paramMap.put(FormField.CLIENTSECRET, clientSecretToken);
@@ -190,42 +192,6 @@ public class JiraSectionAction extends JiraWebActionSupport {
         }*/
     }
 
-    public String getClientId() {
-        return clientId;
-    }
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-    public String getClientSecretToken() {
-        return clientSecretToken;
-    }
-    public void setClientSecretToken(String clientSecretToken) {
-        this.clientSecretToken = clientSecretToken;
-    }
-    public String getGitlabHost() {
-        return gitlabHost;
-    }
-    public void setGitlabHost(String gitlabHost) {
-        this.gitlabHost = gitlabHost;
-    }
-    public String getGitProjectId() {
-        return gitProjectId;
-    }
-    public void setGitProjectId(String gitProjectId) {
-        this.gitProjectId = gitProjectId;
-    }
-    public String getGitlabProjectName() {
-        return gitlabProjectName;
-    }
-    public void setGitlabProjectName(String gitlabProjectName) {
-        this.gitlabProjectName = gitlabProjectName;
-    }
-    public Project getProject() {
-        return project;
-    }
-    public void setProject(Project project) {
-        this.project = project;
-    }
 }
 
 

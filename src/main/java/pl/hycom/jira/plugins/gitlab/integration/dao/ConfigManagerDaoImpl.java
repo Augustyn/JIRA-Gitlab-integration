@@ -45,7 +45,7 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao {
         return Arrays.asList(configs);
     }
     @Nullable
-    public ConfigEntity updateProjectConfig(Long projectID,String gitlabLink,String gitlabSecret,String gitlabClientId,
+    public ConfigEntity updateProjectConfig(Long projectID, String gitlabLink, String gitlabSecret, String gitlabClientId,
                                             String gitlabProjectName) throws SQLException {
         ConfigEntity projectConfig;
         if(entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?", projectID)) > 0 ) {

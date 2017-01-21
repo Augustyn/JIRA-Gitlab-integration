@@ -69,7 +69,7 @@ public class CommitService implements ICommitService {
     }
 
     @Override
-    public Commit getOneCommit(Long projectId, String shaSum) throws SQLException {
+    public Commit getOneCommit(Long projectId, String shaSum) throws SQLException, IOException {
         return commitRepository.getOneCommit(dao.getProjectConfig(projectId), shaSum);
     }
 }

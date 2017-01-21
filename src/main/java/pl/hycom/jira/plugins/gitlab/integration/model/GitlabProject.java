@@ -15,14 +15,10 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-/*import org.codehaus.jackson.annotate.JsonAnyGetter;
+import org.codehaus.jackson.annotate.JsonAnyGetter;
 import org.codehaus.jackson.annotate.JsonAnySetter;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;*/
+import org.codehaus.jackson.annotate.JsonProperty;
 import lombok.Data;
 import javax.annotation.Generated;
 import java.util.HashMap;

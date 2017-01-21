@@ -16,6 +16,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 import lombok.extern.log4j.Log4j;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -26,6 +27,8 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.util.HttpHeadersBuilder;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @Log4j
@@ -37,27 +40,33 @@ public class CommitRepository implements ICommitDao {
     private static final String COMMIT_SINGLE_URL = COMMIT_BASE + "/{sha1sum}";
 
     @Autowired private TemplateFactory restTemplate;
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber) {
+    public List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber) throws IOException {
         log.info("Trying to reach url: {}, with projectId: {}");
         HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(configEntity.getGitlabSecretToken()).get());
-        ResponseEntity<List<Commit>> response = restTemplate.getRestTemplate().exchange(configEntity.getGitlabURL() + COMMIT_URL, HttpMethod.GET, requestEntity,
-                new ParameterizedTypeReference<List<Commit>>() {
+        ResponseEntity<String> response = restTemplate.getRestTemplate().exchange(configEntity.getGitlabURL() + COMMIT_URL, HttpMethod.GET, requestEntity,
+                new ParameterizedTypeReference<String>() {
                 }, configEntity.getGitlabProjectId(), Integer.toString(perPage), Integer.toString(pageNumber));
-
-        return response.getBody();
+        log.debug("Received response: " + response.getBody());
+        List<Commit> commitList = mapper.readValue(response.getBody(), mapper.getTypeFactory().constructCollectionType(List.class, Commit.class));
+        log.debug(("Received response as commit list: " + commitList));
+        return commitList;
     }
 
     @Override
-    public Commit getOneCommit(ConfigEntity config, String shaSum) {
+    public Commit getOneCommit(ConfigEntity config, String shaSum) throws IOException {
         log.info("Getting one commit from git repository: " + config.getGitlabURL() + " with secret: " + config.getGitlabSecretToken() + " and project Id: " + config.getGitlabProjectId());
         HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(config.getGitlabSecretToken()).get());
-        ResponseEntity<Commit> response = restTemplate.getRestTemplate().exchange(config.getGitlabURL() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
-                new ParameterizedTypeReference<Commit>() {
+        ResponseEntity<String> response = restTemplate.getRestTemplate().exchange(config.getGitlabURL() + COMMIT_SINGLE_URL, HttpMethod.GET, requestEntity,
+                new ParameterizedTypeReference<String>() {
                 }, config.getGitlabProjectId(), shaSum);
         if (response != null) {
-            return response.getBody();
+            log.debug("Received response: " + response.getBody());
+            Commit commit = mapper.readValue(response.getBody(), Commit.class);
+            log.debug("Resolved response as commit: " + commit);
+            return commit;
         }
         return null;
     }
