@@ -21,6 +21,8 @@ import org.apache.lucene.document.Field;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * Mapper. Converts {@link Commit} to Lucene {@link Document}
@@ -52,7 +54,7 @@ public class CommitMapper {
                     .withTitle(document.get(CommitFields.TITLE.name()))
                     .withAuthorName(document.get(CommitFields.AUTHOR_NAME.name()))
                     .withAuthorEmail(document.get(CommitFields.AUTHOR_EMAIL.name()))
-                    .withCreatedAt(CommitFields.formatter.parse(document.get(CommitFields.CREATED.name())))
+                    .withCreatedAt(LocalDateTime.ofInstant(CommitFields.formatter.parse(document.get(CommitFields.CREATED.name())).toInstant(), ZoneId.systemDefault()))
                     .withMessage(document.get(CommitFields.COMMIT_MESSAGE.name()))
                     .withIssueKey(document.get(CommitFields.JIRA_ISSUE_KEY.name()))
                     .withGitProject(Long.valueOf(document.get(CommitFields.GIT_PROJECT_ID.name())));

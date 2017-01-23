@@ -17,10 +17,11 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 public interface IGitlabCommunicationDao {
-    List<GitlabProject> getGitlabProjects(ConfigEntity configEntity);
-    public Long findGitlabProjectId(Long jiraProjectId) throws SQLException;
+    List<GitlabProject> getGitlabProjects(ConfigEntity configEntity) throws IOException;
+    public Long findGitlabProjectId(Long jiraProjectId) throws SQLException, IOException;
 }

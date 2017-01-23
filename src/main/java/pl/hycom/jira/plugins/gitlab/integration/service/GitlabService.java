@@ -18,11 +18,12 @@ package pl.hycom.jira.plugins.gitlab.integration.service;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
  * @author higashi on 2016-11-13, HYCOM S.A.
  */
 public interface GitlabService {
-    Optional<GitlabProject> getGitlabProject(ConfigEntity config);
+    Optional<GitlabProject> getGitlabProject(ConfigEntity config) throws IOException;
 }

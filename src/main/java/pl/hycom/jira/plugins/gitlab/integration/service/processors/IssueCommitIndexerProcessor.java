@@ -34,11 +34,11 @@ public class IssueCommitIndexerProcessor implements ProcessorInterface {
     @Autowired private CommitIndex commitIndexer;
 
     @Override
-    public void execute(@NotNull Commit commitInfo) throws ProcessException {
+    public void execute(@NotNull Commit commit) throws ProcessException {
         try {
-            commitIndexer.indexFile(commitInfo);
+            commitIndexer.indexFile(commit);
         } catch (IOException e) {
-            log.info("Failed to index commit with id: "+commitInfo.getId() + e.getMessage());
+            log.info("Failed to index commit with id: "+commit.getId() + e.getMessage());
         }
     }
 }

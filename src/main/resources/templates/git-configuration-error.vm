@@ -14,45 +14,43 @@
 ## See the License for the specific language governing permissions and
 ## limitations under the License.</p>
 ##
+<div class="aui-message aui-message-error">
+    <p>Jira-Gitlab: Error occurred</p>
+    <br/>
+    <p>Failed to save project!</p>
+    <br/>
+    <p>The value from the client id: ${clientId}</p>
+    <p>The value from the action-client_secret: ${clientSecretToken}</p>
+    <p>The value from the action-gitlablink: ${gitlabHost}</p>
+    <p>The value from the action-gitlabProjectName: ${gitlabProjectName}</p>
+    <br/>
+    <p>Error(s) details:</p>
 
-#requireResource("pl.hycom.jira.plugins.jira-gitlab-plugin:gittab-resources")
-
-
-<p>This is an error page for webwork section Jira-Gitlab.</p>
-
-<p>
-The value from the action-client_id: ${clientId}
-</p>
-<p>
-The value from the action-client_secret: ${clientSecretToken}
-</p>
-<p>
-The value from the action-gitlablink: ${gitlabHost}
-</p>
-<p>
-The value from the action-gitlabProjectName: ${gitlabProjectName}
-</p>
-<p>
-Or display the details of the error(s):
-</p>
-
-## Error messages are per action, errors are per field
-<table>
-  #foreach ($error in $action.getErrorMessages())
-  <tr>
-    <td>${error}</td>
-  </tr>
-  #end
-</table>
-<table>
-  #foreach ($error in $action.errors)
-  <tr>
-    <td>${error}</td>
-  </tr>
-  #end
-</table>
-
-<p>
-In many pages, the errors are displayed as part of the controlheader macro.
-See macros.vm for more examples of displaying errors
-</p>
+    ## Error messages are per action, errors are per field
+    <table>
+      #foreach ($error in $action.getErrorMessages())
+      <tr>
+        <td>${error}</td>
+      </tr>
+      #end
+    </table>
+    <table>
+      #foreach ($error in $action.errors)
+      <tr>
+        <td>${error}</td>
+      </tr>
+      #end
+    </table>
+</div>
+<div class="buttons-container gitintegration">
+    <div class="buttons">
+        <a class="aui-button" href="${req.contextPath}/plugins/servlet/project-config/$!{project.key}">
+            <span class="aui-icon aui-icon-small icon-error aui-iconfont-remove">Back</span>
+            Back
+        </a>
+        <a class="aui-button" href="${req.contextPath}/secure/JiraSectionAction!default.jspa?projectId=$!{project.id}">
+            <span class="aui-icon aui-icon-small aui-iconfont-bp-troubleshooting">Edit configuration</span>
+            Edit config
+        </a>
+    </div>
+</div>

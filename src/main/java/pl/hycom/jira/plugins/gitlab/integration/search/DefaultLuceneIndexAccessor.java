@@ -40,11 +40,12 @@ import static pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex.
 @NoArgsConstructor
 public class DefaultLuceneIndexAccessor implements LuceneIndexAccessor, InitializingBean {
     private static final Analyzer analyzer = new StandardAnalyzer(VERSION_LUCENE);
+    private final Object lock = new Object();
     private Directory directory;
     private IndexWriter indexWriter;
     private IndexReader indexReader;
     @Autowired private LucenePathSearcher lucenePathSearcher;
-
+    boolean refresh = false;
     public IndexReader getIndexReader() throws IOException {
         if (indexReader == null) {
             Path path = lucenePathSearcher.getIndexPath();
@@ -78,8 +79,9 @@ public class DefaultLuceneIndexAccessor implements LuceneIndexAccessor, Initiali
         if (mergePolicy instanceof LogMergePolicy) {
             ((LogMergePolicy)mergePolicy).setUseCompoundFile(Boolean.TRUE);
         }
-        //TODO verify if it really does create lucene files.
-        indexWriter.commit();
+        if (!IndexReader.indexExists(directory)) {
+            indexWriter.commit();
+        }
     }
 
     @Override

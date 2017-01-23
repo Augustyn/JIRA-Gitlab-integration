@@ -21,10 +21,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -39,6 +36,7 @@ import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -51,19 +49,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CommitIndexerTest {
     @InjectMocks private CommitIndex index = new LuceneCommitIndex();
 
-    @Spy private CommitRepository commitRepository = new CommitRepository();
-    @Spy private LuceneIndexAccessor accessor = new DefaultLuceneIndexAccessor();
-    @Spy private TemplateFactory restTemplateFactory = new TemplateFactory();
-
-    @Mock private LucenePathSearcher lucenePathSearcher;
+    @Mock private LucenePathSearcher lucenePathSearcher = new LucenePathSearcher();
     @Mock private ConfigEntity config;
+    @Spy private CommitRepository commitRepository = new CommitRepository();
+    @Spy private TemplateFactory restTemplateFactory = new TemplateFactory();
+    @Spy private LuceneIndexAccessor accessor = new DefaultLuceneIndexAccessor();
 
     private Commit commit = new Commit();
+    private Path path = Paths.get("./target/lucenetest/");
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(index);
         commit = new Commit().withAuthorEmail("test@example.com").withAuthorName("Test John").withTitle("title")
                 .withGitProject(6667L).withId("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15").withIssueKey("TP-1")
-                .withMessage("[TP-1] test issue 1. Test commit").withCreatedAt(new Date()).withShortId("f1d2d2");
+                .withMessage("[TP-1] test issue 1. Test commit").withCreatedAt(LocalDateTime.now()).withShortId("f1d2d2");
         commitRepository.setRestTemplate(restTemplateFactory);
     }
 
@@ -73,7 +72,6 @@ public class CommitIndexerTest {
     @Test
     public void indexingTestSuite() throws IOException {
         //before
-        Path path = Paths.get("./target/lucenetest/");
         if (!path.toFile().exists()) {
             path.toFile().mkdirs();
         }
@@ -95,7 +93,7 @@ public class CommitIndexerTest {
     public void indexNewCommitTest() throws IOException {
 
         //when
-        List<Commit> commitList = commitRepository.getNewCommits(config, 10, 1);
+        List<Commit> commitList = commitRepository.getNewCommits(config, null);
         int i = 1;
         //then
         for(Commit newCommit : commitList) {
@@ -111,6 +109,7 @@ public class CommitIndexerTest {
         Commit oneCommit = commitRepository.getOneCommit(config, "79be5e2c5e6742d7513d11e0956138f4bf02ab3b");
         assertThat("Commit cannot be null(!)", oneCommit, notNullValue());
         log.info("Will try to index commit: " + oneCommit);
+        Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(path);
         index.indexFile(oneCommit);
     }
 

@@ -25,14 +25,14 @@ import com.atlassian.jira.user.UserUtils;
 import com.atlassian.jira.user.util.UserManager;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
 
-import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 /**
  *  Class is responsible for changing issue assignee. Assignee is changed when there's one of an patterns:
@@ -48,33 +48,36 @@ import java.sql.SQLException;
 @Component
 @NoArgsConstructor
 public class IssueAssigneeChangeProcessor implements ProcessorInterface {
-
+//FIXME: this processor. It doesn't do logic it was designed for.
+//FIXME: Skip the processor when full reindexing/Run processor only when fetching new commits.
     @Autowired private IssueManager issueManager;
     @Autowired private UserManager userManager;
     @Autowired private JiraAuthenticationContext authenticationContext;
     @Autowired private ConfigManagerDao configManager;
     @Autowired private CommitManager commitManager;
+    private Pattern processorPattern = Pattern.compile("(assign|asing|a|ass)=>(az-AZ)");
 
     public void execute(Commit commit) {
+        String issueKey = commit.getIssueKey();
+        if (StringUtils.isBlank(issueKey)) {
+            log.info("skipping processor: " + this.getClass().getName() +" due commit doesn't contain any project key");
+            return;
+        }
         try {
-            final ConfigEntity projectConfig = configManager.getProjectConfig(commit.getGitProjectID());
             //TODO: save 'git' user in configuration. Use this user if there's user.
             ApplicationUser executor = UserUtils.getUserByEmail(commit.getAuthorEmail());
             authenticationContext.setLoggedInUser(executor);
 
             ApplicationUser newAssignee = UserUtils.getUserByEmail(commit.getAuthorEmail());
             if (newAssignee == null) {
-                log.info("User with email " + commit.getAuthorEmail() + "not found. Skipping assignee change");
+                log.info("User with email " + commit.getAuthorEmail() + " not found. Skipping assignee change");
                 return;
             }
 
-            String issueKey = commit.getIssueKey() != null ? commit.getIssueKey() : commitManager.findIssue(commit, projectConfig.getProjectID());
             MutableIssue issue = issueManager.getIssueObject(issueKey);
             issue.setAssignee(newAssignee);
             issueManager.updateIssue(executor, issue, UpdateIssueRequest.builder().build());
 
-        } catch (SQLException e) {
-            log.warn("Failed to load project configuration or , with message: " + e.getMessage(), e);
         } catch (Exception e) {
             log.info("Failed to update issue, with message: " + e.getMessage() +". Enable debug for more info.");
             log.debug("Detailed stack-trace: ", e);

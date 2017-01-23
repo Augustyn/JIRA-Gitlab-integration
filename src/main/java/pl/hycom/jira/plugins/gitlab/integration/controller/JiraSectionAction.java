@@ -27,6 +27,7 @@ import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
+import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
 import pl.hycom.jira.plugins.gitlab.integration.service.GitlabService;
 import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
@@ -55,6 +56,8 @@ public class JiraSectionAction extends JiraWebActionSupport {
     @Getter @Setter private Project project;
     private Long projectId;
     private ConfigEntity projectConfig;
+
+    @Autowired private CommitManager commitManager;
 
     private ErrorCollection doInternalValidate() {
         Map<FormField, String> paramMap = new EnumMap<>(FormField.class);
@@ -116,19 +119,24 @@ public class JiraSectionAction extends JiraWebActionSupport {
         ConfigEntity config = null;
         try {
             config = confManager.updateProjectConfig(projectId, gitlabHost, clientSecretToken, clientId, gitlabProjectName);
+            if (config == null) {
+                addError("config", "Couldn't save project configuration. Please contact administrator.", Reason.SERVER_ERROR);
+                return ERROR;
+            }
         } catch (Exception e) {
             log.error("Couldn't save project configuration, with message: '" + e.getMessage() + "'. Enable debug for more info.");
             log.debug("Stack:", e);
-        }
-        if (config == null) {
-            addError("config", "Couldn't save project configuration. Please contact administrator.", Reason.SERVER_ERROR);
-            return ERROR;
         }
         try {
             final Optional<GitlabProject> gitlabProject = gitlabService.getGitlabProject(config);
             if (!gitlabProject.isPresent()) {
                 addError("gitlab-project", "Couldn't find Gitlab project id based on provided data. Please verify Gitlab project name and credentials", Reason.VALIDATION_FAILED);
                 return ERROR;
+            }
+            //FIXME: for development only. Remove me.
+            boolean reindex = true;
+            if (reindex) {
+                commitManager.updateCommitsForAll();
             }
         } catch (Exception e) {
             addError("gitlab-project", "Couldn't contact Gitlab. Please verify host name and credentials.");

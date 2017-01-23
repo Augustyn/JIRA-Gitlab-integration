@@ -28,6 +28,9 @@ import pl.hycom.jira.plugins.gitlab.integration.util.HttpHeadersBuilder;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,19 +39,21 @@ import java.util.List;
 public class CommitRepository implements ICommitDao {
 
     private static final String COMMIT_BASE = "/api/v3/projects/{gitlabprojectid}/repository/commits";
-    private static final String COMMIT_URL =  COMMIT_BASE + "?per_page={perPage}&page={pageNumber}";
+    private static final String COMMIT_UNTIL_DATE =  COMMIT_BASE + "?until={date}";
     private static final String COMMIT_SINGLE_URL = COMMIT_BASE + "/{sha1sum}";
 
     @Autowired private TemplateFactory restTemplate;
     private ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber) throws IOException {
+    public List<Commit> getNewCommits(ConfigEntity configEntity, LocalDateTime date) throws IOException {
         log.info("Trying to reach url: {}, with projectId: {}");
+        String url = configEntity.getGitlabURL();
+        url += (date != null) ? COMMIT_UNTIL_DATE : COMMIT_BASE;
         HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(configEntity.getGitlabSecretToken()).get());
-        ResponseEntity<String> response = restTemplate.getRestTemplate().exchange(configEntity.getGitlabURL() + COMMIT_URL, HttpMethod.GET, requestEntity,
+        ResponseEntity<String> response = restTemplate.getRestTemplate().exchange( url, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<String>() {
-                }, configEntity.getGitlabProjectId(), Integer.toString(perPage), Integer.toString(pageNumber));
+                }, configEntity.getGitlabProjectId(), DateTimeFormatter.ISO_DATE_TIME.format(date != null? date : LocalDateTime.now()));
         log.debug("Received response: " + response.getBody());
         List<Commit> commitList = mapper.readValue(response.getBody(), mapper.getTypeFactory().constructCollectionType(List.class, Commit.class));
         log.debug(("Received response as commit list: " + commitList));

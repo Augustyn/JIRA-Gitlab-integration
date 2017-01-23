@@ -17,6 +17,7 @@ package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -27,7 +28,9 @@ import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 import pl.hycom.jira.plugins.gitlab.integration.util.HttpHeadersBuilder;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,21 +43,32 @@ public class GitlabCommunicationDao implements IGitlabCommunicationDao {
 
     @Autowired private ConfigManagerDao configManagerDao;
     @Autowired private TemplateFactory templateFactory;
+    private ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * Get projects from gitlab.
+     * @param configEntity configuration entity. Host, auth token for gitlab.
+     * @return Collection, never null
+     * @throws IOException when parsing response
+     */
     @Override
-    public List<GitlabProject> getGitlabProjects(ConfigEntity configEntity){
+    public List<GitlabProject> getGitlabProjects(ConfigEntity configEntity) throws IOException {
         HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(configEntity.getGitlabSecretToken()).get());
-        ResponseEntity<List<GitlabProject>> response = templateFactory.getRestTemplate().exchange(configEntity.getGitlabURL() + PROJECT, HttpMethod.GET, requestEntity,
-                new ParameterizedTypeReference<List<GitlabProject>>() {
+        ResponseEntity<String> response = templateFactory.getRestTemplate().exchange(configEntity.getGitlabURL() + PROJECT, HttpMethod.GET, requestEntity,
+                new ParameterizedTypeReference<String>() {
                 });
-        return response.getBody();
+        List<GitlabProject> gitlabProjects = mapper.readValue(response.getBody(), mapper.getTypeFactory().constructCollectionType(List.class, GitlabProject.class));
+        log.debug("Received gitlabProjects: {}" + gitlabProjects);
+        return Optional.ofNullable(gitlabProjects).orElse(Collections.emptyList());
     }
-    @Override
-    public Long findGitlabProjectId(Long jiraProjectId) throws SQLException {
 
+    @Override
+    public Long findGitlabProjectId(Long jiraProjectId) throws SQLException, IOException {
         final ConfigEntity configEntity = configManagerDao.getProjectConfig(jiraProjectId);
         final List<GitlabProject> gitlabProjectList = this.getGitlabProjects(configEntity);
-        final Optional<Long> gitlabProjectId = gitlabProjectList.stream().filter(p -> p.getGitlabProjectName().equalsIgnoreCase(configEntity.getGitlabProjectName())).map(GitlabProject::getGitlabProjectId).findAny();
+        final Optional<Long> gitlabProjectId = gitlabProjectList.stream()
+                        .filter(p -> p.getGitlabProjectName().equalsIgnoreCase(configEntity.getGitlabProjectName()))
+                        .map(GitlabProject::getGitlabProjectId).findAny();
         if (gitlabProjectId.isPresent()) {
             configManagerDao.updateGitlabProjectId(jiraProjectId, gitlabProjectId.get());
             return gitlabProjectId.get();

@@ -19,8 +19,8 @@ import lombok.Data;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,7 +64,7 @@ public class Commit implements Serializable {
     // example: 2015-05-21T20:57:28.000+02:00;
     //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
     @JsonProperty("created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
     /**
      * Git commit message.
      */
@@ -76,13 +76,13 @@ public class Commit implements Serializable {
     @JsonProperty("parent_ids")
     private List<String> parentIds = new ArrayList<String>();
 
-    @JsonProperty("committed_date")
+/*    @JsonProperty("committed_date")
     //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
     private Date committedDate;
 
     @JsonProperty("authored_date")
     //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
-    private Date authoredDate;
+    private Date authoredDate;*/
 
     private Stats stats;
 
@@ -125,7 +125,7 @@ public class Commit implements Serializable {
         return this;
     }
 
-    public Commit withCreatedAt(Date createdAt) {
+    public Commit withCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }

@@ -24,7 +24,10 @@ public interface ConfigEntity extends RawEntity<Long> {
     @NotNull
     @AutoIncrement
     @PrimaryKey("ProjectID")
-    public Long getProjectID();
+    public Long getJiraProjectID();
+
+    public String getJiraProjectKey();
+    public void setJiraProjectKey();
 
     public String getGitlabURL();
     public void setGitlabURL(String gitlabUrl);

@@ -29,6 +29,7 @@ import lombok.extern.log4j.Log4j;
 import org.apache.velocity.exception.VelocityException;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class GitCommitAction implements IssueAction {
 
     @Override
     public Date getTimePerformed() {
-        return commit.getCreatedAt();
+        return Date.from(Instant.from(commit.getCreatedAt()));
     }
     @Override
     public String getHtml() {

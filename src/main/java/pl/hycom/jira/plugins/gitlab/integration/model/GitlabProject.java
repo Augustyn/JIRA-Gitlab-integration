@@ -28,9 +28,9 @@ import java.util.Map;
 @Data
 public class GitlabProject {
 
-    @JsonProperty("gitlabProjectName")
+    @JsonProperty("name")
     private String gitlabProjectName;
-    @JsonProperty("gitlabProjectId")
+    @JsonProperty("id")
     private Long gitlabProjectId;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();

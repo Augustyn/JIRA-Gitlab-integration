@@ -30,8 +30,7 @@ import java.util.List;
 @Service
 @Log4j
 public class ProcessorManager {
-    @Setter
-    @Getter
+    @Setter @Getter
     private List<ProcessorInterface> processorsList = new ArrayList<>();
 
     public void startProcessors(@NotNull List<Commit> commitInfoList) {

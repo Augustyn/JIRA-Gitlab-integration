@@ -40,10 +40,9 @@ public class LuceneCommitIndex implements CommitIndex {
 
     @Override
     public void indexFile(Commit commit) throws IOException {
-        IndexWriter indexWriter = indexAccessor.getIndexWriter();
         Document document = CommitMapper.getDocument(commit);
+        IndexWriter indexWriter = indexAccessor.getIndexWriter();
         indexWriter.addDocument(document);
-        indexWriter.close();
     }
 
 
@@ -51,16 +50,15 @@ public class LuceneCommitIndex implements CommitIndex {
         List<Document> foundedCommitsList = new ArrayList<>();
         BooleanQuery query = new BooleanQuery();
         query.add(new TermQuery(new Term(fieldName, fieldValue)), BooleanClause.Occur.MUST);
-        try(IndexReader reader = indexAccessor.getIndexReader()) {
-            IndexSearcher searcher = new IndexSearcher(reader);
-            TopDocs docs = searcher.search(query, HITS_PER_PAGE);
-            ScoreDoc[] hits = docs.scoreDocs;
-            for (ScoreDoc hit : hits) {
-                int docId = hit.doc;
-                Document document = searcher.doc(docId);
-                foundedCommitsList.add(document);
-            }
+        IndexSearcher searcher = new IndexSearcher(indexAccessor.getIndexReader());
+        TopDocs docs = searcher.search(query, HITS_PER_PAGE);
+        ScoreDoc[] hits = docs.scoreDocs;
+        for (ScoreDoc hit : hits) {
+            int docId = hit.doc;
+            Document document = searcher.doc(docId);
+            foundedCommitsList.add(document);
         }
+        searcher.close();
         return foundedCommitsList;
     }
 
@@ -93,24 +91,21 @@ public class LuceneCommitIndex implements CommitIndex {
         BooleanQuery query = new BooleanQuery();
         /*Query query = new QueryParser(CommitFields.ID.name(), analyzer).parse(idValue);*/
         query.add(new TermQuery(new Term(CommitFields.ID.name(), idValue)), BooleanClause.Occur.SHOULD);
-        try (IndexReader reader = indexAccessor.getIndexReader()) {
-            IndexSearcher searcher = new IndexSearcher(reader);
-            TopDocs docs = searcher.search(query, HITS_PER_PAGE);
-
-            Optional<ScoreDoc> firstDoc = Arrays.stream(docs.scoreDocs).filter(hit -> {
-                try {
-                    Document document = searcher.doc(hit.doc);
-                    log.debug("Found: " + document);
-                    if (idValue.equals(document.get(CommitFields.ID.name()))) {
-                        return true;
-                    }
-                } catch (IOException e) {
-                    log.warn("Failed to search for hit: " + hit.doc + " with message: " + e.getMessage());
+        IndexSearcher searcher = new IndexSearcher(indexAccessor.getIndexReader());
+        TopDocs docs = searcher.search(query, HITS_PER_PAGE);
+        Optional<ScoreDoc> firstDoc = Arrays.stream(docs.scoreDocs).filter(hit -> {
+            try {
+                Document document = searcher.doc(hit.doc);
+                log.debug("Found: " + document);
+                if (idValue.equals(document.get(CommitFields.ID.name()))) {
+                    return true;
                 }
-                return false;
-            }).findFirst();
-            return firstDoc.isPresent();
-        }
+            } catch (IOException e) {
+                log.warn("Failed to search for hit: " + hit.doc + " with message: " + e.getMessage());
+            }
+            return false;
+        }).findFirst();
+        return firstDoc.isPresent();
     }
 
 }

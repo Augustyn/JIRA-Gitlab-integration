@@ -75,24 +75,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${version.jackson}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${version.jackson}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${version.jackson}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
@@ -155,6 +137,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${version.lombok}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.9.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -396,7 +390,6 @@
                             org.eclipse.jdt.internal.corext.refactoring.structure,
                             org.springframework.data.annotation,
                             org.apache.tools.*,
-                            com.fasterxml.jackson.core.JsonProcessingException,
                             lombok.*,
                             pl.hycom.jira.plugins.gitlab.integration.*
                         </Export-Package>
@@ -429,8 +422,6 @@
                             org.osgi.util.tracker;version="${org.osgi.util.version}",
                             org.springframework.aop.support,
                             org.springframework.data.annotation,
-                            com.fasterxml.jackson.core.JsonProcessingException
-                            !com.fasterxml.jackson.core,
                             javax.xml.transform;version="0.0.0",
                             javax.xml.parsers;version="0.0.0",
                             javax.xml.datatype;version="0.0.0",
@@ -440,7 +431,6 @@
                             org.xml.sax;version="0.0.0",
                             *
                         </Import-Package>
-                        <Embed-Dependency>com.fasterxml.jackson.core;scope=runtime</Embed-Dependency>
                         <!-- Ensure plugin is spring powered -->
                         <Spring-Context>*</Spring-Context>
                     </instructions>
@@ -522,7 +512,6 @@
         <version.junit>4.12</version.junit>
         <version.lombok>1.16.10</version.lombok>
         <version.mockito>1.9.5</version.mockito>
-        <version.jackson>2.8.4</version.jackson>
         <ao.version>1.1.5</ao.version>
         <rest.version>2.7.1</rest.version>
         <lucene.version>3.3.0</lucene.version>
