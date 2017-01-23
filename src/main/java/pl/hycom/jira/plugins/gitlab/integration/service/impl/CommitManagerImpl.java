@@ -41,15 +41,10 @@ public class CommitManagerImpl implements CommitManager {
     private ProcessorManager processorManager;
 
     @Override
-    public void updateCommitsForProject(Long projectId) throws SQLException, IOException {
-        ConfigEntity config = configManager.getProjectConfig(projectId);
-        List<Commit> commitList = commitService.getNewCommits( (long) projectId);
-
-        for (Commit c : commitList){
-            String issue = this.findIssue(c,projectId);
-            c.setIssueKey(issue);
-        }
-
+    public void updateCommitsForProject(ConfigEntity config) throws SQLException, IOException {
+        List<Commit> commitList = commitService.getNewCommits(config);
+        Pattern pattern = this.getPattern(config.getJiraProjectID());
+        commitList.forEach( c-> c.setIssueKey(this.findIssueKey(c, pattern)));
         processorManager.startProcessors(commitList);
     }
 
@@ -57,22 +52,20 @@ public class CommitManagerImpl implements CommitManager {
     public void updateCommitsForAll() throws SQLException, IOException {
         List<ConfigEntity> configList = configManager.getAllProjectConfigs();
         for (ConfigEntity config : configList){
-            updateCommitsForProject(config.getProjectID());
+            updateCommitsForProject(config);
         }
     }
 
     @Override
-    public String findIssue(Commit commit, Long projectID)
-    {
+    public String findIssueKey(Commit commit, Pattern pattern) {
+        String commitMessage = commit.getMessage();
+        Matcher matcher = pattern.matcher(commitMessage);
+        return matcher.find() ? matcher.group(1) : "";
+    }
+
+    private Pattern getPattern(Long projectID) {
         Project currentProject = ComponentAccessor.getProjectManager().getProjectObj(projectID);
         String currentProjectKey = currentProject.getKey();
-        String commitMessage = commit.getMessage();
-
-        Pattern pattern = Pattern.compile("\\[" + currentProjectKey + "-(\\d+)");
-        Matcher matcher = pattern.matcher(commitMessage);
-
-        String issueIdString = matcher.group(1);
-
-        return issueIdString;
+        return Pattern.compile("\\[" + currentProjectKey + "-(\\d+)");
     }
 }

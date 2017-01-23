@@ -18,7 +18,8 @@
 
 package pl.hycom.jira.plugins.gitlab.integration.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
@@ -27,25 +28,25 @@ import pl.hycom.jira.plugins.gitlab.integration.dao.IGitlabCommunicationDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 import pl.hycom.jira.plugins.gitlab.integration.service.GitlabService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * @author higashi on 2016-11-13, HYCOM S.A.
  */
+@Log4j
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class GitlabServiceImpl implements GitlabService {
-    @Autowired private final ConfigManagerDao configManager;
-    @Autowired private final IGitlabCommunicationDao gitlabCommunicationManagerDao;
+    @Autowired private ConfigManagerDao configManager;
+    @Autowired private IGitlabCommunicationDao gitlabCommunicationManagerDao;
 
     @Override
-    public Optional<GitlabProject> getGitlabProject(ConfigEntity config) {
-        final List<GitlabProject> gitlabProjects = gitlabCommunicationManagerDao.getGitlabProjects(config);
+    public Optional<GitlabProject> getGitlabProject(ConfigEntity config) throws IOException {
+        List<GitlabProject> gitlabProjects = gitlabCommunicationManagerDao.getGitlabProjects(config);
         final Optional<GitlabProject> project = gitlabProjects.stream().filter(p -> p.getGitlabProjectName().equalsIgnoreCase(config.getGitlabProjectName())).findAny();
-        if (project.isPresent()) {
-            configManager.updateGitlabProjectId(config.getProjectID(), project.get().getGitlabProjectId());
-        }
+        project.ifPresent(gitlabProject -> configManager.updateGitlabProjectId(config.getJiraProjectID(), gitlabProject.getGitlabProjectId()));
         return project;
     }
 }

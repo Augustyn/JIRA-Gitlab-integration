@@ -15,8 +15,9 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.gitlab.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonProperty;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Project;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Repository;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Generated("org.jsonschema2pojo")
+@JsonAutoDetect
 @Data
 public class Push {
 

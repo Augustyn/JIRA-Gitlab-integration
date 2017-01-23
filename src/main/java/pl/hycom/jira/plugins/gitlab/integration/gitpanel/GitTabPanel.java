@@ -47,8 +47,8 @@ public class GitTabPanel extends AbstractIssueTabPanel2 {
             final Project project = showPanelRequest.issue().getProjectObject();
             final ApplicationUser user = showPanelRequest.remoteUser();
             final boolean hasPermission = permissionManager.hasPermission(ProjectPermissions.WORK_ON_ISSUES, project, user);
-            log.info("User: " + (user != null ? user.getUsername() : null) + " requested to see git panel for project: "
-                    + (project != null ? project.getKey() : null) + ", issue: " + showPanelRequest.issue().getKey()
+            log.debug("User: " + (user != null ? user.getUsername() : null) + " requested to see git panel for project: "
+                    + project.getKey() + ", issue: " + showPanelRequest.issue().getKey()
                     + ". Displaying panel? " + hasPermission);
             return ShowPanelReply.create(hasPermission);
         } catch (Exception e) {
@@ -62,9 +62,7 @@ public class GitTabPanel extends AbstractIssueTabPanel2 {
     public GetActionsReply getActions(GetActionsRequest getActionsRequest) {
         try {
             List<Commit> commitsListForIssue = commitService.getAllIssueCommits(getActionsRequest.issue());
-
-            Commit commit = commitsListForIssue != null && !commitsListForIssue.isEmpty() ? commitsListForIssue.get(0) : null;
-            log.info("Returning actions for commit: " + commit);
+            log.info("Returning actions for commits: " + commitsListForIssue);
             final List<IssueAction> actions = createActionList(commitsListForIssue);
             if (actions.isEmpty()) {
                 actions.add(new GenericMessageAction("There are no commits for this issue, yet. Maybe you should add some?"));

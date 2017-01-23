@@ -1,5 +1,5 @@
 /*
- *  <p>Copyright (c) 2016. Authors</p>
+ *  <p>Copyright (c) 2017. Authors</p>
  *
  *  <p>Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -13,17 +13,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.</p>
  */
-package pl.hycom.jira.plugins.gitlab.integration.service;
 
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
-import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
+package pl.hycom.jira.plugins.gitlab.integration.model;
 
-import java.io.IOException;
-import java.util.Optional;
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
- * @author higashi on 2016-11-13, HYCOM S.A.
+ * @author Augustyn Wilk on 2017-01-17, HYCOM S.A.
  */
-public interface GitlabService {
-    Optional<GitlabProject> getGitlabProject(ConfigEntity config) throws IOException;
+@Data
+public class Stats implements Serializable {
+    /**
+     * lines added in commit
+     */
+    private int additions;
+    /**
+     * lines deleted in commit
+     */
+    private int deletions;
+    /**
+     * total changes made.
+     */
+    private int total;
 }

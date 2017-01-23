@@ -14,8 +14,6 @@
 ## limitations under the License.</p>
 ##
 
-#requireResource("pl.hycom.jira.plugins.jira-gitlab-plugin:gittab-resources")
-
 <div class="aui-message aui-message-success">
     <p class="title">
         <strong>Project configuration saved successfully!</strong>

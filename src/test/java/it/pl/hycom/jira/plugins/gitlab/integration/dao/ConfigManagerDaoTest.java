@@ -55,7 +55,7 @@ public class ConfigManagerDaoTest {
         ConfigEntity retrieved = configManager.getProjectConfig(testProjectId);
 
 
-        assertEquals( testProjectId,retrieved.getProjectID());
+        assertEquals( testProjectId,retrieved.getJiraProjectID());
         assertEquals( "testlink", retrieved.getGitlabURL());
         assertEquals( "testsecret",retrieved.getGitlabSecretToken());
         assertEquals( "testid",retrieved.getClientId());

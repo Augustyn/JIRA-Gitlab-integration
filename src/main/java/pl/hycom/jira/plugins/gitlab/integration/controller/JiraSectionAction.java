@@ -17,7 +17,9 @@ package pl.hycom.jira.plugins.gitlab.integration.controller;
 
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.FormField;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
+import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
 import pl.hycom.jira.plugins.gitlab.integration.service.GitlabService;
 import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
@@ -32,9 +35,8 @@ import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 import java.util.*;
 
 @Log4j
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class JiraSectionAction extends JiraWebActionSupport {
-
 
     private static final String ERROR_INVALID_CLIENTID = "jirasection.action.error.invalid.cliendid";
     private static final String ERROR_INVALID_CLIENTSECRET = "jirasection.action.error.invalid.cliendsecret";
@@ -42,21 +44,23 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private static final String ERROR_INVALID_GITLABLINK = "jirasection.action.error.invalid.gitlablink";
     private static final String ERROR_INVALID_GITLABPROJECTNAME = "jirasection.action.error.invalid.gitlabprojectname";
     /* injected through constructor: */
-    @Autowired private final Validator validator;
-    @Autowired private final ConfigManagerDao confManager;
-    @Autowired private final GitlabService gitlabService;
+    @Autowired private Validator validator;
+    @Autowired private ConfigManagerDao confManager;
+    @Autowired private GitlabService gitlabService;
 
-    private String clientId;
-    private String clientSecretToken;
-    private String gitlabHost;
-    private String gitlabProjectName;
-    private String gitProjectId;
-    private Project project;
+    @Getter @Setter private String clientId;
+    @Getter @Setter private String clientSecretToken;
+    @Getter @Setter private String gitlabHost;
+    @Getter @Setter private String gitlabProjectName;
+    @Getter @Setter private String gitProjectId;
+    @Getter @Setter private Project project;
     private Long projectId;
     private ConfigEntity projectConfig;
 
+    @Autowired private CommitManager commitManager;
+
     private ErrorCollection doInternalValidate() {
-        Map<FormField, String> paramMap = new HashMap<>();
+        Map<FormField, String> paramMap = new EnumMap<>(FormField.class);
 
         paramMap.put(FormField.CLIENTID, clientId);
         paramMap.put(FormField.CLIENTSECRET, clientSecretToken);
@@ -115,19 +119,24 @@ public class JiraSectionAction extends JiraWebActionSupport {
         ConfigEntity config = null;
         try {
             config = confManager.updateProjectConfig(projectId, gitlabHost, clientSecretToken, clientId, gitlabProjectName);
+            if (config == null) {
+                addError("config", "Couldn't save project configuration. Please contact administrator.", Reason.SERVER_ERROR);
+                return ERROR;
+            }
         } catch (Exception e) {
             log.error("Couldn't save project configuration, with message: '" + e.getMessage() + "'. Enable debug for more info.");
             log.debug("Stack:", e);
-        }
-        if (config == null) {
-            addError("config", "Couldn't save project configuration. Please contact administrator.", Reason.SERVER_ERROR);
-            return ERROR;
         }
         try {
             final Optional<GitlabProject> gitlabProject = gitlabService.getGitlabProject(config);
             if (!gitlabProject.isPresent()) {
                 addError("gitlab-project", "Couldn't find Gitlab project id based on provided data. Please verify Gitlab project name and credentials", Reason.VALIDATION_FAILED);
                 return ERROR;
+            }
+            //FIXME: for development only. Remove me.
+            boolean reindex = true;
+            if (reindex) {
+                commitManager.updateCommitsForAll();
             }
         } catch (Exception e) {
             addError("gitlab-project", "Couldn't contact Gitlab. Please verify host name and credentials.");
@@ -191,42 +200,6 @@ public class JiraSectionAction extends JiraWebActionSupport {
         }*/
     }
 
-    public String getClientId() {
-        return clientId;
-    }
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-    public String getClientSecretToken() {
-        return clientSecretToken;
-    }
-    public void setClientSecretToken(String clientSecretToken) {
-        this.clientSecretToken = clientSecretToken;
-    }
-    public String getGitlabHost() {
-        return gitlabHost;
-    }
-    public void setGitlabHost(String gitlabHost) {
-        this.gitlabHost = gitlabHost;
-    }
-    public String getGitProjectId() {
-        return gitProjectId;
-    }
-    public void setGitProjectId(String gitProjectId) {
-        this.gitProjectId = gitProjectId;
-    }
-    public String getGitlabProjectName() {
-        return gitlabProjectName;
-    }
-    public void setGitlabProjectName(String gitlabProjectName) {
-        this.gitlabProjectName = gitlabProjectName;
-    }
-    public Project getProject() {
-        return project;
-    }
-    public void setProject(Project project) {
-        this.project = project;
-    }
 }
 
 

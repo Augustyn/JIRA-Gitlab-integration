@@ -16,6 +16,7 @@
 package pl.hycom.jira.plugins.gitlab.integration.service;
 
 import com.atlassian.jira.issue.Issue;
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
@@ -25,6 +26,9 @@ import java.util.List;
 public interface ICommitService {
 
     List<Commit> getNewCommits(Long projectId) throws SQLException, IOException;
-    Commit getOneCommit(Long projectId, String shaSum) throws SQLException;
+    Commit getOneCommit(Long projectId, String shaSum) throws SQLException, IOException;
+
+    List<Commit> getNewCommits(ConfigEntity config) throws SQLException, IOException;
+
     List<Commit> getAllIssueCommits(Issue jiraIssue) throws IOException;
 }

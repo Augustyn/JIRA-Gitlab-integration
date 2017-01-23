@@ -39,11 +39,11 @@ public class IssueStatusChangeProcessorTest {
     @Mock private IssueInputParameters params;
     private MockApplicationUser mockUser;
     @Test
-    @Ignore
+    @Ignore //FIXME
     public void getPossibleStatuesTest() throws URISyntaxException, IOException {
         Mockito.when(userManager.getUserByKey("admin")).thenReturn(mockUser);
         /*Mockito.when(issueService.validateTransition(mockUser, 10000L, 31, params));*/
-        IssueStatusChangeProcessor statusChanger = new IssueStatusChangeProcessor(userManager, context, issueService);
+        IssueStatusChangeProcessor statusChanger = new IssueStatusChangeProcessor(/*userManager, context, issueService*/);
         List<String> result = statusChanger.getPossibleIssueStatuses();
         for(String statuses : result) {
             log.info(statuses);
@@ -51,9 +51,9 @@ public class IssueStatusChangeProcessorTest {
     }
 
     @Test
-    @Ignore
+    @Ignore //FIXME
     public void changeIssueStatusTest(){
-        IssueStatusChangeProcessor statusChanger = new IssueStatusChangeProcessor(userManager, context, issueService);
+        IssueStatusChangeProcessor statusChanger = new IssueStatusChangeProcessor(/*userManager, context, issueService*/);
         statusChanger.changeIssueStatus();
     }
 }

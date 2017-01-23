@@ -16,10 +16,13 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ICommitDao {
 
-    List<Commit> getNewCommits(ConfigEntity configEntity, int perPage, int pageNumber);
-    Commit getOneCommit(ConfigEntity configEntity, String shaSum);
+    List<Commit> getNewCommits(ConfigEntity configEntity, LocalDateTime date) throws IOException;
+
+    Commit getOneCommit(ConfigEntity configEntity, String shaSum) throws IOException;
 }

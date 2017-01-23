@@ -16,26 +16,25 @@
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
 import com.atlassian.jira.config.util.IndexPathManager;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Log4j
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class LucenePathSearcher {
 
+    @Autowired private IndexPathManager indexPathManager;
+
     private static final String COMMIT_INDEXER_DIRECTORY = "gitlab-integration";
-
-    @Autowired private final IndexPathManager indexPathManager;
-
     private Path luceneIndexPath;
 
     @PostConstruct
@@ -44,9 +43,7 @@ public class LucenePathSearcher {
             throw new NullPointerException("Cannot start plugin, index root path is NULL");
         }
         Path path = Paths.get(indexPathManager.getPluginIndexRootPath(), COMMIT_INDEXER_DIRECTORY);
-        if(path == null) {
-               throw new InvalidPathException(getIndexPathStr(), "Index path doesn't exists");
-        }
+        createDirRobust(path);
         luceneIndexPath = path;
         if (!luceneIndexPath.toFile().exists()) {
             final boolean created = luceneIndexPath.toFile().mkdirs();
@@ -58,7 +55,6 @@ public class LucenePathSearcher {
         }
     }
 
-
     private String getIndexPathStr() {
         return luceneIndexPath.toString();
     }
@@ -67,4 +63,30 @@ public class LucenePathSearcher {
         return luceneIndexPath;
     }
 
+    /**
+     * Create a directory (robustly) or throw appropriate Exception
+     * It's redundant, as {@link LucenePathSearcher} does the same: validates path. However unlike {@link LucenePathSearcher} it does it every time.
+     * Not only on initialization.
+     * @param path Lucene index directory path
+     * @throws IOException if cannot create directory, write to the directory, or param 'path' is not a directory
+     */
+    private static void createDirRobust(final Path path) throws IOException {
+        final File potentialPath = path.toFile();
+        if (!potentialPath.exists()) {
+            log.warn("Directory " + path + " does not exist - perhaps it was deleted?  Creating..");
+            final boolean created = potentialPath.mkdirs();
+            if (!created) {
+                log.warn("Directory " + path + " could not be created.  Aborting index creation");
+                throw new IOException("Could not create directory: " + path);
+            }
+        }
+        if (!potentialPath.isDirectory()) {
+            log.warn("File " + path + " is not a directory.  Cannot create index");
+            throw new IOException("File " + path + " is not a directory.  Cannot create index");
+        }
+        if (!potentialPath.canWrite()) {
+            log.warn("Dir " + path + " is not writable.  Cannot create index");
+            throw new IOException("Dir " + path + " is not writable.  Cannot create index");
+        }
+    }
 }

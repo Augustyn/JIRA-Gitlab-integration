@@ -15,25 +15,22 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.model;
 
-import com.fasterxml.jackson.annotation.*;
+import org.codehaus.jackson.annotate.JsonAnyGetter;
+import org.codehaus.jackson.annotate.JsonAnySetter;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 import lombok.Data;
-
 import javax.annotation.Generated;
 import java.util.HashMap;
 import java.util.Map;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
-@JsonPropertyOrder({
-        "gitlabProjectName",
-        "gitlabProjectId"
-})
 @Data
 public class GitlabProject {
 
-    @JsonProperty("gitlabProjectName")
+    @JsonProperty("name")
     private String gitlabProjectName;
-    @JsonProperty("gitlabProjectId")
+    @JsonProperty("id")
     private Long gitlabProjectId;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();

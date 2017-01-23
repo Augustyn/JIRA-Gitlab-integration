@@ -31,6 +31,9 @@ import java.util.regex.Pattern;
 @Component
 @Slf4j
 public class IssueWorklogChangeProcessor implements ProcessorInterface {
+
+    public static final Pattern TIME_PATTERN = Pattern.compile("([0-9]+y)?([0-9]+w)?([0-9]+d)?([0-9]+h)?([0-9]+m)?([0-9]+s)?");
+
     @Override
     public void execute(@NotNull Commit commitInfo) throws ProcessException {
         List<Time> timeFromMessage = getExtractedMsg(commitInfo);
@@ -48,8 +51,7 @@ public class IssueWorklogChangeProcessor implements ProcessorInterface {
     public List<Time> getExtractedMsg(@NotNull Commit commitInfo) {
         List<Time> timesList = new ArrayList<>();
         String messageWithoutSpaces = commitInfo.getMessage().replaceAll("\\s+", "");
-        Pattern timePattern = Pattern.compile("([0-9]+y)?([0-9]+w)?([0-9]+d)?([0-9]+h)?([0-9]+m)?([0-9]+s)?");
-        Matcher matcher = timePattern.matcher(messageWithoutSpaces);
+        Matcher matcher = TIME_PATTERN.matcher(messageWithoutSpaces);
         String extractedMessage = "";
         if (matcher.matches()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {

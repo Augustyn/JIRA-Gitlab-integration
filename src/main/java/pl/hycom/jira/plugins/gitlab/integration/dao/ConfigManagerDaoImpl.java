@@ -16,7 +16,8 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 import com.atlassian.activeobjects.external.ActiveObjects;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NoArgsConstructor;
 import net.java.ao.DBParam;
 import net.java.ao.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,10 @@ import java.util.*;
 
 @Repository
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor //required by spring
 public class ConfigManagerDaoImpl implements ConfigManagerDao {
     @Autowired
-    private final ActiveObjects entityManager;
+    private ActiveObjects entityManager;
 
     @Nullable
     public ConfigEntity getProjectConfig(Long projectID) throws SQLException {
@@ -44,7 +45,7 @@ public class ConfigManagerDaoImpl implements ConfigManagerDao {
         return Arrays.asList(configs);
     }
     @Nullable
-    public ConfigEntity updateProjectConfig(Long projectID,String gitlabLink,String gitlabSecret,String gitlabClientId,
+    public ConfigEntity updateProjectConfig(Long projectID, String gitlabLink, String gitlabSecret, String gitlabClientId,
                                             String gitlabProjectName) throws SQLException {
         ConfigEntity projectConfig;
         if(entityManager.count(ConfigEntity.class, Query.select().where("PROJECT_ID LIKE ?", projectID)) > 0 ) {

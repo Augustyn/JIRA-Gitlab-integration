@@ -15,8 +15,10 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.annotation.Generated;
 import java.util.ArrayList;

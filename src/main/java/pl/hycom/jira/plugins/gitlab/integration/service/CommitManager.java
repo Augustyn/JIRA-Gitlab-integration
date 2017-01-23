@@ -15,13 +15,15 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.service;
 
+import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 public interface CommitManager {
-    void updateCommitsForProject(Long projectId) throws SQLException, IOException;
+    void updateCommitsForProject(ConfigEntity config) throws SQLException, IOException;
     void updateCommitsForAll() throws SQLException, IOException;
-    public String findIssue(Commit commit, Long projectID);
+    public String findIssueKey(Commit commit, Pattern projectID);
 }

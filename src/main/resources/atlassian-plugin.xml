@@ -111,7 +111,7 @@
             i18n-name-key="jira.git.integration.configuration.admin.web.item.module.name" weight="10">
     <description key="jira.git.integration.configuration.admin.web.item.module.link.description">Configuration module for JIRA plugin - Gitlab configuration</description>
     <label key="jira.git.integration.configuration.admin.web.item.module.link.label"/>
-    <link linkId="gitlab-configuration-module-link">/secure/JiraSectionAction!default.jspa?projectId=${project.getId()}</link>
+    <link linkId="gitlab-configuration-module-link">/secure/JiraSectionAction!default.jspa?projectId=${project.getId()}&amp;project=${project.getKey()}</link>
     <param name="webfragments.keywords">webfragments.keywords.admin.project.view_projects</param>
     <conditions type="OR">
       <condition class="pl.hycom.jira.plugins.gitlab.integration.webfragment.condition.UserIsProjectAdminCondition"/>
