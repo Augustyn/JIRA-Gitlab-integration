@@ -30,6 +30,9 @@ import java.time.ZoneId;
  */
 @Log4j
 public class CommitMapper {
+
+    private CommitMapper() {}
+
     public static Document getDocument(Commit commit) throws IOException {
         Document document = new Document();
         document.add(new Field(CommitFields.ID.name(), commit.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));

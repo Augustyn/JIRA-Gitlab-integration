@@ -17,6 +17,7 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
 
 import lombok.Data;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -61,8 +62,6 @@ public class Commit implements Serializable {
     @JsonProperty("committer_email")
     private String committerEmail;
 
-    // example: 2015-05-21T20:57:28.000+02:00;
-    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     /**
@@ -76,17 +75,9 @@ public class Commit implements Serializable {
     @JsonProperty("parent_ids")
     private List<String> parentIds = new ArrayList<String>();
 
-/*    @JsonProperty("committed_date")
-    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
-    private Date committedDate;
-
-    @JsonProperty("authored_date")
-    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern= DATE_FORMAT)
-    private Date authoredDate;*/
-
     private Stats stats;
 
-    private Object status;
+    private transient Object status;
     /**
      * JIRA issue Key.
      */

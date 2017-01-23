@@ -18,11 +18,13 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author Augustyn Wilk on 2017-01-17, HYCOM S.A.
  */
 @Data
-public class Stats {
+public class Stats implements Serializable {
     /**
      * lines added in commit
      */
