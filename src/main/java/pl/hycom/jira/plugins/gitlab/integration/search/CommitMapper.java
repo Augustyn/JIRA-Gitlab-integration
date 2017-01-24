@@ -40,7 +40,7 @@ public class CommitMapper {
         document.add(new Field(CommitFields.TITLE.name(), commit.getTitle(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field(CommitFields.AUTHOR_NAME.name(), commit.getAuthorName(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field(CommitFields.AUTHOR_EMAIL.name(), commit.getAuthorEmail(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(CommitFields.CREATED.name(), CommitFields.formatter.format(commit.getCreatedAt()), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        //document.add(new Field(CommitFields.CREATED.name(), CommitFields.formatter.format(commit.getCreatedAt()), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field(CommitFields.COMMIT_MESSAGE.name(), commit.getMessage(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         if (org.apache.commons.lang3.StringUtils.isNotEmpty(commit.getIssueKey())) {
             document.add(new Field(CommitFields.JIRA_ISSUE_KEY.name(), commit.getIssueKey(), Field.Store.YES, Field.Index.NOT_ANALYZED));

@@ -37,6 +37,7 @@ public class LuceneCommitIndex implements CommitIndex {
     static final Version VERSION_LUCENE = Version.LUCENE_33;
 
     @Autowired private LuceneIndexAccessor indexAccessor;
+    @Autowired private IndexSearcherFactory indexSearcherFactory;
 
     @Override
     public void indexFile(Commit commit) throws IOException {
@@ -45,12 +46,12 @@ public class LuceneCommitIndex implements CommitIndex {
         indexWriter.addDocument(document);
     }
 
-
     public List<Document> searchCommits(String fieldName, String fieldValue) throws IOException {
         List<Document> foundedCommitsList = new ArrayList<>();
         BooleanQuery query = new BooleanQuery();
         query.add(new TermQuery(new Term(fieldName, fieldValue)), BooleanClause.Occur.MUST);
-        IndexSearcher searcher = new IndexSearcher(indexAccessor.getIndexReader());
+        IndexReader indexReader = indexAccessor.getIndexReader();
+        IndexSearcher searcher =  indexSearcherFactory.create(indexReader);
         TopDocs docs = searcher.search(query, HITS_PER_PAGE);
         ScoreDoc[] hits = docs.scoreDocs;
         for (ScoreDoc hit : hits) {
@@ -67,7 +68,7 @@ public class LuceneCommitIndex implements CommitIndex {
         try {
             Query query = new WildcardQuery(new Term(CommitFields.COMMIT_MESSAGE.name(), jiraIssueKey));
             IndexReader reader = indexAccessor.getIndexReader();
-            IndexSearcher searcher = new IndexSearcher(reader);
+            IndexSearcher searcher = indexSearcherFactory.create(reader);
             TopDocs docs = searcher.search(query, HITS_PER_PAGE);
             return Arrays.stream(docs.scoreDocs).map(hit -> convertToCommit(searcher, hit)).collect(Collectors.toList());
         } catch (IOException e) {
@@ -75,16 +76,6 @@ public class LuceneCommitIndex implements CommitIndex {
             log.debug("Stack: ", e);
         }
         return Collections.emptyList();
-    }
-
-    private Commit convertToCommit(IndexSearcher searcher, ScoreDoc hit) {
-        try {
-            Document document = searcher.doc(hit.doc);
-            return CommitMapper.getCommit(document);
-        } catch(IOException e) {
-            log.warn("Failed to get commit from lucene doc Id: " + hit.doc +" with msg: " + e.getMessage() , e);
-            return null;
-        }
     }
 
     public boolean checkIfCommitIsIndexed(String idValue) throws IOException {
@@ -106,6 +97,16 @@ public class LuceneCommitIndex implements CommitIndex {
             return false;
         }).findFirst();
         return firstDoc.isPresent();
+    }
+
+    private Commit convertToCommit(IndexSearcher searcher, ScoreDoc hit) {
+        try {
+            Document document = searcher.doc(hit.doc);
+            return CommitMapper.getCommit(document);
+        } catch(IOException e) {
+            log.warn("Failed to get commit from lucene doc Id: " + hit.doc +" with msg: " + e.getMessage() , e);
+            return null;
+        }
     }
 
 }

@@ -17,122 +17,119 @@ package ut.pl.hycom.jira.plugins.gitlab.integration.search;
 
 import lombok.extern.log4j.Log4j;
 import org.apache.lucene.document.Document;
-import org.junit.Assert;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.web.client.RestTemplate;
-import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
-import pl.hycom.jira.plugins.gitlab.integration.interceptor.RestLoggingInterceptor;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.search.*;
-import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static junit.framework.TestCase.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.*;
 
 @Log4j
 @RunWith(MockitoJUnitRunner.class)
 public class CommitIndexerTest {
-    @InjectMocks private CommitIndex index = new LuceneCommitIndex();
 
-    @Mock private LucenePathSearcher lucenePathSearcher = new LucenePathSearcher();
-    @Mock private ConfigEntity config;
-    @Spy private CommitRepository commitRepository = new CommitRepository();
-    @Spy private TemplateFactory restTemplateFactory = new TemplateFactory();
-    @Spy private LuceneIndexAccessor accessor = new DefaultLuceneIndexAccessor();
+    @InjectMocks
+    private CommitIndex index = new LuceneCommitIndex();
 
-    private Commit commit = new Commit();
-    private Path path = Paths.get("./target/lucenetest/");
+    @Mock
+    private LuceneIndexAccessor indexAccessor;
+    @Mock
+    private IndexWriter indexWriter;
+    @Mock
+    private IndexReader indexReader;
+    @Mock
+    private IndexSearcherFactory indexSearcherFactory;
+
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
         MockitoAnnotations.initMocks(index);
-        commit = new Commit().withAuthorEmail("test@example.com").withAuthorName("Test John").withTitle("title")
-                .withGitProject(6667L).withId("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15").withIssueKey("TP-1")
-                .withMessage("[TP-1] test issue 1. Test commit").withCreatedAt(LocalDateTime.now()).withShortId("f1d2d2");
-        commitRepository.setRestTemplate(restTemplateFactory);
+        when(indexAccessor.getIndexWriter()).thenReturn(indexWriter);
+        when(indexAccessor.getIndexReader()).thenReturn(indexReader);
     }
 
-    /**
-     * "test suite", because one cannot set order of tests in JUnit.
-     */
     @Test
-    public void indexingTestSuite() throws IOException {
-        //before
-        if (!path.toFile().exists()) {
-            path.toFile().mkdirs();
-        }
-        Mockito.when(config.getGitlabURL()).thenReturn("https://gitlab.com/");
-        Mockito.when(config.getGitlabSecretToken()).thenReturn("KCi3MfkU7qNGJCe3pQUW");
-        Mockito.when(config.getGitlabProjectId()).thenReturn(1063546L);
-        Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(path);
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setInterceptors(Collections.singletonList(new RestLoggingInterceptor()));
-        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
-
-        //when // TODO: this test 'suite' has too much responsibility: getting new commits, indexing them, reading index. Break to smaller unit tests
-        this.indexOneCommitTest();
-        this.indexNewCommitTest();
-        this.checkIfCommitIsIndexedTest();
-        this.searchCommitsTest();
-    }
-
-    public void indexNewCommitTest() throws IOException {
-
+    public void shouldIndexOneCommit() throws IOException {
         //when
-        List<Commit> commitList = commitRepository.getNewCommits(config, null);
-        int i = 1;
+        Commit commit = new Commit()
+                .withId("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15")
+                .withAuthorEmail("test@example.com")
+                .withAuthorName("Test John")
+                .withTitle("title")
+                .withGitProject(6667L)
+                .withIssueKey("TP-1")
+                .withMessage("[TP-1] test issue 1. Test commit")
+                .withShortId("f1d2d2")
+                .withCreatedAt(LocalDateTime.now());
+
+        index.indexFile(commit);
         //then
-        for(Commit newCommit : commitList) {
-            log.info(newCommit.getId() + ", " + newCommit.getAuthorName());
-            newCommit.setMessage("PIP-" + i + ", " + newCommit.getMessage());
-            i++;
-            index.indexFile(newCommit);
-        }
+        ArgumentCaptor<Document> documentCapt = ArgumentCaptor.forClass(Document.class);
+        verify(indexWriter).addDocument(documentCapt.capture());
 
+        Document documentUsed = documentCapt.getValue();
+
+        assertEquals("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15", documentUsed.getFieldable(CommitFields.ID.name().toString()).stringValue());
+        assertEquals("test@example.com", documentUsed.getFieldable(CommitFields.AUTHOR_EMAIL.name().toString()).stringValue());
+        assertEquals("Test John", documentUsed.getFieldable(CommitFields.AUTHOR_NAME.name().toString()).stringValue());
+        assertEquals("title", documentUsed.getFieldable(CommitFields.TITLE.name().toString()).stringValue());
+        assertEquals("6667", documentUsed.getFieldable(CommitFields.GIT_PROJECT_ID.name().toString()).stringValue());
+        assertEquals("TP-1", documentUsed.getFieldable(CommitFields.JIRA_ISSUE_KEY.name().toString()).stringValue());
+        assertEquals("[TP-1] test issue 1. Test commit", documentUsed.getFieldable(CommitFields.COMMIT_MESSAGE.name().toString()).stringValue());
+        assertEquals("f1d2d2", documentUsed.getFieldable(CommitFields.SHORT_ID.name().toString()).stringValue());
     }
 
-    public void indexOneCommitTest() throws IOException{
-        Commit oneCommit = commitRepository.getOneCommit(config, "79be5e2c5e6742d7513d11e0956138f4bf02ab3b");
-        assertThat("Commit cannot be null(!)", oneCommit, notNullValue());
-        log.info("Will try to index commit: " + oneCommit);
-        Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(path);
-        index.indexFile(oneCommit);
+    @Test
+    public void shouldSearchForCommits() throws IOException {
+
+        IndexSearcher indexSearcher = mock(IndexSearcher.class);
+        when(indexSearcherFactory.create(any())).thenReturn(indexSearcher);
+
+        TopDocs topDocs = mock(TopDocs.class);
+        ArgumentCaptor<Query> queryCap = ArgumentCaptor.forClass(Query.class);
+        when(indexSearcher.search(queryCap.capture(), anyInt())).thenReturn(topDocs);
+
+        topDocs.scoreDocs = new ScoreDoc[2];
+        Arrays.asList(createScoreDoc(0), createScoreDoc(3)).toArray(topDocs.scoreDocs);
+
+        when(indexSearcher.doc(0)).thenReturn(createDocument(4));
+        when(indexSearcher.doc(3)).thenReturn(createDocument(5));
+        //when
+        List<Document> docs = index.searchCommits("fieldname input", "fieldValue input");
+        //then
+        verify(indexAccessor).getIndexReader();
+        verify(indexSearcherFactory).create(indexReader);
+        assertEquals("+fieldname input:fieldValue input", queryCap.getValue().toString());
+        assertEquals(docs.size(), 2);
     }
 
-    public void searchCommitsTest() throws IOException {
-        Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(Paths.get("./target/lucenetest/"));
-
-        String fieldName = "author_name";
-        String fieldValue = "kamilrogowski";
-        List<Document> foundedCommitsList =  index.searchCommits(fieldName, fieldValue);
-
-        for(Document document : foundedCommitsList) {
-            Assert.assertTrue(document.get("author_name").equals("kamilrogowski"));
-        }
-
+    private Document createDocument(float boost) {
+        Document doc = new Document();
+        doc.setBoost(boost);
+        return doc;
     }
 
-
-    public void checkIfCommitIsIndexedTest() throws IOException {
-        Mockito.when(lucenePathSearcher.getIndexPath()).thenReturn(Paths.get("./target/lucenetest/"));
-        String validIdValue = "da3d482b7a675926502c20b0598b470f05ae8c57";
-        String invalidIdValue = "xxx";
-
-        Assert.assertTrue(index.checkIfCommitIsIndexed(validIdValue));
-        Assert.assertFalse(index.checkIfCommitIsIndexed(invalidIdValue));
+    private ScoreDoc createScoreDoc(int docId) {
+        return new ScoreDoc(docId,0);
     }
+
 }
