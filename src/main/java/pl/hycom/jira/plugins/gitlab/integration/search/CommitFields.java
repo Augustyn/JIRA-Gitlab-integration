@@ -28,5 +28,9 @@ public enum CommitFields {
     COMMIT_MESSAGE,
     GIT_PROJECT_ID,
     JIRA_ISSUE_KEY;
-    public static final DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm.sssZ");
+    public static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm.sssZ";
+    /**
+     * Simple Date Format is not thread safe. You've been warned.
+     */
+    public static final DateFormat formatter = new SimpleDateFormat(DATE_PATTERN);
 }

@@ -18,6 +18,7 @@ package pl.hycom.jira.plugins.gitlab.integration.service.processors;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.UserUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
@@ -25,6 +26,7 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,6 +58,9 @@ public class IssueWorklogChangeProcessor implements ProcessorInterface {
         if (matcher.matches()) {
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 String group = matcher.group(i);
+                if (StringUtils.isBlank(group)) {
+                    continue;
+                }
                 String onlyChars = group.replaceAll("\\d+", "");
                 group = matcher.group(i);
                 String onlyDigits = group.replaceAll("(?i)[a-z]", "");
@@ -70,36 +75,36 @@ public class IssueWorklogChangeProcessor implements ProcessorInterface {
     }
 
     public int getTimeConvertedToSeconds(List<Time> timeFromMessageList) {
-        int summedTime = 0;
+        long summedTime = 0;
         for (Time time : timeFromMessageList) {
             switch (time) {
                 case YEAR: {
-                    summedTime += time.getFieldValue() * 31556926;
+                    summedTime += TimeUnit.DAYS.toSeconds(time.getFieldValue() * 365L);
                     break;
                 }
                 case WEEK: {
-                    summedTime += time.getFieldValue() * 604800;
+                    summedTime += TimeUnit.DAYS.toSeconds(time.getFieldValue() * 7L);
                     break;
                 }
                 case DAY: {
-                    summedTime += time.getFieldValue() * 86400;
+                    summedTime += TimeUnit.DAYS.toSeconds(time.getFieldValue());
                     break;
                 }
                 case HOUR: {
-                    summedTime += time.getFieldValue() * 3600;
+                    summedTime += TimeUnit.HOURS.toSeconds(time.getFieldValue());
                     break;
                 }
                 case MINUTE: {
-                    summedTime += time.getFieldValue() * 60;
+                    summedTime += TimeUnit.MINUTES.toSeconds(time.getFieldValue());
                     break;
                 }
                 case SECOND: {
-                    summedTime += time.getFieldValue();
+                    summedTime += TimeUnit.SECONDS.toSeconds(time.getFieldValue());
                     break;
                 }
             }
         }
-        return summedTime;
+        return Math.toIntExact(summedTime);
     }
 
     public enum Time {

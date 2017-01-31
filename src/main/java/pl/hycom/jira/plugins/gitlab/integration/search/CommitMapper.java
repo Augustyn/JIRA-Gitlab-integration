@@ -23,6 +23,8 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Mapper. Converts {@link Commit} to Lucene {@link Document}
@@ -30,6 +32,7 @@ import java.time.ZoneId;
  */
 @Log4j
 public class CommitMapper {
+    //private static DateTimeFormatter formatter = ;
 
     private CommitMapper() {}
 
@@ -37,11 +40,11 @@ public class CommitMapper {
         Document document = new Document();
         document.add(new Field(CommitFields.ID.name(), commit.getId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field(CommitFields.SHORT_ID.name(), commit.getShortId(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(CommitFields.TITLE.name(), commit.getTitle(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field(CommitFields.TITLE.name(), commit.getTitle(), Field.Store.YES, Field.Index.ANALYZED));
         document.add(new Field(CommitFields.AUTHOR_NAME.name(), commit.getAuthorName(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         document.add(new Field(CommitFields.AUTHOR_EMAIL.name(), commit.getAuthorEmail(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(CommitFields.CREATED.name(), CommitFields.formatter.format(commit.getCreatedAt()), Field.Store.YES, Field.Index.NOT_ANALYZED));
-        document.add(new Field(CommitFields.COMMIT_MESSAGE.name(), commit.getMessage(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field(CommitFields.CREATED.name(), DateTimeFormatter.ISO_DATE_TIME.format(commit.getCreatedAt()), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        document.add(new Field(CommitFields.COMMIT_MESSAGE.name(), commit.getMessage(), Field.Store.YES, Field.Index.ANALYZED));
         if (org.apache.commons.lang3.StringUtils.isNotEmpty(commit.getIssueKey())) {
             document.add(new Field(CommitFields.JIRA_ISSUE_KEY.name(), commit.getIssueKey(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         }

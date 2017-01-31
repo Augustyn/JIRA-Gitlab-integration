@@ -66,7 +66,7 @@ public class CommitServiceTest {
     @Ignore
     public void testGetNewCommits() throws Exception {
         int pageSize = 3;
-        List<Commit> commits = commitService.getNewCommits(config, pageSize, 3);
+        List<Commit> commits = commitService.getNewCommits(config, null);
         assertThat("Commits size should be as ", commits.size(), is(equalTo(pageSize)));
     }
 

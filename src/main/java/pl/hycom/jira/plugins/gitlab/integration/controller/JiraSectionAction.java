@@ -19,6 +19,7 @@ import com.atlassian.jira.project.Project;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,10 +33,11 @@ import pl.hycom.jira.plugins.gitlab.integration.service.GitlabService;
 import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 
+import javax.inject.Inject;
 import java.util.*;
 
 @Log4j
-@NoArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class JiraSectionAction extends JiraWebActionSupport {
 
     private static final String ERROR_INVALID_CLIENTID = "jirasection.action.error.invalid.cliendid";
@@ -44,7 +46,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
     private static final String ERROR_INVALID_GITLABLINK = "jirasection.action.error.invalid.gitlablink";
     private static final String ERROR_INVALID_GITLABPROJECTNAME = "jirasection.action.error.invalid.gitlabprojectname";
     /* injected through constructor: */
-    @Autowired private Validator validator;
+    @Autowired private final Validator validator;
     @Autowired private ConfigManagerDao confManager;
     @Autowired private GitlabService gitlabService;
 
