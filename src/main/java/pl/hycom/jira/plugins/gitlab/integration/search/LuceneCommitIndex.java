@@ -15,6 +15,7 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
@@ -22,10 +23,10 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.*;
 import org.apache.lucene.util.Version;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
+import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.*;
@@ -33,10 +34,11 @@ import java.util.stream.Collectors;
 
 @Log4j
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Inject)) //Inject all final variables.
 public class LuceneCommitIndex implements CommitIndex {
     static final Version VERSION_LUCENE = Version.LUCENE_33;
 
-    @Autowired private LuceneIndexAccessor indexAccessor;
+    private final LuceneIndexAccessor indexAccessor;
 
     @Override
     public void indexFile(Commit commit) throws IOException {

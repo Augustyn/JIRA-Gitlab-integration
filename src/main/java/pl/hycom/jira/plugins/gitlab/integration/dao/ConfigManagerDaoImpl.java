@@ -16,24 +16,24 @@
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
 import com.atlassian.activeobjects.external.ActiveObjects;
-import lombok.NoArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.java.ao.DBParam;
 import net.java.ao.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 @Repository
 @Service
-@NoArgsConstructor //required by spring
+@RequiredArgsConstructor(onConstructor = @__(@Inject)) //Inject all final variables.
 public class ConfigManagerDaoImpl implements ConfigManagerDao {
-    @Autowired
-    private ActiveObjects entityManager;
+
+    private final ActiveObjects entityManager;
 
     @Nullable
     public ConfigEntity getProjectConfig(Long projectID) throws SQLException {

@@ -30,6 +30,7 @@ import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
 import pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex;
+import pl.hycom.jira.plugins.gitlab.integration.search.LuceneIndexAccessor;
 import pl.hycom.jira.plugins.gitlab.integration.search.LucenePathSearcher;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
@@ -43,13 +44,14 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @RunWith(MockitoJUnitRunner.class)
 public class CommitServiceTest {
 
-    @InjectMocks private CommitIndex commitIndexer = new LuceneCommitIndex();
-    @InjectMocks private CommitRepository commitService = new CommitRepository();
-
+    @Mock private LuceneIndexAccessor indexAccessor;
     @Mock private TemplateFactory restTemplateFactory;
     @Mock private LucenePathSearcher lucenePathSearcher;
     @Mock private ConfigEntity config;
     @Mock private RestTemplate template;
+
+    @InjectMocks private CommitIndex commitIndexer = new LuceneCommitIndex(indexAccessor);
+    @InjectMocks private CommitRepository commitService = new CommitRepository();
 
     private String urlMock = "https://gitlab.com/";
     private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
@@ -75,6 +77,6 @@ public class CommitServiceTest {
     public void testGetOneCommit() throws Exception {
         String id = "404dd04e1d6279f76db51f64c80edf6c2bd96bf2";
         Commit commit = commitService.getOneCommit(config, id);
-        assertThat("Commit id's should be the same: ", commit.getId(), is(equalTo(id)));
+        assertThat("CommitEvent id's should be the same: ", commit.getId(), is(equalTo(id)));
     }
 }

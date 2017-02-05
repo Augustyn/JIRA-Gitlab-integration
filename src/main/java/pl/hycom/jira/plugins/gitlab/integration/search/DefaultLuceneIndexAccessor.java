@@ -15,7 +15,7 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -24,9 +24,9 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.NativeFSLockFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -37,14 +37,15 @@ import static pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex.
  */
 @Service
 @Slf4j
-@NoArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Inject)) //Inject all final variables.
 public class DefaultLuceneIndexAccessor implements LuceneIndexAccessor, InitializingBean {
     private static final Analyzer analyzer = new StandardAnalyzer(VERSION_LUCENE);
+    private final LucenePathSearcher lucenePathSearcher;
+
     private final Object lock = new Object();
     private Directory directory;
     private IndexWriter indexWriter;
     private IndexReader indexReader;
-    @Autowired private LucenePathSearcher lucenePathSearcher;
     boolean refresh = false;
     public IndexReader getIndexReader() throws IOException {
         if (indexReader == null) {

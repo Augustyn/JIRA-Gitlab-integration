@@ -104,7 +104,7 @@
                 <div class="buttons-container gitintegration">
                     <div class="buttons">
                     ##    <input type="hidden" name="cancelUrl" value="${req.contextPath}/secure/Dashboard.jspa"/>
-                        <a class="aui-button" href="${req.contextPath}/jira/plugins/servlet/project-config/$!{project}">
+                        <a class="aui-button" href="${req.contextPath}/plugins/servlet/project-config/$!{project.key}">
                             <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Cancel</span>
                             Cancel
                         </a>

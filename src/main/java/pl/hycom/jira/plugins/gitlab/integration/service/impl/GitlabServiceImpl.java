@@ -18,9 +18,8 @@
 
 package pl.hycom.jira.plugins.gitlab.integration.service.impl;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
@@ -28,6 +27,7 @@ import pl.hycom.jira.plugins.gitlab.integration.dao.IGitlabCommunicationDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 import pl.hycom.jira.plugins.gitlab.integration.service.GitlabService;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -37,10 +37,10 @@ import java.util.Optional;
  */
 @Log4j
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Inject)) //Inject all final variables.
 public class GitlabServiceImpl implements GitlabService {
-    @Autowired private ConfigManagerDao configManager;
-    @Autowired private IGitlabCommunicationDao gitlabCommunicationManagerDao;
+    private final ConfigManagerDao configManager;
+    private final IGitlabCommunicationDao gitlabCommunicationManagerDao;
 
     @Override
     public Optional<GitlabProject> getGitlabProject(ConfigEntity config) throws IOException {

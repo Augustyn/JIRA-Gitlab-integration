@@ -32,7 +32,6 @@ import java.util.Locale;
  */
 @Log4j
 public class CommitMapper {
-    //private static DateTimeFormatter formatter = ;
 
     private CommitMapper() {}
 
@@ -65,7 +64,7 @@ public class CommitMapper {
                     .withIssueKey(document.get(CommitFields.JIRA_ISSUE_KEY.name()))
                     .withGitProject(Long.valueOf(document.get(CommitFields.GIT_PROJECT_ID.name())));
         } catch(java.text.ParseException e) {
-        log.warn("Failed to recreate Commit from lucene document: " + document , e);
+        log.warn("Failed to recreate CommitEvent from lucene document: " + document , e);
         return null;
         }
     }

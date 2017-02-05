@@ -26,7 +26,7 @@ import java.util.List;
 
 @Generated("org.jsonschema2pojo")
 @Data
-public class Commit {
+public class CommitEvent {
 
     @JsonProperty("id")
     public String id;

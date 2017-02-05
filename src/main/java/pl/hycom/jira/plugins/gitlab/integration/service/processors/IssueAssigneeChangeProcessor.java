@@ -23,15 +23,15 @@ import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.user.UserUtils;
 import com.atlassian.jira.user.util.UserManager;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
 
+import javax.inject.Inject;
 import java.util.regex.Pattern;
 
 /**
@@ -46,15 +46,16 @@ import java.util.regex.Pattern;
  */
 @Log4j
 @Component
-@NoArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Inject)) //Inject all final variables.
 public class IssueAssigneeChangeProcessor implements ProcessorInterface {
 //FIXME: this processor. It doesn't do logic it was designed for.
 //FIXME: Skip the processor when full reindexing/Run processor only when fetching new commits.
-    @Autowired private IssueManager issueManager;
-    @Autowired private UserManager userManager;
-    @Autowired private JiraAuthenticationContext authenticationContext;
-    @Autowired private ConfigManagerDao configManager;
-    @Autowired private CommitManager commitManager;
+    private final IssueManager issueManager;
+    private final UserManager userManager;
+    private final JiraAuthenticationContext authenticationContext;
+    private final ConfigManagerDao configManager;
+    private final CommitManager commitManager;
+
     private Pattern processorPattern = Pattern.compile("(assign|asing|a|ass)=>(az-AZ)");
 
     public void execute(Commit commit) {

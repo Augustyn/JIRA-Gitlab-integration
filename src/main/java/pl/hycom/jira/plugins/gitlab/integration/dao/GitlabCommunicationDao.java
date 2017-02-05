@@ -15,10 +15,9 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.dao;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -28,6 +27,7 @@ import pl.hycom.jira.plugins.gitlab.integration.model.GitlabProject;
 import pl.hycom.jira.plugins.gitlab.integration.util.HttpHeadersBuilder;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -36,13 +36,13 @@ import java.util.Optional;
 
 @Log4j
 @Repository
-@NoArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Inject)) //Inject all final variables.
 public class GitlabCommunicationDao implements IGitlabCommunicationDao {
 
     private static final String PROJECT = "/api/v3/projects/owned";
 
-    @Autowired private ConfigManagerDao configManagerDao;
-    @Autowired private TemplateFactory templateFactory;
+    private final ConfigManagerDao configManagerDao;
+    private final TemplateFactory templateFactory;
     private ObjectMapper mapper = new ObjectMapper();
 
     /**

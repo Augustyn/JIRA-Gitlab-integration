@@ -17,7 +17,10 @@ package pl.hycom.jira.plugins.gitlab.integration.model;
 
 import lombok.Data;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.data.annotation.Transient;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import pl.hycom.jira.plugins.gitlab.integration.mapper.LocalDateTimeJacksonDeserializer;
+import pl.hycom.jira.plugins.gitlab.integration.mapper.LocalDateTimeJacksonSerializer;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -63,6 +66,8 @@ public class Commit implements Serializable {
     private String committerEmail;
 
     @JsonProperty("created_at")
+    @JsonSerialize(using = LocalDateTimeJacksonSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeJacksonDeserializer.class)
     private LocalDateTime createdAt;
     /**
      * Git commit message.

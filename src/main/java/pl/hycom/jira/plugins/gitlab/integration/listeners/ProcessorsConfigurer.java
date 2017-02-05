@@ -16,25 +16,25 @@
 package pl.hycom.jira.plugins.gitlab.integration.listeners;
 
 import com.atlassian.sal.api.lifecycle.LifecycleAware;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.service.ProcessorManager;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@NoArgsConstructor
 @Component
 @Log4j
+@RequiredArgsConstructor(onConstructor = @__(@Inject)) //Inject all final variables.
 public class ProcessorsConfigurer implements LifecycleAware {
 
-    @Autowired private ProcessorManager processorManager;
-    @Autowired private ApplicationContext context;
+    private final ProcessorManager processorManager;
+    private final ApplicationContext context;
 
     @Override
     public void onStart() {

@@ -15,8 +15,6 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.webfragment.condition;
 
-import com.atlassian.jira.permission.ProjectPermission;
-import com.atlassian.jira.permission.ProjectPermissions;
 import com.atlassian.jira.plugin.webfragment.conditions.AbstractWebCondition;
 import com.atlassian.jira.plugin.webfragment.model.JiraHelper;
 import com.atlassian.jira.security.PermissionManager;

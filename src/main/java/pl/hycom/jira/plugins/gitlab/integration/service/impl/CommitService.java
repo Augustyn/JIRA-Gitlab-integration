@@ -16,8 +16,8 @@
 package pl.hycom.jira.plugins.gitlab.integration.service.impl;
 
 import com.atlassian.jira.issue.Issue;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
@@ -26,21 +26,21 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
 import pl.hycom.jira.plugins.gitlab.integration.service.ICommitService;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Log4j
+@RequiredArgsConstructor(onConstructor = @__(@Inject)) //Inject all final variables.
 public class CommitService implements ICommitService {
 
-    @Autowired private ConfigManagerDao dao;
-    @Autowired private ICommitDao commitRepository;
-    @Autowired private CommitIndex commitSearcher;
+    private final ConfigManagerDao dao;
+    private final ICommitDao commitRepository;
+    private final CommitIndex commitSearcher;
     //TODO: get me from gitlab config:
 
     @Override
@@ -61,9 +61,8 @@ public class CommitService implements ICommitService {
             }
             for(Commit commit : commitList) {
                 date = date == null ? commit.getCreatedAt() : date.isBefore(commit.getCreatedAt()) ? date : commit.getCreatedAt();
-                if(commitSearcher.checkIfCommitIsIndexed(commit.getId())) {
+                if(commitSearcher.checkIfCommitIsIndexed(commit.getId()) || resultList.contains(commit)) {
                     breakLoop = true;
-                    break;
                 } else {
                     resultList.add(commit);
                 }

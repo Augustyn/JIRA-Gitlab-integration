@@ -38,7 +38,7 @@
     <description key="jira.git.integration.git-tab.description">The Git Tab Plugin</description>
     <resource type="i18n" name="i18n" location="gittab"/>
     <label key="jira.git.integration.git-tab.label"/>
-    <order>10</order>
+    <order>90</order>
     <resource type="velocity" name="view" location="templates/tabpanels/git-tab.vm"/>
     <!-- enable fast tab switch -->
     <supports-ajax-load>true</supports-ajax-load>

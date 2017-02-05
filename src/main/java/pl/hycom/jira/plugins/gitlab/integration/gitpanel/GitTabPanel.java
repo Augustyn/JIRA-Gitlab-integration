@@ -21,12 +21,13 @@ import com.atlassian.jira.plugin.issuetabpanel.*;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.security.PermissionManager;
 import com.atlassian.jira.user.ApplicationUser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.service.impl.CommitService;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -34,12 +35,13 @@ import java.util.stream.Collectors;
 
 @Log4j
 @Controller
+@RequiredArgsConstructor(onConstructor = @__(@Inject)) //Inject all final variables.
 public class GitTabPanel extends AbstractIssueTabPanel2 {
 
     private IssueTabPanelModuleDescriptor descriptor;
 
-    @Autowired(required = false) private CommitService commitService;
-    @Autowired private PermissionManager permissionManager;
+    private final CommitService commitService;
+    private final PermissionManager permissionManager;
 
     @Override
     public ShowPanelReply showPanel(ShowPanelRequest showPanelRequest) {

@@ -18,7 +18,7 @@ package pl.hycom.jira.plugins.gitlab.integration.gitlab.events;
 import lombok.Data;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonProperty;
-import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.CommitEvent;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Project;
 import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Repository;
 
@@ -56,7 +56,7 @@ public class Push {
     @JsonProperty("repository")
     public Repository repository;
     @JsonProperty("commits")
-    public List<Commit> commits = new ArrayList<Commit>();
+    public List<CommitEvent> commits = new ArrayList<CommitEvent>();
     @JsonProperty("total_commits_count")
     public Integer totalCommitsCount;
 

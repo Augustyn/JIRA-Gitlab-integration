@@ -61,7 +61,7 @@ public class ProcessorManagerTest {
         assertThat("Tested List is not empty", processorsList, is(notNullValue()));
         assertThat("Reference should be injected.", manager, is(notNullValue()));
         List<Commit> list = new ArrayList<>();
-        //list.add(new Commit());
+        //list.add(new CommitEvent());
         manager.startProcessors(list);
     }
 

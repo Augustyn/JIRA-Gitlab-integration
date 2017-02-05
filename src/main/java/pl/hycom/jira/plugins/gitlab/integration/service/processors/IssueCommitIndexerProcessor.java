@@ -15,23 +15,22 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.service.processors;
 
-import lombok.NoArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.exceptions.ProcessException;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
 
+import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
-@NoArgsConstructor
 @Component
 @Log4j
+@RequiredArgsConstructor(onConstructor = @__(@Inject)) //Inject all final variables.
 public class IssueCommitIndexerProcessor implements ProcessorInterface {
-    @Autowired private CommitIndex commitIndexer;
+    private final CommitIndex commitIndexer;
 
     @Override
     public void execute(@NotNull Commit commit) throws ProcessException {
