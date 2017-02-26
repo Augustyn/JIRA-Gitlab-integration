@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.search.CommitFields;
@@ -59,29 +60,30 @@ public class CommitIndexerTest {
     @Mock
     private IndexSearcherFactory indexSearcherFactory;
 
-    private CommitIndex index = new LuceneCommitIndex(indexAccessor);
+    private CommitIndex index;
 
     @Before
     public void setUp() throws IOException {
-/*        MockitoAnnotations.initMocks(index);*/
+        MockitoAnnotations.initMocks(indexAccessor);
         when(indexAccessor.getIndexWriter()).thenReturn(indexWriter);
         when(indexAccessor.getIndexReader()).thenReturn(indexReader);
+        index = new LuceneCommitIndex(indexAccessor);
     }
 
-    @Test @Ignore
+    @Test
     public void shouldIndexOneCommit() throws IOException {
-        //when
+        //given
         Commit commit = new Commit()
                 .withId("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15")
                 .withAuthorEmail("test@example.com")
                 .withAuthorName("Test John")
-                .withTitle("title")
+                .withTitle("title: Zażółć gęślą jaźń")
                 .withGitProject(6667L)
                 .withIssueKey("TP-1")
                 .withMessage("[TP-1] test issue 1. Test commit")
                 .withShortId("f1d2d2")
                 .withCreatedAt(LocalDateTime.now());
-
+        //when
         index.indexFile(commit);
         //then
         ArgumentCaptor<Document> documentCapt = ArgumentCaptor.forClass(Document.class);
@@ -92,7 +94,7 @@ public class CommitIndexerTest {
         assertEquals("f1d2d2f924e986ac86fdf7b36c94bcdf32beec15", documentUsed.getFieldable(CommitFields.ID.name()).stringValue());
         assertEquals("test@example.com", documentUsed.getFieldable(CommitFields.AUTHOR_EMAIL.name()).stringValue());
         assertEquals("Test John", documentUsed.getFieldable(CommitFields.AUTHOR_NAME.name()).stringValue());
-        assertEquals("title", documentUsed.getFieldable(CommitFields.TITLE.name()).stringValue());
+        assertEquals("title: Zażółć gęślą jaźń", documentUsed.getFieldable(CommitFields.TITLE.name()).stringValue());
         assertEquals("6667", documentUsed.getFieldable(CommitFields.GIT_PROJECT_ID.name()).stringValue());
         assertEquals("TP-1", documentUsed.getFieldable(CommitFields.JIRA_ISSUE_KEY.name()).stringValue());
         assertEquals("[TP-1] test issue 1. Test commit", documentUsed.getFieldable(CommitFields.COMMIT_MESSAGE.name()).stringValue());

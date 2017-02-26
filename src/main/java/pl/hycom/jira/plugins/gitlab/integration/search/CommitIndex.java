@@ -31,4 +31,8 @@ public interface CommitIndex {
     public List<Commit> searchCommitsByIssue(String jiraIssueKey);
 
     public boolean checkIfCommitIsIndexed(String idValue) throws IOException;
+
+    public void clearIndex() throws IOException;
+
+    void commit() throws IOException;
 }

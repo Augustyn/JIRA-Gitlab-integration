@@ -28,10 +28,9 @@ import pl.hycom.jira.plugins.gitlab.integration.util.HttpHeadersBuilder;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
 import java.io.IOException;
-import java.text.DateFormat;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
 
 @Log4j
@@ -47,17 +46,19 @@ public class CommitRepository implements ICommitDao {
 
     @Override
     public List<Commit> getNewCommits(ConfigEntity configEntity, LocalDateTime date) throws IOException {
-        log.info("Trying to reach url: {}, with projectId: {}");
+        log.info("Trying to reach url: " + configEntity.getGitlabURL() + ", with projectId: " + configEntity.getGitlabProjectId());
         String url = configEntity.getGitlabURL();
         url += (date != null) ? COMMIT_UNTIL_DATE : COMMIT_BASE;
         HttpEntity<?> requestEntity = new HttpEntity<>(HttpHeadersBuilder.getInstance().setAuth(configEntity.getGitlabSecretToken()).get());
-        ResponseEntity<String> response = restTemplate.getRestTemplate().exchange( url, HttpMethod.GET, requestEntity,
+        ResponseEntity<String> response = restTemplate.getRestTemplate().exchange(url, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<String>() {
                 }, configEntity.getGitlabProjectId(), DateTimeFormatter.ISO_DATE_TIME.format(date != null? date : LocalDateTime.now()));
-        log.debug("Received response: " + response.getBody());
-        List<Commit> commitList = mapper.readValue(response.getBody(), mapper.getTypeFactory().constructCollectionType(List.class, Commit.class));
-        log.debug(("Received response as commit list: " + commitList));
+        final String bodyInUTF8 = new String(response.getBody().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        log.debug("Received response: " + bodyInUTF8);
+        List<Commit> commitList = mapper.readValue(bodyInUTF8, mapper.getTypeFactory().constructCollectionType(List.class, Commit.class));
+        log.debug("Received response as commit list: " + commitList);
         return commitList;
+        //TODO: test: czy dostajemy string w utf-8; czy po konwersji nie tracimy znaków diakrytycznych.
     }
 
     @Override
@@ -68,8 +69,9 @@ public class CommitRepository implements ICommitDao {
                 new ParameterizedTypeReference<String>() {
                 }, config.getGitlabProjectId(), shaSum);
         if (response != null) {
-            log.debug("Received response: " + response.getBody());
-            Commit commit = mapper.readValue(response.getBody(), Commit.class);
+            final String bodyInUTF8 = new String(response.getBody().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+            log.debug("Received response: " + bodyInUTF8);
+            Commit commit = mapper.readValue(bodyInUTF8, Commit.class);
             log.debug("Resolved response as commit: " + commit);
             return commit;
         }

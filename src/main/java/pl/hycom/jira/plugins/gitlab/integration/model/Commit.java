@@ -65,6 +65,22 @@ public class Commit implements Serializable {
     @JsonProperty("committer_email")
     private String committerEmail;
 
+    /**
+     * Commit date, when getting single commit.
+     */
+    @JsonProperty("committed_date")
+    @JsonSerialize(using = LocalDateTimeJacksonSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeJacksonDeserializer.class)
+    private LocalDateTime commitedDate;
+
+    /**
+     * Authored date, when getting single commit.
+     */
+    @JsonProperty("authored_date")
+    @JsonSerialize(using = LocalDateTimeJacksonSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeJacksonDeserializer.class)
+    private LocalDateTime authoredDate;
+
     @JsonProperty("created_at")
     @JsonSerialize(using = LocalDateTimeJacksonSerializer.class)
     @JsonDeserialize(using = LocalDateTimeJacksonDeserializer.class)

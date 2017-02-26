@@ -16,22 +16,17 @@
 package ut.pl.hycom.jira.plugins.gitlab.integration.service;
 
 import lombok.extern.log4j.Log4j;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.web.client.RestTemplate;
 import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
-import pl.hycom.jira.plugins.gitlab.integration.dao.ICommitDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
-import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
-import pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex;
-import pl.hycom.jira.plugins.gitlab.integration.search.LuceneIndexAccessor;
-import pl.hycom.jira.plugins.gitlab.integration.search.LucenePathSearcher;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
 import java.util.List;
@@ -44,38 +39,34 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @RunWith(MockitoJUnitRunner.class)
 public class CommitServiceTest {
 
-    @Mock private LuceneIndexAccessor indexAccessor;
-    @Mock private TemplateFactory restTemplateFactory;
-    @Mock private LucenePathSearcher lucenePathSearcher;
-    @Mock private ConfigEntity config;
-    @Mock private RestTemplate template;
-
-    @InjectMocks private CommitIndex commitIndexer = new LuceneCommitIndex(indexAccessor);
     @InjectMocks private CommitRepository commitService = new CommitRepository();
+
+    @Mock private ConfigEntity config;
+    @Mock private TemplateFactory template;
 
     private String urlMock = "https://gitlab.com/";
     private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
-    @Mock private ICommitDao dao;
 
-
+    @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(commitService);
         Mockito.when(config.getGitlabURL()).thenReturn(urlMock);
         Mockito.when(config.getGitlabProjectId()).thenReturn(1063546L);
         Mockito.when(config.getGitlabSecretToken()).thenReturn(privateTokenMock);
+        /*template = new TemplateFactory();*/
+        Mockito.when(template.getRestTemplate()).thenReturn(new TemplateFactory().getRestTemplate());
+        //ReflectionTestUtils.setField(commitService, "restTemplate", template);
     }
 
     @Test
-    @Ignore
     public void testGetNewCommits() throws Exception {
-        int pageSize = 3;
         List<Commit> commits = commitService.getNewCommits(config, null);
-        assertThat("Commits size should be as ", commits.size(), is(equalTo(pageSize)));
+        assertThat("Commits size should be as ", commits.size(), is(equalTo(20)));
     }
 
     @Test
-    @Ignore
     public void testGetOneCommit() throws Exception {
-        String id = "404dd04e1d6279f76db51f64c80edf6c2bd96bf2";
+        String id = "3fabe415af4ae792ce1732c0921330a4832457a2";
         Commit commit = commitService.getOneCommit(config, id);
         assertThat("CommitEvent id's should be the same: ", commit.getId(), is(equalTo(id)));
     }

@@ -19,5 +19,6 @@
 
 <div class="mod-header">
     <h3>$i18n.getText('jira.git.integration.git-tab.label')</h3>
-    <p>content</p>
+    <p>$commit</p>
+    <p>$commit.shortId</p><p>$commit.committerName</p><p>$commit.message</p><p>$commit.createdAt</p>
 </div>

@@ -60,6 +60,7 @@ public class CommitService implements ICommitService {
                 breakLoop = true;
             }
             for(Commit commit : commitList) {
+                commit.setGitProjectID(config.getGitlabProjectId());
                 date = date == null ? commit.getCreatedAt() : date.isBefore(commit.getCreatedAt()) ? date : commit.getCreatedAt();
                 if(commitSearcher.checkIfCommitIsIndexed(commit.getId()) || resultList.contains(commit)) {
                     breakLoop = true;

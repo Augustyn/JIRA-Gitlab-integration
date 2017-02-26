@@ -47,25 +47,25 @@ public class CommitMapper {
         if (org.apache.commons.lang3.StringUtils.isNotEmpty(commit.getIssueKey())) {
             document.add(new Field(CommitFields.JIRA_ISSUE_KEY.name(), commit.getIssueKey(), Field.Store.YES, Field.Index.NOT_ANALYZED));
         }
-        document.add(new Field(CommitFields.GIT_PROJECT_ID.name(), String.valueOf(commit.getGitProjectID()), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        if (commit.getGitProjectID() != null) {
+            document.add(new Field(CommitFields.GIT_PROJECT_ID.name(), String.valueOf(commit.getGitProjectID()), Field.Store.YES, Field.Index.NOT_ANALYZED));
+        }
         return document;
     }
 
     public static Commit getCommit(Document document) {
-        try {
-            return new Commit()
-                    .withId(document.get(CommitFields.ID.name()))
-                    .withShortId(document.get(CommitFields.SHORT_ID.name()))
-                    .withTitle(document.get(CommitFields.TITLE.name()))
-                    .withAuthorName(document.get(CommitFields.AUTHOR_NAME.name()))
-                    .withAuthorEmail(document.get(CommitFields.AUTHOR_EMAIL.name()))
-                    .withCreatedAt(LocalDateTime.ofInstant(CommitFields.formatter.parse(document.get(CommitFields.CREATED.name())).toInstant(), ZoneId.systemDefault()))
-                    .withMessage(document.get(CommitFields.COMMIT_MESSAGE.name()))
-                    .withIssueKey(document.get(CommitFields.JIRA_ISSUE_KEY.name()))
-                    .withGitProject(Long.valueOf(document.get(CommitFields.GIT_PROJECT_ID.name())));
-        } catch(java.text.ParseException e) {
-        log.warn("Failed to recreate CommitEvent from lucene document: " + document , e);
-        return null;
+        Commit commit = new Commit()
+                .withId(document.get(CommitFields.ID.name()))
+                .withShortId(document.get(CommitFields.SHORT_ID.name()))
+                .withTitle(document.get(CommitFields.TITLE.name()))
+                .withAuthorName(document.get(CommitFields.AUTHOR_NAME.name()))
+                .withAuthorEmail(document.get(CommitFields.AUTHOR_EMAIL.name()))
+                .withCreatedAt(LocalDateTime.parse(document.get(CommitFields.CREATED.name()),DateTimeFormatter.ISO_DATE_TIME))
+                .withMessage(document.get(CommitFields.COMMIT_MESSAGE.name()))
+                .withIssueKey(document.get(CommitFields.JIRA_ISSUE_KEY.name()));
+        if (!"null".equals(document.get(CommitFields.GIT_PROJECT_ID.name()))) {
+            commit.setGitProjectID(Long.valueOf(document.get(CommitFields.GIT_PROJECT_ID.name())));
         }
+        return commit;
     }
 }

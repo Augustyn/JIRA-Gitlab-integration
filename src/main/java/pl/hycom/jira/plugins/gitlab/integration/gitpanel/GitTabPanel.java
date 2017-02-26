@@ -42,6 +42,7 @@ public class GitTabPanel extends AbstractIssueTabPanel2 {
 
     private final CommitService commitService;
     private final PermissionManager permissionManager;
+    private final ActionFactory actionFactory;
 
     @Override
     public ShowPanelReply showPanel(ShowPanelRequest showPanelRequest) {
@@ -77,6 +78,6 @@ public class GitTabPanel extends AbstractIssueTabPanel2 {
     }
 
     private List<IssueAction> createActionList(List<Commit> commitsListForIssue) {
-        return commitsListForIssue.stream().map(GitCommitAction::new).collect(Collectors.toList());
+        return commitsListForIssue.stream().map(actionFactory::createAction).collect(Collectors.toList());
     }
 }

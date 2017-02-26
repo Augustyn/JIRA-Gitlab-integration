@@ -18,18 +18,18 @@ package pl.hycom.jira.plugins.gitlab.integration.util;
 import org.springframework.http.HttpHeaders;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 /**
  * Builder for HttpHeaders, used by Spring Template
  */
 public class HttpHeadersBuilder {
-    private static final Charset UTF8 = Charset.forName("UTF-8");
     private final HttpHeaders httpHeaders;
 
     private HttpHeadersBuilder() {
         this.httpHeaders = new HttpHeaders();
-        this.httpHeaders.setAcceptCharset(Collections.singletonList(UTF8));
+        this.httpHeaders.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
     }
 
     public static HttpHeadersBuilder getInstance() {

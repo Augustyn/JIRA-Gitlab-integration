@@ -133,5 +133,8 @@
     <description>The module configuring the Active Objects service used by this plugin</description>
     <entity>pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity</entity>
   </ao>
-
+  <!-- Rest service definition: -->
+  <rest key="jira-gitlab-rest-resources" path="/jira-gitlab" version="1.0">
+    <description>Provides the REST resource for the project list.</description>
+  </rest>
 </atlassian-plugin>

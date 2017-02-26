@@ -67,7 +67,7 @@ public class LuceneCommitIndex implements CommitIndex {
     @NotNull
     public List<Commit> searchCommitsByIssue(@NotNull String jiraIssueKey) {
         try {
-            Query query = new WildcardQuery(new Term(CommitFields.COMMIT_MESSAGE.name(), jiraIssueKey));
+            Query query = new TermQuery(new Term(CommitFields.JIRA_ISSUE_KEY.name(), jiraIssueKey));
             IndexReader reader = indexAccessor.getIndexReader();
             IndexSearcher searcher = new IndexSearcher(reader);
             TopDocs docs = searcher.search(query, HITS_PER_PAGE);
@@ -110,4 +110,14 @@ public class LuceneCommitIndex implements CommitIndex {
         return firstDoc.isPresent();
     }
 
+    @Override
+    public void clearIndex() throws IOException {
+        indexAccessor.getIndexWriter().deleteAll();
+        indexAccessor.getIndexWriter().commit();
+    }
+
+    @Override
+    public void commit() throws IOException {
+        indexAccessor.getIndexWriter().commit();
+    }
 }

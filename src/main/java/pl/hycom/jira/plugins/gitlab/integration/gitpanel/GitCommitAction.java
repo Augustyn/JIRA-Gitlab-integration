@@ -21,6 +21,7 @@ import com.atlassian.jira.plugin.profile.UserFormatManager;
 import com.atlassian.jira.template.VelocityTemplatingEngine;
 import com.atlassian.jira.util.JiraVelocityHelper;
 import com.atlassian.jira.util.velocity.DefaultVelocityRequestContextFactory;
+import com.atlassian.velocity.VelocityHelper;
 import com.google.common.collect.Maps;
 import com.opensymphony.util.TextUtils;
 import lombok.NoArgsConstructor;
@@ -41,20 +42,18 @@ import static com.atlassian.jira.template.TemplateSources.file;
 @Log4j
 @RequiredArgsConstructor
 public class GitCommitAction implements IssueAction {
+    private static final String PLUGIN_TEMPLATE = "templates/tabpanels/git-tab-content.vm";
     private final Commit commit;
-    private static final String PLUGIN_TEMPLATE = "templates/tabpanels/git-tab.vm";
-
+    private final Map<String,Object> params;
+    private final VelocityTemplatingEngine templateEngine;
     @Override
     public Date getTimePerformed() {
         return Date.from(Instant.from(commit.getCreatedAt()));
     }
+
     @Override
     public String getHtml() {
-        final Map<String, Object> params = Maps.newHashMap();
-        populateVelocityParams(params);
-        final VelocityTemplatingEngine templateEngine = ComponentAccessor.getComponent(VelocityTemplatingEngine.class);
         try {
-            /*ImmutableMap.<String, Object>of("commit", commit);*/
             return templateEngine.render(file(PLUGIN_TEMPLATE)).applying(params).asHtml();
         } catch (VelocityException e) {
             log.error("Error while rendering velocity template for '" + PLUGIN_TEMPLATE + "' with commit: " + commit, e);
@@ -67,18 +66,4 @@ public class GitCommitAction implements IssueAction {
         return Boolean.FALSE;
     }
 
-    /**
-     * This will populate the passed in map with this object referenced as "action" and the rendered comment body as
-     * "renderedContent".
-     *
-     * @param params map of params to populate
-     */
-    private void populateVelocityParams(Map<String, Object> params) {
-        params.put("action", this);
-        params.put("velocityhelper", new JiraVelocityHelper(ComponentAccessor.getFieldManager()));
-        params.put("requestContext", new DefaultVelocityRequestContextFactory(ComponentAccessor.getApplicationProperties()).getJiraVelocityRequestContext());
-        params.put("userformat", ComponentAccessor.getComponent(UserFormatManager.class));
-        params.put("textutils", new TextUtils());
-        params.put("commit", commit);
-    }
 }

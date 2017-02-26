@@ -139,6 +139,7 @@ public class JiraSectionAction extends JiraWebActionSupport {
             boolean reindex = true;
             if (reindex) {
                 commitManager.updateCommitsForAll();
+
             }
         } catch (Exception e) {
             addError("gitlab-project", "Couldn't contact Gitlab. Please verify host name and credentials.");

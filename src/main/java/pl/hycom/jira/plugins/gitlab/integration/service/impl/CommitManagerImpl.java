@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
 import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
 import pl.hycom.jira.plugins.gitlab.integration.service.ProcessorManager;
 
@@ -37,6 +38,7 @@ public class CommitManagerImpl implements CommitManager {
     private final ConfigManagerDao configManager;
     private final CommitService commitService;
     private final ProcessorManager processorManager;
+    private final CommitIndex commitIndex;
 
     @Override
     public void updateCommitsForProject(ConfigEntity config) throws SQLException, IOException {
@@ -52,6 +54,7 @@ public class CommitManagerImpl implements CommitManager {
         for (ConfigEntity config : configList){
             updateCommitsForProject(config);
         }
+        commitIndex.commit();
     }
 
     @Override

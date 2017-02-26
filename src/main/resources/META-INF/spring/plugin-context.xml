@@ -37,6 +37,9 @@
     <osgi:reference id="authenticationContext" interface="com.atlassian.jira.security.JiraAuthenticationContext" />
     <osgi:reference id="issueManager" interface="com.atlassian.jira.issue.IssueManager" />
     <osgi:reference id="permissionManager" interface="com.atlassian.jira.security.PermissionManager" />
+    <osgi:reference id="velocityEngine" interface="com.atlassian.jira.template.VelocityTemplatingEngine" />
+    <osgi:reference id="fieldManager" interface="com.atlassian.jira.issue.fields.FieldManager" />
+    <osgi:reference id="applicationProperties" interface="com.atlassian.jira.config.properties.ApplicationProperties" />
 
     <osgi:service id="configManagerDao" interface="pl.hycom.jira.plugins.gitlab.integration.dao.ConfigManagerDao" ref="configManagerDaoImpl" />
     <osgi:service id="pl.hycom.jira.plugins.gitlab.integration.listeners.ProcessorsConfigurer" interface="com.atlassian.sal.api.lifecycle.LifecycleAware" ref="processorsConfigurer" />
