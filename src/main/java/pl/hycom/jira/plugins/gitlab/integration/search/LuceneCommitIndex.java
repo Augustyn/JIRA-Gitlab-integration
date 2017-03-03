@@ -41,10 +41,35 @@ public class LuceneCommitIndex implements CommitIndex {
     private final LuceneIndexAccessor indexAccessor;
 
     @Override
-    public void indexFile(Commit commit) throws IOException {
+    public void index(List<Commit> commits) throws IOException {
+        final List<Document> documents = Optional.ofNullable(commits).orElse(Collections.emptyList()).stream()
+                                       .map(c -> {
+                                           try {
+                                               return CommitMapper.getDocument(c);
+                                           } catch (IOException e) {
+                                               log.warn("Failed to convert commitId: " + c.getShortId() + ", to lucene document. Enable debug for more info");
+                                               log.debug("Fail to convert commitId " + c.getShortId() + " with message", e);
+                                               return null;
+                                           }
+                                       }).filter(Objects::nonNull)
+                                       .collect(Collectors.toList());
+        IndexWriter indexWriter = indexAccessor.getIndexWriter();
+        documents.forEach(d -> {
+            try {
+                indexWriter.addDocument(d);
+            } catch (IOException e) {
+                log.warn("Failed to index document: '" + d + "' with message: " + e.getMessage(), e);
+            }
+        });
+        indexWriter.commit();
+    }
+
+    @Override
+    public void index(Commit commit) throws IOException {
         Document document = CommitMapper.getDocument(commit);
         IndexWriter indexWriter = indexAccessor.getIndexWriter();
         indexWriter.addDocument(document);
+        indexWriter.commit();
     }
 
 
@@ -112,8 +137,9 @@ public class LuceneCommitIndex implements CommitIndex {
 
     @Override
     public void clearIndex() throws IOException {
-        indexAccessor.getIndexWriter().deleteAll();
-        indexAccessor.getIndexWriter().commit();
+        final IndexWriter indexWriter = indexAccessor.getIndexWriter();
+        indexWriter.deleteAll();
+        indexWriter.commit();
     }
 
     @Override

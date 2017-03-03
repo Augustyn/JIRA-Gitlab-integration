@@ -34,7 +34,7 @@
     <context>gittab</context>
   </web-resource>
 
-  <issue-tabpanel key="git-tab" name="Git Tab" i18n-name-key="jira.git.integration.git-tab.name" class="pl.hycom.jira.plugins.gitlab.integration.gitpanel.GitTabPanel">
+  <issue-tabpanel key="git-tab" name="Git Tab" i18n-name-key="jira.git.integration.git-tab.name" class="pl.hycom.jira.plugins.gitlab.integration.controller.GitTabPanel">
     <description key="jira.git.integration.git-tab.description">The Git Tab Plugin</description>
     <resource type="i18n" name="i18n" location="gittab"/>
     <label key="jira.git.integration.git-tab.label"/>

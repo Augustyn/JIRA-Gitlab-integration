@@ -24,7 +24,9 @@ import java.util.List;
 public interface CommitIndex {
     public static final int HITS_PER_PAGE = 100;
 
-    public void indexFile(Commit commit) throws IOException;
+    public void index(List<Commit> commits) throws IOException;
+
+    public void index(Commit commit) throws IOException;
 
     public List<Document> searchCommits(String fieldName, String fieldValue) throws IOException;
 

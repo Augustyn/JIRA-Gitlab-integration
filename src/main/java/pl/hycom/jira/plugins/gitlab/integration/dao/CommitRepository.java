@@ -58,7 +58,6 @@ public class CommitRepository implements ICommitDao {
         List<Commit> commitList = mapper.readValue(bodyInUTF8, mapper.getTypeFactory().constructCollectionType(List.class, Commit.class));
         log.debug("Received response as commit list: " + commitList);
         return commitList;
-        //TODO: test: czy dostajemy string w utf-8; czy po konwersji nie tracimy znaków diakrytycznych.
     }
 
     @Override

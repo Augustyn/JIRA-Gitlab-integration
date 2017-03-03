@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-package pl.hycom.jira.plugins.gitlab.integration.gitlab.events;
+package pl.hycom.jira.plugins.gitlab.integration.model.events;
 
 import lombok.Data;
 import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonProperty;
-import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.CommitEvent;
-import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Project;
-import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.model.Repository;
 
 import javax.annotation.Generated;
 import java.util.ArrayList;

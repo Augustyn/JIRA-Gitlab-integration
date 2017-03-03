@@ -22,7 +22,7 @@ import com.atlassian.sal.api.message.I18nResolver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Controller;
-import pl.hycom.jira.plugins.gitlab.integration.gitlab.events.Push;
+import pl.hycom.jira.plugins.gitlab.integration.model.events.Push;
 import pl.hycom.jira.plugins.gitlab.integration.service.CommitManager;
 
 import javax.inject.Inject;
