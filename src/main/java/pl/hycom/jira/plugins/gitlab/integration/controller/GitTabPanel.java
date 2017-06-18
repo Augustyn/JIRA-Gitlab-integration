@@ -80,6 +80,6 @@ public class GitTabPanel extends AbstractIssueTabPanel2 {
     }
 
     private List<IssueAction> createActionList(List<Commit> commitsListForIssue) {
-        return commitsListForIssue.stream().map(actionFactory::createAction).collect(Collectors.toList());
+        return Collections.singletonList(actionFactory.createAction(commitsListForIssue));
     }
 }

@@ -40,6 +40,7 @@ import pl.hycom.jira.plugins.gitlab.integration.search.LuceneIndexAccessor;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
@@ -84,7 +85,7 @@ public class CommitIndexerTest {
                 .withShortId("f1d2d2")
                 .withCreatedAt(LocalDateTime.now());
         //when
-        index.indexFile(commit);
+        index.index(commit);
         //then
         ArgumentCaptor<Document> documentCapt = ArgumentCaptor.forClass(Document.class);
         verify(indexWriter).addDocument(documentCapt.capture());

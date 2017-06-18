@@ -42,7 +42,7 @@ import static com.atlassian.jira.template.TemplateSources.file;
 @Log4j
 @RequiredArgsConstructor
 public class GitCommitAction implements IssueAction {
-    private static final String PLUGIN_TEMPLATE = "templates/tabpanels/git-tab-content.vm";
+    private static final String PLUGIN_TEMPLATE = "templates/tabpanels/gitTab-single-commit.vm";
     private final Commit commit;
     private final Map<String,Object> params;
     private final VelocityTemplatingEngine templateEngine;

@@ -35,7 +35,7 @@ public class IssueCommitIndexerProcessor implements ProcessorInterface {
     @Override
     public void execute(@NotNull Commit commit) throws ProcessException {
         try {
-            commitIndexer.indexFile(commit);
+            commitIndexer.index(commit);
         } catch (IOException e) {
             log.info("Failed to index commit with id: "+commit.getId() + e.getMessage());
         }

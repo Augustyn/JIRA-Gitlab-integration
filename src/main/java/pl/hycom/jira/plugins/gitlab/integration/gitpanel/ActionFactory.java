@@ -20,6 +20,7 @@ package pl.hycom.jira.plugins.gitlab.integration.gitpanel;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.properties.ApplicationProperties;
 import com.atlassian.jira.issue.fields.FieldManager;
+import com.atlassian.jira.plugin.issuetabpanel.IssueAction;
 import com.atlassian.jira.plugin.profile.UserFormatManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.template.VelocityTemplatingEngine;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Service;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,5 +67,11 @@ public class ActionFactory {
 /*        params.put("userformat", component);*/
         params.put("textutils", new TextUtils());
         return params;
+    }
+
+    public IssueAction createAction(List<Commit> commits) {
+        final Map<String, Object> velocityParams = this.populateVelocityParams();
+        velocityParams.put("commits", commits);
+        return new GitCommitsAction(commits, velocityParams, velocityEngine);
     }
 }

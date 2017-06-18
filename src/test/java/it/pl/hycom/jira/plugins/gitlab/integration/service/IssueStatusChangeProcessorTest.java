@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.</p>
  */
-package ut.pl.hycom.jira.plugins.gitlab.integration.service;
+package it.pl.hycom.jira.plugins.gitlab.integration.service;
 
 import com.atlassian.jira.bc.issue.IssueService;
 import com.atlassian.jira.issue.IssueInputParameters;
@@ -23,8 +23,10 @@ import com.atlassian.jira.user.util.UserManager;
 import lombok.extern.log4j.Log4j;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.IssueStatusChangeProcessor;
 
 import java.io.IOException;
@@ -32,6 +34,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @Log4j
+@RunWith(SpringJUnit4ClassRunner.class)
 public class IssueStatusChangeProcessorTest {
     @Mock private UserManager userManager;
     @Mock private IssueService issueService;

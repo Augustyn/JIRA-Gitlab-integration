@@ -19,16 +19,16 @@ import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import pl.hycom.jira.plugins.gitlab.integration.dao.CommitRepository;
 import pl.hycom.jira.plugins.gitlab.integration.dao.ConfigEntity;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.util.TemplateFactory;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,10 +42,10 @@ public class CommitServiceTest {
     @InjectMocks private CommitRepository commitService = new CommitRepository();
 
     @Mock private ConfigEntity config;
-    @Mock private TemplateFactory template;
+    @Spy private TemplateFactory template = new TemplateFactory();
 
     private String urlMock = "https://gitlab.com/";
-    private String privateTokenMock = "KCi3MfkU7qNGJCe3pQUW";
+    private String privateTokenMock = "R4jTxnBBT5Tr4xoSo7vw";
 
     @Before
     public void setUp() {
@@ -54,7 +54,7 @@ public class CommitServiceTest {
         Mockito.when(config.getGitlabProjectId()).thenReturn(1063546L);
         Mockito.when(config.getGitlabSecretToken()).thenReturn(privateTokenMock);
         /*template = new TemplateFactory();*/
-        Mockito.when(template.getRestTemplate()).thenReturn(new TemplateFactory().getRestTemplate());
+        /*Mockito.when(template.getRestTemplate()).thenReturn(new TemplateFactory().getRestTemplate());*/
         //ReflectionTestUtils.setField(commitService, "restTemplate", template);
     }
 
@@ -66,6 +66,7 @@ public class CommitServiceTest {
 
     @Test
     public void testGetOneCommit() throws Exception {
+        Collections.unmodifiableCollection(new ArrayList<>());
         String id = "3fabe415af4ae792ce1732c0921330a4832457a2";
         Commit commit = commitService.getOneCommit(config, id);
         assertThat("CommitEvent id's should be the same: ", commit.getId(), is(equalTo(id)));
