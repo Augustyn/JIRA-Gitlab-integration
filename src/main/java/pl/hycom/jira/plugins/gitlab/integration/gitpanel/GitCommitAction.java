@@ -15,16 +15,8 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.gitpanel;
 
-import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.plugin.issuetabpanel.IssueAction;
-import com.atlassian.jira.plugin.profile.UserFormatManager;
 import com.atlassian.jira.template.VelocityTemplatingEngine;
-import com.atlassian.jira.util.JiraVelocityHelper;
-import com.atlassian.jira.util.velocity.DefaultVelocityRequestContextFactory;
-import com.atlassian.velocity.VelocityHelper;
-import com.google.common.collect.Maps;
-import com.opensymphony.util.TextUtils;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.apache.velocity.exception.VelocityException;

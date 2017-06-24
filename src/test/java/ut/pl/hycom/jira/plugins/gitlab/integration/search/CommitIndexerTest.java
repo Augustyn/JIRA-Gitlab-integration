@@ -34,13 +34,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 import pl.hycom.jira.plugins.gitlab.integration.search.CommitFields;
 import pl.hycom.jira.plugins.gitlab.integration.search.CommitIndex;
+import pl.hycom.jira.plugins.gitlab.integration.search.DefaultLuceneIndexAccessor;
 import pl.hycom.jira.plugins.gitlab.integration.search.LuceneCommitIndex;
-import pl.hycom.jira.plugins.gitlab.integration.search.LuceneIndexAccessor;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
@@ -51,24 +50,22 @@ import static org.mockito.Mockito.*;
 @Log4j
 @RunWith(MockitoJUnitRunner.class)
 public class CommitIndexerTest {
+    //dependencies:
+    @Mock private DefaultLuceneIndexAccessor indexAccessor;
+    @Mock private IndexWriter indexWriter;
+    @Mock private IndexReader indexReader;
+    @Mock private IndexSearcherFactory indexSearcherFactory;
 
-    @Mock
-    private LuceneIndexAccessor indexAccessor;
-    @Mock
-    private IndexWriter indexWriter;
-    @Mock
-    private IndexReader indexReader;
-    @Mock
-    private IndexSearcherFactory indexSearcherFactory;
 
+    // Tested class:
     private CommitIndex index;
 
     @Before
     public void setUp() throws IOException {
-        MockitoAnnotations.initMocks(indexAccessor);
-        when(indexAccessor.getIndexWriter()).thenReturn(indexWriter);
-        when(indexAccessor.getIndexReader()).thenReturn(indexReader);
+        //indexAccessor = new DefaultLuceneIndexAccessor(searcher);
         index = new LuceneCommitIndex(indexAccessor);
+        MockitoAnnotations.initMocks(index);
+
     }
 
     @Test
@@ -84,11 +81,12 @@ public class CommitIndexerTest {
                 .withMessage("[TP-1] test issue 1. Test commit")
                 .withShortId("f1d2d2")
                 .withCreatedAt(LocalDateTime.now());
+        when(indexAccessor.getIndexWriter()).thenReturn(indexWriter);
         //when
         index.index(commit);
         //then
         ArgumentCaptor<Document> documentCapt = ArgumentCaptor.forClass(Document.class);
-        verify(indexWriter).addDocument(documentCapt.capture());
+        verify(indexAccessor.getIndexWriter()).addDocument(documentCapt.capture());
 
         Document documentUsed = documentCapt.getValue();
 

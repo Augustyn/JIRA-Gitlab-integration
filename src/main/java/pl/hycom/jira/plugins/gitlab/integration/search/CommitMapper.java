@@ -22,9 +22,7 @@ import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 /**
  * Mapper. Converts {@link Commit} to Lucene {@link Document}

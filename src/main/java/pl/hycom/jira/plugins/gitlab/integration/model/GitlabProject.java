@@ -15,11 +15,12 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.model;
 
+import lombok.Data;
 import org.codehaus.jackson.annotate.JsonAnyGetter;
 import org.codehaus.jackson.annotate.JsonAnySetter;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
-import lombok.Data;
+
 import javax.annotation.Generated;
 import java.util.HashMap;
 import java.util.Map;

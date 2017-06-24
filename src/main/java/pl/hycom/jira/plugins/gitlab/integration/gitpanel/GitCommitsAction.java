@@ -24,7 +24,6 @@ import org.apache.velocity.exception.VelocityException;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.atlassian.jira.template.TemplateSources.file;

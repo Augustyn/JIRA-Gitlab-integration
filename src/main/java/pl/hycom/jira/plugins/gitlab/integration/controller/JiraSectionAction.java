@@ -18,7 +18,6 @@ package pl.hycom.jira.plugins.gitlab.integration.controller;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -34,7 +33,10 @@ import pl.hycom.jira.plugins.gitlab.integration.service.Validator;
 import pl.hycom.jira.plugins.gitlab.integration.validation.ErrorCollection;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.EnumMap;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.Optional;
 
 @Log4j
 @RequiredArgsConstructor(onConstructor = @__(@Inject))

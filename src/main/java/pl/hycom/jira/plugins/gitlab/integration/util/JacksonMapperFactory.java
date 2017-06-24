@@ -18,11 +18,6 @@
 
 package pl.hycom.jira.plugins.gitlab.integration.util;
 
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.module.SimpleModule;
-import pl.hycom.jira.plugins.gitlab.integration.mapper.LocalDateTimeJacksonSerializer;
-
 /**
  * Factory for creating Jackson Object Mapper with custom serializer and deserializers.
  */

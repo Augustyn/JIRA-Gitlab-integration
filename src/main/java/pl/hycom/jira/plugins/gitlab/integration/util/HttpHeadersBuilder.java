@@ -17,7 +17,6 @@ package pl.hycom.jira.plugins.gitlab.integration.util;
 
 import org.springframework.http.HttpHeaders;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 

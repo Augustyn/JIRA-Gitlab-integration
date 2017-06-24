@@ -15,12 +15,10 @@
  */
 package pl.hycom.jira.plugins.gitlab.integration.search;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 /**
  * @author higashi on 2016-09-05, HYCOM S.A.

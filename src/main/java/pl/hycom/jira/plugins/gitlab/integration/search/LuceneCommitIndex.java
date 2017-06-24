@@ -69,7 +69,7 @@ public class LuceneCommitIndex implements CommitIndex {
         Document document = CommitMapper.getDocument(commit);
         IndexWriter indexWriter = indexAccessor.getIndexWriter();
         indexWriter.addDocument(document);
-        indexWriter.commit();
+/*        indexWriter.commit(); //optimizing: don't commit every time document is added. */
     }
 
 

@@ -21,7 +21,6 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.properties.ApplicationProperties;
 import com.atlassian.jira.issue.fields.FieldManager;
 import com.atlassian.jira.plugin.issuetabpanel.IssueAction;
-import com.atlassian.jira.plugin.profile.UserFormatManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.template.VelocityTemplatingEngine;
 import com.atlassian.jira.util.JiraVelocityHelper;

@@ -19,18 +19,24 @@ import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import pl.hycom.jira.plugins.gitlab.integration.model.Commit;
+import pl.hycom.jira.plugins.gitlab.integration.search.DefaultLuceneIndexAccessor;
+import pl.hycom.jira.plugins.gitlab.integration.search.LucenePathSearcher;
 import pl.hycom.jira.plugins.gitlab.integration.service.ProcessorManager;
 import pl.hycom.jira.plugins.gitlab.integration.service.processors.ProcessorInterface;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests of processor manager.
@@ -39,13 +45,21 @@ import static org.junit.Assert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessorManagerTest {
 
-    @InjectMocks
+    @Mock
+    private LucenePathSearcher searcher;
+    //dependencies.
+    private DefaultLuceneIndexAccessor indexAccessor;
+
     private ProcessorManager manager;
 
     private List<ProcessorInterface> processorsList;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
+        indexAccessor = new DefaultLuceneIndexAccessor(searcher);
+        MockitoAnnotations.initMocks(indexAccessor);
+        manager = new ProcessorManager(indexAccessor);
+        when(searcher.getIndexPath()).thenReturn(Paths.get("target","test-index"));
         processorsList = new ArrayList<>();
         processorsList.add(new ProcessorInterface() {
             @Override
@@ -57,7 +71,7 @@ public class ProcessorManagerTest {
     }
 
     @Test
-    public void referenceTest() {
+    public void startProcessorsTest() {
         assertThat("Tested List is not empty", processorsList, is(notNullValue()));
         assertThat("Reference should be injected.", manager, is(notNullValue()));
         List<Commit> list = new ArrayList<>();
