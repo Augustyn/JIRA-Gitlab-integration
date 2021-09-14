@@ -509,7 +509,7 @@
         <testkit.version>7.2.9</testkit.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.junit>4.12</version.junit>
+        <version.junit>4.13.1</version.junit>
         <version.lombok>1.16.12</version.lombok>
         <version.mockito>1.9.5</version.mockito>
         <version.jackson>1.9.1</version.jackson>
