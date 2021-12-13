@@ -1,5 +1,6 @@
 # JIRA-Gitlab-integration
-Atlassian JIRA to Gitlab integration
+Atlassian JIRA to Gitlab integration was created with technical university of Lodz students, as a term subject project.
+It is not developed and because that I've set it as a read only.
 
 # Building
 ## Prerequisites:
